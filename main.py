@@ -5,11 +5,14 @@
 from telegram.ext import Updater, CommandHandler
 from bot_actions import BotActions
 
+
 def main():
     updater = Updater('YOUR TOKEN HERE')
     updater.dispatcher.add_handler(CommandHandler('start', BotActions.start))
     updater.dispatcher.add_handler(CommandHandler('hola', BotActions.hola))
     updater.dispatcher.add_handler(CommandHandler('macho', BotActions.macho))
+    updater.dispatcher.add_handler(CommandHandler('nudes', BotActions.sned_memes))
+    updater.dispatcher.add_handler(CommandHandler('ping', BotActions.ping))
 
     updater.start_polling()
     updater.idle()

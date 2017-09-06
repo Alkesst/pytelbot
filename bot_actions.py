@@ -33,6 +33,7 @@ class BotActions():
 
     @staticmethod
     def random_meme_template(file_name):
+        """Search a random meme in a list of memes"""
         num_lines = sum(1 for line in open(file_name, 'r'))
         random_file_pos = int(random.random()*num_lines)
         file_opened = open(file_name, 'r')
@@ -44,3 +45,8 @@ class BotActions():
             if not line:
                 has_next = False
         return file_opened.readline()
+
+    @staticmethod
+    def ping(bot, updater):
+        """Reply with a pong."""
+        bot.send_message(chat_id=updater.message.chat.id, "Pong!")
