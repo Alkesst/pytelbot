@@ -19,22 +19,28 @@ class BotActions():
         updater.message.reply_text('Hola, {}!'.format(updater.message.from_user.first_name))
 
     @staticmethod
-    def macho(updater):
+    def macho(bot, updater):
         """Reply if you are altered"""
         chat_id = updater.message.chat.id
-        updater.message.reply_text(updater.bot.send_audio(chat_id=chat_id, audio=open('macho.mp3', 'rb')))
+        bot.send_audio(chat_id=chat_id, audio=open('macho.mp3', 'rb'))
 
     @staticmethod
-    def send_memes(updater):
+    def send_memes(bot, updater):
         """Reply with a random meme"""
         chat_id = updater.message.chat.id
         file_name = BotActions.random_meme_template("meme_list.txt")
-        updater.message.reply_text(updater.bot.send_photo(chat_id=chat_id, photo=open(file_name, 'rb')))
+        bot.send_photo(chat_id=chat_id, photo=open(file_name, 'rb'))
 
     @staticmethod
     def random_meme_template(file_name):
         num_lines = sum(1 for line in open(file_name, 'r'))
         random_file_pos = int(random.random()*num_lines)
-    # Acabar
-    # def macho(updater):
-    #   updater.message.reply_text(updater.message.chat.id)
+        file_opened = open(file_name, 'r')
+        linea = 0
+        has_next = True
+        while has_next and linea < random_file_pos:
+            line = file_opened.readline()
+            linea += 1
+            if not line:
+                has_next = False
+        return file_opened.readline()
