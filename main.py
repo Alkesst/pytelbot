@@ -17,6 +17,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('id_c', BotActions.id_chat))
     updater.dispatcher.add_handler(CommandHandler('help', BotActions.help))
     updater.dispatcher.add_handler(CommandHandler('animals', BotActions.animals))
+    updater.dispatcher.add_handler(CommandHandler('tweet', BotActions.tweet))
     updater.dispatcher.add_error_handler(BotActions.show_error)
     updater.start_polling()
     updater.idle()
