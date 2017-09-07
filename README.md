@@ -1,3 +1,21 @@
 # PyTel-Bot
 A short bot in telegram
-Made with Python-Telegram-Bot API (https://python-telegram-bot.org/)
+Made with Python-Telegram-Bot API (https://python-telegram-bot.org/) and Python 2.7.10
+
+This associate a COMMAND (/COMMAND in telegram chat) with a method (default_method). Is not necessary to
+call the method, just is needed to make a reference.
+```python
+    updater.dispatcher.add_handler(CommandHandler('COMMAND', default_method)
+```
+For example, the command /start, is associated with BotActions.start
+```python
+    updater.dispatcher.add_handler(CommandHandler('start'), BotActions.start)
+```
+And, in your telegram chat, you'll see something like this:
+
+```shell
+    Hola, mundo!
+```
+
+All the methods' arguments are bot and update. With bot you can make actions like, sending messages, photos, etc...
+With update you can get information of the message like the chat object, user object, etc... 
