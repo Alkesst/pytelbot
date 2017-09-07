@@ -7,13 +7,15 @@ from bot_actions import BotActions
 
 
 def main():
-    updater = Updater('TOKENSITO')
+    updater = Updater('TOKEN')
     updater.dispatcher.add_handler(CommandHandler('start', BotActions.start))
     updater.dispatcher.add_handler(CommandHandler('hola', BotActions.hola))
     updater.dispatcher.add_handler(CommandHandler('macho', BotActions.macho))
     updater.dispatcher.add_handler(CommandHandler('nudes', BotActions.send_memes))
     updater.dispatcher.add_handler(CommandHandler('ping', BotActions.ping))
     updater.dispatcher.add_handler(CommandHandler('id', BotActions.id))
+    updater.dispatcher.add_handler(CommandHandler('id_c', BotActions.id_chat))
+    updater.dispatcher.add_handler(CommandHandler('help', BotActions.help))
     updater.dispatcher.add_error_handler(BotActions.show_error)
     updater.start_polling()
     updater.idle()
