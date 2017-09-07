@@ -30,16 +30,16 @@ class BotActions():
     def send_memes(bot, update):
         """Reply with a random meme"""
         chat_id = update.message.chat.id
-        file_name = BotActions.random_meme_template()
+        file_name = BotActions.random_file_name('/Users/alec/Desktop/Memes')
         bot.send_photo(chat_id=chat_id, photo=open(file_name, 'rb'))
 
     @staticmethod
-    def random_meme_template():
-        """Search a random meme in a list of memes"""
-        onlyfiles = [f for f in listdir('/Users/alec/Desktop/Memes') if isfile(join('/Users/alec/Desktop/Memes', f)) and f != '.DS_Store']
+    def random_file_name(path):
+        """Search a random file inside a path"""
+        onlyfiles = [f for f in listdir(path) if isfile(join(path, f)) and f != '.DS_Store']
         lines = len(onlyfiles)
-        random_meme = int(round(random.random()*lines, 0))
-        return '/Users/alec/Desktop/Memes/' + onlyfiles[random_meme]
+        random_file = int(round(random.random()*lines, 0))
+        return path + "/" + onlyfiles[random_file]
 
     @staticmethod
     def ping(bot, update):
@@ -64,6 +64,13 @@ class BotActions():
     def help(bot, update):
         help_text = BotActions.help_commands()
         bot.send_message(chat_id=update.message.from_user.id, text=help_text)
+
+    @staticmethod
+    def animals(bot, update):
+        """Reply with a random Shiba image"""
+        chat_id = update.message.chat.id
+        file_name = BotActions.random_file_name('/Users/alec/Desktop/Animals')
+        bot.send_photo(chat_id=chat_id, photo=open(file_name, 'rb'))
 
     @staticmethod
     def help_commands():
