@@ -80,6 +80,7 @@ class BotActions():
         help_text += "/hola     Te saluda cordialmente\n"
         help_text += "/macho    Te manda un audio para que te vayas a la mierda\n"
         help_text += "/nudes    Te manda un meme aleatorio de un repertorio de memes\n"
+        help_text += "/animals  Te manda un animal aleatorio de un repertorio de aniamlitos\n"
         help_text += "/id       Manda el ID del usuario que ha ejecutado el comando\n"
         help_text += "/id_c     Manda el ID del chat en el que se ha ejecutado el comando\n"
         help_text += "/tweet    Manda un tweet a la cuenta de @PyTwe_bot\n"
@@ -87,12 +88,14 @@ class BotActions():
 
     @staticmethod
     def tweet(bot, update):
+        to_twitter = TweetFromTelegram()
         text_to_tweet = update.message.text_markdown[7:len(update.message.text_markdown)]
-        link = "Ya he publicado tu tweet: " + TweetFromTelegram.new_tweet(text_to_tweet)
-        bot.send_message(chat_id=update.message.chat.id, text=link)
+        link = to_twitter.new_tweet(text_to_tweet)
+        if link == "error":
+            bot.send_message(chat_id=update.message.chat.id, text="Intenta no poner carácteres especiales :)", reply_to_message_id=update.message.message_id)
+        else:
+            mensaje = "Ya he publicado tu tweet: " + link
+            bot.send_message(chat_id=update.message.chat.id, text=mensaje, reply_to_message_id=update.message.message_id)
 
-
-    # Anotaciones para el autor: Debes crear un try: except: para que cuando itenten mandar
-    # tweets con caracteres raros les pida un nuevo texto, con el comando /tweet
     # añadir alguna manera de que si el mensaje de telegram contiene alguna imagen
     # que se descargue la imagen y se publique en twitter.

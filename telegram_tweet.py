@@ -18,15 +18,18 @@ class TweetFromTelegram():
 
     def new_tweet(self, tweet):
         """Create a new tweet"""
-        self.api.update_status(str(tweet))
-        link = TweetFromTelegram.get_last_status_link(self.api)
+        link = None
+        try:
+            self.api.update_status(str(tweet))
+            link = TweetFromTelegram.get_last_status_link(self.api)
+        except UnicodeEncodeError:
+            link = "error"
         return link
 
-# Does not work.
     @staticmethod
     def get_last_status_link(api):
         """Get the link from the last tweet from user timeline"""
-        link = "http://www.twitter.com/pytwe_bot/status/"
+        link = "https://twitter.com/pytwe_bot/status/"
         tweets = api.user_timeline()
-        link += tweets[0].id
+        link += str(tweets[0].id)
         return link

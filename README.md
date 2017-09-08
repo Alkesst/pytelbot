@@ -14,7 +14,7 @@ For example, the command /start, is associated with BotActions.start
 ```
 And, in your telegram chat, you'll see something like this:
 
-```shell
+```
     Hola, mundo!
 ```
 The method random_file_name gives a random file name from a specific path. For example, if the path is full of images
@@ -29,6 +29,9 @@ The parse_mode='Markdown' is for using a style in the message, for example, when
 ```python
     bot.send_message(chat_id=chat_id, text='`' + str(chat_id) + '`', reply_to_message_id=update.message.message_id, parse_mode='Markdown')
 ```
+
+The module telegram_tweet.py connects the telegram bot with @PyTwe_bot (http://www.github.com/alkesst/pytwe-bot).
+The method new_tweet, post the tweet and returns the link where the tweet was posted.
 
 All the methods' arguments are bot and update. With bot you can make actions like, sending messages, photos, etc...
 With update you can get information of the message like the chat object, user object, etc...
