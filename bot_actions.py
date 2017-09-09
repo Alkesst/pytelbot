@@ -96,6 +96,8 @@ class BotActions():
             else:
                 mensaje = "Ya he publicado tu tweet: " + link
                 bot.send_message(chat_id=update.message.chat.id, text=mensaje, reply_to_message_id=update.message.message_id)
+        else:
+            bot.send_message(chat_id=update.message.chat.id, text="Creo que no se te permite enviar tweets... :s", reply_to_message_id=update.message.message_id)
 
     # añadir alguna manera de que si el mensaje de telegram contiene alguna imagen
     # que se descargue la imagen y se publique en twitter.
