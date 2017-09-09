@@ -83,19 +83,19 @@ class BotActions():
         help_text += "/animals  Te manda un animal aleatorio de un repertorio de aniamlitos\n"
         help_text += "/id       Manda el ID del usuario que ha ejecutado el comando\n"
         help_text += "/id_c     Manda el ID del chat en el que se ha ejecutado el comando\n"
-        help_text += "/tweet    Manda un tweet a la cuenta de @PyTwe_bot\n"
         return help_text
 
     @staticmethod
     def tweet(bot, update):
-        to_twitter = TweetFromTelegram()
-        text_to_tweet = update.message.text_markdown[7:len(update.message.text_markdown)]
-        link = to_twitter.new_tweet(text_to_tweet)
-        if link == "error":
-            bot.send_message(chat_id=update.message.chat.id, text="Intenta no poner carácteres especiales :)", reply_to_message_id=update.message.message_id)
-        else:
-            mensaje = "Ya he publicado tu tweet: " + link
-            bot.send_message(chat_id=update.message.chat.id, text=mensaje, reply_to_message_id=update.message.message_id)
+        if update.message.from_user.id == "":
+            to_twitter = TweetFromTelegram()
+            text_to_tweet = update.message.text_markdown[7:len(update.message.text_markdown)]
+            link = to_twitter.new_tweet(text_to_tweet)
+            if link == "error":
+                bot.send_message(chat_id=update.message.chat.id, text="Intenta no poner carácteres especiales :)", reply_to_message_id=update.message.message_id)
+            else:
+                mensaje = "Ya he publicado tu tweet: " + link
+                bot.send_message(chat_id=update.message.chat.id, text=mensaje, reply_to_message_id=update.message.message_id)
 
     # añadir alguna manera de que si el mensaje de telegram contiene alguna imagen
     # que se descargue la imagen y se publique en twitter.
