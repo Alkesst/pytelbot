@@ -31,7 +31,7 @@ class BotActions():
     def send_memes(bot, update):
         """Reply with a random meme"""
         chat_id = update.message.chat.id
-        file_name = BotActions.random_file_name('/Users/alec/Desktop/Memes')
+        file_name = BotActions.random_file_name('/home/pi/Documentos/Memes')
         bot.send_photo(chat_id=chat_id, photo=open(file_name, 'rb'))
 
     @staticmethod
@@ -68,9 +68,9 @@ class BotActions():
 
     @staticmethod
     def animals(bot, update):
-        """Reply with a random Shiba image"""
+        """Reply with a random animal image"""
         chat_id = update.message.chat.id
-        file_name = BotActions.random_file_name('/Users/alec/Desktop/Animals')
+        file_name = BotActions.random_file_name('/home/pi/Documentos/Animals')
         bot.send_photo(chat_id=chat_id, photo=open(file_name, 'rb'))
 
     @staticmethod
