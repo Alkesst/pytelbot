@@ -40,6 +40,14 @@ If you want to run the bot when the rpi powers on, you will need to use a servic
 ```sh
     #!/usr/bin/env bash
     cd /home/pi/Documentos/PyTel-Bot
+    STATE=$(ping -q -w 1 -c 1 `ip r | grep default | cut -d ' ' -f 3` > /dev/null && echo ok || echo error)
+    while [  $STATE == "error" ]; do
+        #do a ping and check that its not a default message or change to grep for something else
+        STATE=$(ping -q -w 1 -c 1 `ip r | grep default | cut -d ' ' -f 3` > /dev/null && echo ok || echo error)
+
+        #sleep for 2 seconds and try again
+        sleep 2
+     done
     echo "Pulling PyTel-Bot..."
     echo
     git pull
@@ -48,6 +56,18 @@ If you want to run the bot when the rpi powers on, you will need to use a servic
     echo "Initializating PyTel-Bot..."
     python main.py
 
+```
+This check if there's internet connection, if not, wait 2 secs and retry a ping. I made this because, when the service
+powers on, executes the script and raises an error from the python code informing that there's no internet connection.
+```sh
+STATE=$(ping -q -w 1 -c 1 `ip r | grep default | cut -d ' ' -f 3` > /dev/null && echo ok || echo error)
+while [  $STATE == "error" ]; do
+    #do a ping and check that its not a default message or change to grep for something else
+    STATE=$(ping -q -w 1 -c 1 `ip r | grep default | cut -d ' ' -f 3` > /dev/null && echo ok || echo error)
+
+    #sleep for 2 seconds and try again
+    sleep 2
+ done
 ```
 Then you create the .service file
 ```
@@ -66,6 +86,7 @@ When you have your .service file, you need to move the file into /etc/systemd/sy
 ```sh
     sudo systemctl enable pytwe.service
 ```
+
 Don't forget this:
 ```sh
     chmod a+x rpi_pytwe_script.sh

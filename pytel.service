@@ -5,4 +5,4 @@ Description=PyTel-Bot
 ExecStart=/home/pi/rpi_pytel_script.sh
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=network-online.target
