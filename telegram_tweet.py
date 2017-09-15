@@ -16,11 +16,14 @@ class TweetFromTelegram():
         self.auth.set_access_token(access_token, access_token_secret)
         self.api = tweepy.API(self.auth, wait_on_rate_limit=True)
 
-    def new_tweet(self, tweet):
+    def new_tweet(self, tweet, has_media=False):
         """Create a new tweet"""
         link = None
         try:
-            self.api.update_status(str(tweet))
+            if not has_media:
+                self.api.update_status(str(tweet))
+            else:
+                self.api.update_with_media('downloaded_img.png', str(tweet))
             link = TweetFromTelegram.get_last_status_link(self.api)
         except UnicodeEncodeError:
             link = "error"

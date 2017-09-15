@@ -87,7 +87,7 @@ class BotActions():
 
     @staticmethod
     def tweet(bot, update):
-        if update.message.from_user.id == "":
+        if update.message.from_user.id == 0:
             to_twitter = TweetFromTelegram()
             text_to_tweet = update.message.text_markdown[7:len(update.message.text_markdown)]
             link = to_twitter.new_tweet(text_to_tweet)

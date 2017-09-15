@@ -1,0 +1,8 @@
+[Unit]
+Description=PyTel-Bot
+
+[Service]
+ExecStart=/home/pi/rpi_pytel_script.sh
+
+[Install]
+WantedBy=multi-user.target
