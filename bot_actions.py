@@ -5,6 +5,7 @@
 """Methods for the CommandHandler"""
 import random
 from os import listdir
+from time import gmtime
 from os.path import isfile, join
 from telegram_tweet import TweetFromTelegram
 
@@ -96,9 +97,29 @@ class BotActions():
                 bot.send_message(chat_id=update.message.chat.id, text="Intenta no poner carácteres especiales :)", reply_to_message_id=update.message.message_id)
             else:
                 mensaje = "Ya he publicado tu tweet: " + link
+                BotActions.tweet_to_log(link, update.message.from_user.first_name)
                 bot.send_message(chat_id=update.message.chat.id, text=mensaje, reply_to_message_id=update.message.message_id)
         else:
             bot.send_message(chat_id=update.message.chat.id, text="Creo que no se te permite enviar tweets... :s", reply_to_message_id=update.message.message_id)
+
+    @staticmethod
+    def tweet_media(bot, update):
+        list_id = BotActions.read_ids_from_file("ids.txt")
+        if update.message.from_user.id in list_id:
+            # to_twitter = TweetFromTelegram()
+            pass
+
+    @staticmethod
+    def tweet_to_log(link, user_name):
+        opened_file = open("tweets.log", "a")
+        hour = str(gmtime().tm_hour + 2)
+        minute = str(gmtime().tm_min)
+        secs = str(gmtime().tm_sec)
+        month = str(gmtime().tm_mon)
+        day = str(gmtime().tm_mday)
+        log_string = hour + ":" + minute + ":" + secs + " at " + day + "/" + month + ": "
+        log_string += user_name + ", " + link + "\n"
+        opened_file.write(log_string)
 
     @staticmethod
     def read_ids_from_file(file_name):
