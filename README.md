@@ -48,7 +48,7 @@ With update you can get information of the message like the chat object, user ob
 
 ### Script:
 
-To run the boot when turning on the raspberry we must create a service, that's easy to configure.
+To run the bot when turning on the raspberry we must create a service, that's easy to configure.
 
 First of all we need to create a script that pulls the changes from git, and then, runs the bot
 ```sh
