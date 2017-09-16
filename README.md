@@ -2,6 +2,8 @@
 A short bot in telegram
 Made with Python-Telegram-Bot API (https://python-telegram-bot.org/) and Python 2.7.10
 All methods and all the replies from the bot are in spanish.
+## INTRODUCTION:    
+
 
 This associate a COMMAND (/COMMAND in telegram chat) with a method (default_method). Is not necessary to
 call the method, just is needed to make a reference.
@@ -36,7 +38,14 @@ The method new_tweet, post the tweet and returns the link where the tweet was po
 All the methods' arguments are bot and update. With bot you can make actions like, sending messages, photos, etc...
 With update you can get information of the message like the chat object, user object, etc...
 
-If you want to run the bot when the rpi powers on, you will need to use a service that runs a script
+
+## AUTOMATE THE BOT:
+
+### Script:
+
+To run the boot when turning on the raspberry we must create a service, that's easy to configure.
+
+First of all we need to create a script that pulls the changes from git, and then, runs the bot
 ```sh
     #!/usr/bin/env bash
     cd /home/pi/Documentos/PyTel-Bot
@@ -57,8 +66,10 @@ If you want to run the bot when the rpi powers on, you will need to use a servic
     python main.py
 
 ```
-This check if there's internet connection, if not, wait 2 secs and retry a ping. I made this because, when the service
-powers on, executes the script and raises an error from the python code informing that there's no internet connection.
+
+
+You will need to put this on your code, because the service will start immediatly when the rpi turns on, so, we need to
+check if there is internet conection.
 ```sh
 STATE=$(ping -q -w 1 -c 1 `ip r | grep default | cut -d ' ' -f 3` > /dev/null && echo ok || echo error)
 while [  $STATE == "error" ]; do
@@ -69,23 +80,32 @@ while [  $STATE == "error" ]; do
     sleep 2
  done
 ```
-Then you create the .service file
+
+### Service:
+
+Made the script, now you need to create a .service file with this code:
 ```
 [Unit]
 Description=PyTwe-Bot
 
 [Service]
 ExecStart=/home/pi/rpi_pytwe_script.sh
+User=pi
+Group=pi
 
 [Install]
 WantedBy=multi-user.target
 
 ```
 
+### Enabling service and moving to the path:
+
 When you have your .service file, you need to move the file into /etc/systemd/system/ and use this command:
 ```sh
     sudo systemctl enable pytwe.service
 ```
+
+Spoiler: you will need to move first your service where you want and then use sudo mv pytwe_service /etc/systemd/system
 
 Don't forget this:
 ```sh
