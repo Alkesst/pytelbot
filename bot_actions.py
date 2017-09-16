@@ -117,7 +117,8 @@ class BotActions():
         secs = str(gmtime().tm_sec)
         month = str(gmtime().tm_mon)
         day = str(gmtime().tm_mday)
-        log_string = hour + ":" + minute + ":" + secs + " at " + day + "/" + month + ": "
+        year = str(gmtime().tm_year)
+        log_string = hour + ":" + minute + ":" + secs + " at " + day + "/" + month + "/" + year + ": "
         log_string += user_name + ", " + link + "\n"
         opened_file.write(log_string)
 
