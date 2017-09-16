@@ -87,7 +87,7 @@ class BotActions():
 
     @staticmethod
     def tweet(bot, update):
-        list_id = BotActions.read_ids_from_file("id.txt")
+        list_id = BotActions.read_ids_from_file("ids.txt")
         if update.message.from_user.id in list_id:
             to_twitter = TweetFromTelegram()
             text_to_tweet = update.message.text_markdown[7:len(update.message.text_markdown)]
