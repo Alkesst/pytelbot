@@ -44,7 +44,7 @@ With update you can get information of the message like the chat object, user ob
 
 
 
-## AUTOMATE THE BOT:
+## AUTOMATE THE BOT:
 
 ### Script:
 
@@ -103,7 +103,7 @@ WantedBy=multi-user.target
 
 ```
 
-### Enabling service and moving to the path:
+### Enabling service and moving to the path:
 
 When you have your .service file, you need to move the file into /etc/systemd/system/ and use this command:
 ```sh
