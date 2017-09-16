@@ -87,7 +87,8 @@ class BotActions():
 
     @staticmethod
     def tweet(bot, update):
-        if update.message.from_user.id == 0:
+        list_id = BotActions.read_ids_from_file("id.txt")
+        if update.message.from_user.id in list_id:
             to_twitter = TweetFromTelegram()
             text_to_tweet = update.message.text_markdown[7:len(update.message.text_markdown)]
             link = to_twitter.new_tweet(text_to_tweet)
@@ -99,5 +100,17 @@ class BotActions():
         else:
             bot.send_message(chat_id=update.message.chat.id, text="Creo que no se te permite enviar tweets... :s", reply_to_message_id=update.message.message_id)
 
+    @staticmethod
+    def read_ids_from_file(file_name):
+        opened_file = open(file_name, 'r')
+        ids = []
+        has_next = True
+        while has_next:
+            line = opened_file.readline()
+            if not line:
+                has_next = False
+            else:
+                ids.append(line)
+        return ids
     # añadir alguna manera de que si el mensaje de telegram contiene alguna imagen
     # que se descargue la imagen y se publique en twitter.
