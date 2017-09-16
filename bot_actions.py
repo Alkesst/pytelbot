@@ -110,7 +110,7 @@ class BotActions():
             if not line:
                 has_next = False
             else:
-                ids.append(line)
+                ids.append(int(line))
         return ids
     # añadir alguna manera de que si el mensaje de telegram contiene alguna imagen
     # que se descargue la imagen y se publique en twitter.
