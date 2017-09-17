@@ -4,10 +4,12 @@
 # pylint: disable=C1001
 """Methods for the CommandHandler"""
 import random
+import os
 from os import listdir
 from time import gmtime
 from os.path import isfile, join
 from telegram_tweet import TweetFromTelegram
+from special_actions import SpecialActions
 
 
 class BotActions():
@@ -134,6 +136,13 @@ class BotActions():
             else:
                 ids.append(int(line))
         return ids
+
+    @staticmethod
+    def search(bot, updater):
+        text = updater.message.text[8:len(updater.message.text)]
+        SpecialActions.create_image_search("meme_template_search.png", text)
+        bot.send_photo(chat_id=updater.message.chat.id, photo=open("generated_meme_search", 'rb'), reply_to_message_id=updater.message.message_id)
+        os.remove("generated_meme_search.png")
 
     @staticmethod
     def sad_reactions(bot, updater):
