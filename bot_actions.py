@@ -71,7 +71,7 @@ class BotActions():
     def animals(bot, update):
         """Reply with a random animal image"""
         chat_id = update.message.chat.id
-        file_name = BotActions.random_file_name('/home/pi/Documentos/pytel_stuff/Memes')
+        file_name = BotActions.random_file_name('/home/pi/Documentos/pytel_stuff/Animals')
         bot.send_photo(chat_id=chat_id, photo=open(file_name, 'rb'))
 
     @staticmethod
