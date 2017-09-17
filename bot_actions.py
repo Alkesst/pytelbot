@@ -138,7 +138,7 @@ class BotActions():
     @staticmethod
     def sad_reactions(bot, updater):
         video = open("/home/pi/Documentos/pytel_stuff/sad_reactions_only.mp4", 'rb')
-        bot.send_video(chat_id=updater.message.chat.id, reply_to_message_id=updater.message.message_id, video=video)
+        bot.send_video(chat_id=updater.message.chat.id, reply_to_message_id=updater.message.message_id, video=video, caption="sad reactions only")
 
     # añadir alguna manera de que si el mensaje de telegram contiene alguna imagen
     # que se descargue la imagen y se publique en twitter.
