@@ -19,7 +19,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('animals', BotActions.animals))
     updater.dispatcher.add_handler(CommandHandler('tweet', BotActions.tweet))
     updater.dispatcher.add_handler(CommandHandler('sad', BotActions.sad_reactions))
-    updater.dispatcher.add_handler(CommandHandler('search'), BotActions.search))
+    updater.dispatcher.add_handler(CommandHandler('search', BotActions.search))
     updater.dispatcher.add_error_handler(BotActions.show_error)
     updater.start_polling()
     updater.idle()
