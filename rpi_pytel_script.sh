@@ -14,4 +14,6 @@ git pull
 echo
 echo "Pull done..."
 echo "Initializating PyTel-Bot..."
+echo
+echo "Bot running"
 python main.py

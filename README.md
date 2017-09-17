@@ -1,8 +1,10 @@
 # PyTel-Bot
-A short bot in telegram
+###### A Telegram bot.
+
+## INTRODUCTION:   
 Made with Python-Telegram-Bot API (https://python-telegram-bot.org/) and Python 2.7.10
 All methods and all the replies from the bot are in spanish.
-## INTRODUCTION:    
+
 
 
 This associate a COMMAND (/COMMAND in telegram chat) with a method (default_method). Is not necessary to
@@ -12,11 +14,11 @@ call the method, just is needed to make a reference.
 ```
 
 
-For example, the command /start, is associated with BotActions.start
+For example, the command /start, is associated with BotActions.start() method.
 ```python
     updater.dispatcher.add_handler(CommandHandler('start'), BotActions.start)
 ```
-And, in your telegram chat, you'll see something like this:
+If you use the command /start in a chat you will see something like this:
 
 ```
     Hola, mundo!
@@ -25,9 +27,9 @@ The method random_file_name gives a random file name from a specific path.
 
 For example, if the path is full of images
 it returns one random image name.
-That is just a condition to avoid sending a .DS_Store file, you can make it with other files.
+you can add conditions to avoid getting non-image file_name, i.e. the .DS_Store file in MacOS
 ```python
-    and f != '.DS_Store'
+onlyfiles = [f for f in listdir(path) if isfile(join(path, f)) and f != '.DS_Store']
 ```
 
 The parse_mode='Markdown' is for using a style in the message, for example, when using '__' for send an italic text.
@@ -37,7 +39,7 @@ The parse_mode='Markdown' is for using a style in the message, for example, when
 ```
 
 The module telegram_tweet.py connects the telegram bot with @PyTwe_bot (http://www.github.com/alkesst/pytwe-bot).
-The method new_tweet, post the tweet and returns the link where the tweet was posted.
+The method new_tweet post a tweet and returns the link of that tweet.
 
 All the methods' arguments are bot and update. With bot you can make actions like, sending messages, photos, etc...
 With update you can get information of the message like the chat object, user object, etc...
@@ -48,7 +50,7 @@ With update you can get information of the message like the chat object, user ob
 
 ### Script:
 
-To run the boot when turning on the raspberry we must create a service, that's easy to configure.
+To run the bot when turning on the raspberry we must create a service.
 
 First of all we need to create a script that pulls the changes from git, and then, runs the bot
 ```sh
@@ -73,8 +75,8 @@ First of all we need to create a script that pulls the changes from git, and the
 ```
 
 
-You will need to put this on your code, because the service will start immediatly when the rpi turns on, so, we need to
-check if there is internet conection.
+Is requiered to use this code, because the service will start immediatly when the rpi turns on, so, we need to
+check if there is internet conection before trying to pull from git.
 ```sh
 STATE=$(ping -q -w 1 -c 1 `ip r | grep default | cut -d ' ' -f 3` > /dev/null && echo ok || echo error)
 while [  $STATE == "error" ]; do

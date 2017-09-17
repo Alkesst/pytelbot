@@ -32,7 +32,7 @@ class BotActions():
     def send_memes(bot, update):
         """Reply with a random meme"""
         chat_id = update.message.chat.id
-        file_name = BotActions.random_file_name('/home/pi/Documentos/Memes')
+        file_name = BotActions.random_file_name('/home/pi/Documentos/pytel_stuff/Memes')
         bot.send_photo(chat_id=chat_id, photo=open(file_name, 'rb'))
 
     @staticmethod
@@ -71,7 +71,7 @@ class BotActions():
     def animals(bot, update):
         """Reply with a random animal image"""
         chat_id = update.message.chat.id
-        file_name = BotActions.random_file_name('/home/pi/Documentos/Animals')
+        file_name = BotActions.random_file_name('/home/pi/Documentos/pytel_stuff/Memes')
         bot.send_photo(chat_id=chat_id, photo=open(file_name, 'rb'))
 
     @staticmethod
@@ -134,5 +134,11 @@ class BotActions():
             else:
                 ids.append(int(line))
         return ids
+
+    @staticmethod
+    def sad_reactions(bot, updater):
+        video = open("/home/pi/Documentos/pytel_stuff/sad_reactions_only.mp4", 'rb')
+        bot.send_video(chat_id=updater.message.chat.id, reply_to_message_id=updater.message.message_id, video=video)
+
     # añadir alguna manera de que si el mensaje de telegram contiene alguna imagen
     # que se descargue la imagen y se publique en twitter.
