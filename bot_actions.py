@@ -157,9 +157,10 @@ class BotActions():
     @staticmethod
     def search(bot, updater):
         text = updater.message.text[8:len(updater.message.text)]
+        text = text.encode('utf-8')
         SpecialActions.create_image_search("meme_template_search.png", text)
         bot.send_photo(chat_id=updater.message.chat.id,
-                       photo=open("generated_meme_search", 'rb'),
+                       photo=open("generated_meme_search.png", 'rb'),
                        reply_to_message_id=updater.message.message_id)
         os.remove("generated_meme_search.png")
 
