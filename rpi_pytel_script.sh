@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-cd /home/pi/Documentos/PyTel-Bot
+cd /home/pi/Documentos/pytelbot
 STATE=$(ping -q -w 1 -c 1 `ip r | grep default | cut -d ' ' -f 3` > /dev/null && echo ok || echo error)
 while [  $STATE == "error" ]; do
     #do a ping and check that its not a default message or change to grep for something else

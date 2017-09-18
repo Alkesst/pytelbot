@@ -9,7 +9,7 @@ from os import listdir
 from time import gmtime
 from os.path import isfile, join
 from telegram_tweet import TweetFromTelegram
-from special_actions import SpecialActions
+import pytwebot.special_actions
 
 
 class BotActions():
@@ -86,6 +86,8 @@ class BotActions():
         help_text += "/animals  Te manda un animal aleatorio de un repertorio de aniamlitos\n"
         help_text += "/id       Manda el ID del usuario que ha ejecutado el comando\n"
         help_text += "/id_c     Manda el ID del chat en el que se ha ejecutado el comando\n"
+        help_text += "/search   Manda un meme con el texto que le introduzcas\n"
+        help_text += "/sad      Manda un meme de sad reacts only\n"
         return help_text
 
     @staticmethod
@@ -106,6 +108,7 @@ class BotActions():
 
     @staticmethod
     def tweet_media(bot, update):
+        # not finished method
         list_id = BotActions.read_ids_from_file("ids.txt")
         if update.message.from_user.id in list_id:
             # to_twitter = TweetFromTelegram()
@@ -140,14 +143,14 @@ class BotActions():
     @staticmethod
     def search(bot, updater):
         text = updater.message.text[8:len(updater.message.text)]
-        SpecialActions.create_image_search("meme_template_search.png", text)
-        bot.send_photo(chat_id=updater.message.chat.id, photo=open("generated_meme_search.png", 'rb'), reply_to_message_id=updater.message.message_id)
+        pytwebot.special_actions.SpecialActions.create_image_search("meme_template_search.png", text)
+        bot.send_photo(chat_id=updater.message.chat.id, photo=open("generated_meme_search", 'rb'), reply_to_message_id=updater.message.message_id)
         os.remove("generated_meme_search.png")
 
     @staticmethod
     def sad_reactions(bot, updater):
         video = open("/home/pi/Documentos/pytel_stuff/sad_reactions_only.mp4", 'rb')
-        bot.send_video(chat_id=updater.message.chat.id, reply_to_message_id=updater.message.message_id, video=video, caption="sad reactions only")
+        bot.send_video(chat_id=updater.message.chat.id, reply_to_message_id=updater.message.message_id, video=video, caption="sad reacts only")
 
     # añadir alguna manera de que si el mensaje de telegram contiene alguna imagen
     # que se descargue la imagen y se publique en twitter.

@@ -101,7 +101,8 @@ ENV/
 .mypy_cache/
 
 # custom
+*.pyc
 meme_template_search.png
 .DS_Store
 ids.txt
-.log
+*.log
