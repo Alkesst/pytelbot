@@ -57,7 +57,7 @@ class BotActions():
 
     @staticmethod
     def id_user(bot, update):
-        if id == 195999561:
+        if update.message.from_user.id == 195999561:
             chat_id = update.message.chat.id
             bot.send_message(chat_id=chat_id, text='eres muy pesada macho, no te pienso volver a dar la id',
                              reply_to_message_id=update.message.message_id)
