@@ -52,7 +52,7 @@ class BotActions():
 
     @staticmethod
     def prueba(bot, update):
-        bot.send_message(chat_id=update.message.chat.id, text=update.message.text)
+        bot.send_message(chat_id=update.message.chat.id, text=str(type(update.message.text)))
 
     @staticmethod
     def id_user(bot, update):
