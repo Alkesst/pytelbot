@@ -57,7 +57,7 @@ class BotActions():
 
     @staticmethod
     def id_user(bot, update):
-        if id == "195999561":
+        if id == 195999561:
             chat_id = update.message.chat.id
             bot.send_message(chat_id=chat_id, text='eres muy pesada macho, no te pienso volver a dar la id',
                              reply_to_message_id=update.message.message_id)
@@ -156,6 +156,7 @@ class BotActions():
 
     @staticmethod
     def search(bot, updater):
+        # si en el grupo hay más de un bot hay que arreglar la mención de /search@PyTel_bot
         text = updater.message.text[8:len(updater.message.text)]
         text = text.encode('utf-8')
         SpecialActions.create_image_search("meme_template_search.png", text)
