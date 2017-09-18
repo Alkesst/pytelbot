@@ -96,8 +96,9 @@ class BotActions():
         list_id = BotActions.read_ids_from_file("ids.txt")
         if update.message.from_user.id in list_id:
             to_twitter = TweetFromTelegram()
-            text_to_tweet = update.message.text_markdown[7:len(update.message.text_markdown)]
+            text_to_tweet = update.message.text[7:len(update.message.text)]
             link = to_twitter.new_tweet(text_to_tweet)
+            text_to_tweet = text_to_tweet.encode('utf-8')
             if link == "error":
                 bot.send_message(chat_id=update.message.chat.id,
                                   text="Intenta no poner carácteres especiales :)"
