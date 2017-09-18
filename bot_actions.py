@@ -67,7 +67,7 @@ class BotActions():
                              '`', reply_to_message_id=update.message.message_id, parse_mode='Markdown')
 
     @staticmethod
-    def id_chat(bot, update):y
+    def id_chat(bot, update):
         chat_id = update.message.chat.id
         bot.send_message(chat_id=chat_id, text='`' + str(chat_id) + '`',
                          reply_to_message_id=update.message.message_id, parse_mode='Markdown')
