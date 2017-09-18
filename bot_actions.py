@@ -9,7 +9,7 @@ from os import listdir
 from time import gmtime
 from os.path import isfile, join
 from telegram_tweet import TweetFromTelegram
-import pytwebot.special_actions
+from special_actions import SpecialActions
 
 
 class BotActions():
@@ -89,6 +89,7 @@ class BotActions():
         help_text += "/id_c     Manda el ID del chat en el que se ha ejecutado el comando\n"
         help_text += "/search   Manda un meme con el texto que le introduzcas\n"
         help_text += "/sad      Manda un meme de sad reacts only\n"
+        help_text += "/tweet    @pytwe_bot manda un tweet con el texto tras el comando, ahora con soporte de utf-8\n"
         return help_text
 
     @staticmethod
@@ -114,10 +115,7 @@ class BotActions():
     @staticmethod
     def tweet_media(bot, update):
         # not finished method
-        list_id = BotActions.read_ids_from_file("ids.txt")
-        if update.message.from_user.id in list_id:
-            # to_twitter = TweetFromTelegram()
-            pass
+        pass
 
     @staticmethod
     def tweet_to_log(link, user_name):
@@ -148,7 +146,7 @@ class BotActions():
     @staticmethod
     def search(bot, updater):
         text = updater.message.text[8:len(updater.message.text)]
-        pytwebot.special_actions.SpecialActions.create_image_search("meme_template_search.png", text)
+        SpecialActions.create_image_search("meme_template_search.png", text)
         bot.send_photo(chat_id=updater.message.chat.id, photo=open("generated_meme_search", 'rb'), reply_to_message_id=updater.message.message_id)
         os.remove("generated_meme_search.png")
 
