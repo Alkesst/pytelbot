@@ -13,7 +13,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('macho', BotActions.macho))
     updater.dispatcher.add_handler(CommandHandler('nudes', BotActions.send_memes))
     updater.dispatcher.add_handler(CommandHandler('ping', BotActions.ping))
-    updater.dispatcher.add_handler(CommandHandler('id', BotActions.id))
+    updater.dispatcher.add_handler(CommandHandler('id', BotActions.id_user))
     updater.dispatcher.add_handler(CommandHandler('id_c', BotActions.id_chat))
     updater.dispatcher.add_handler(CommandHandler('help', BotActions.help))
     updater.dispatcher.add_handler(CommandHandler('animals', BotActions.animals))
@@ -21,7 +21,6 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('sad', BotActions.sad_reactions))
     updater.dispatcher.add_handler(CommandHandler('search', BotActions.search))
     updater.dispatcher.add_handler(CommandHandler('prueba', BotActions.prueba))
-    updater.dispatcher.add_error_handler(BotActions.show_error)
     updater.start_polling()
     updater.idle()
 

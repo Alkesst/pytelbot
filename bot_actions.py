@@ -15,12 +15,12 @@ from special_actions import SpecialActions
 class BotActions():
     """Makes actions with the bot"""
     @staticmethod
-    def start(bot, update):
+    def start(update):
         """Initialize the bot"""
         update.message.reply_text('Hola, mundo!')
 
     @staticmethod
-    def hola(bot, update):
+    def hola(update):
         """Reply with a cordial salute"""
         update.message.reply_text('Hola, {}!'.format(update.message.from_user.first_name))
 
@@ -52,21 +52,18 @@ class BotActions():
 
     @staticmethod
     def prueba(bot, update):
-        bot.send_message(chat_id=update.message.chat.id, text=str(type(update.message.text)))
+        bot.send_message(chat_id=update.message.chat.id, text=update.message.text)
 
     @staticmethod
-    def id(bot, update):
+    def id_user(bot, update):
         chat_id = update.message.chat.id
-        bot.send_message(chat_id=chat_id, text='`' + str(update.message.from_user.id) + '`', reply_to_message_id=update.message.message_id, parse_mode='Markdown')
+        bot.send_message(chat_id=chat_id, text='`' + str(update.message.from_user.id) +
+                         '`', reply_to_message_id=update.message.message_id, parse_mode='Markdown')
 
     @staticmethod
     def id_chat(bot, update):
         chat_id = update.message.chat.id
         bot.send_message(chat_id=chat_id, text='`' + str(chat_id) + '`', reply_to_message_id=update.message.message_id, parse_mode='Markdown')
-
-    @staticmethod
-    def show_error(bot, update, error):
-        raise error
 
     @staticmethod
     def help(bot, update):
@@ -100,11 +97,14 @@ class BotActions():
             text_to_tweet = update.message.text_markdown[7:len(update.message.text_markdown)]
             link = to_twitter.new_tweet(text_to_tweet)
             if link == "error":
-                bot.send_message(chat_id=update.message.chat.id, text="Intenta no poner carácteres especiales :)", reply_to_message_id=update.message.message_id)
+                bot.send_message(chat_id=update.message.chat.id,
+                                  text="Intenta no poner carácteres especiales :)"
+                                 , reply_to_message_id=update.message.message_id)
             else:
                 mensaje = "Ya he publicado tu tweet: " + link
                 BotActions.tweet_to_log(link, update.message.from_user.first_name)
-                bot.send_message(chat_id=update.message.chat.id, text=mensaje, reply_to_message_id=update.message.message_id)
+                bot.send_message(chat_id=update.message.chat.id, text=mensaje,
+                                 reply_to_message_id=update.message.message_id)
         else:
             bot.send_message(chat_id=update.message.chat.id, text="Creo que no se te permite enviar tweets... :s", reply_to_message_id=update.message.message_id)
 
