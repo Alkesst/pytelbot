@@ -51,6 +51,10 @@ class BotActions():
         bot.send_message(chat_id=update.message.chat.id, text="Pong!")
 
     @staticmethod
+    def prueba(bot, update):
+        bot.send_memes(chat_id=update.message.chat.id, text=str(type(update.message.text)))
+
+    @staticmethod
     def id(bot, update):
         chat_id = update.message.chat.id
         bot.send_message(chat_id=chat_id, text='`' + str(update.message.from_user.id) + '`', reply_to_message_id=update.message.message_id, parse_mode='Markdown')
