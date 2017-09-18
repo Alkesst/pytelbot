@@ -57,9 +57,9 @@ class BotActions():
 
     @staticmethod
     def id_user(bot, update):
-        if update.message.from_user.id == 195999561:
+        if update.message.from_user.id == 67849121:
             chat_id = update.message.chat.id
-            bot.send_message(chat_id=chat_id, text='eres muy pesada macho, no te pienso volver a dar la id',
+            bot.send_message(chat_id=chat_id, text='ahora por gracioso no te doy la id a ti :)',
                              reply_to_message_id=update.message.message_id)
         else:
             chat_id = update.message.chat.id
@@ -67,7 +67,7 @@ class BotActions():
                              '`', reply_to_message_id=update.message.message_id, parse_mode='Markdown')
 
     @staticmethod
-    def id_chat(bot, update):
+    def id_chat(bot, update):y
         chat_id = update.message.chat.id
         bot.send_message(chat_id=chat_id, text='`' + str(chat_id) + '`',
                          reply_to_message_id=update.message.message_id, parse_mode='Markdown')
@@ -175,14 +175,14 @@ class BotActions():
     @staticmethod
     def pole(bot, updater):
         message_time = datetime.utcfromtimestamp(updater.message.date).strftime('%H:%M:%S')
-        if message_time == '2:00:00':
+        if message_time == '22:00:00':
             bot.send_message(chat_id=updater.message.chat.id,
                             reply_to_message_id=updater.message.message_id,
                             text="Muy bien crack has hecho la pole")
         else:
             bot.send_message(chat_id=updater.message.chat.id,
                              reply_to_message_id=updater.message.message_id,
-                             text="nice try pole, máquina")
+                             text="nice try pole, maquina")
 
     # añadir alguna manera de que si el mensaje de telegram contiene alguna imagen
     # que se descargue la imagen y se publique en twitter.
