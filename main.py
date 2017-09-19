@@ -1,14 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# made with python 3
+# made with python 2
 # pylint: disable=C1001
 from telegram.ext import Updater, CommandHandler, MessageHandler
 from bot_actions import BotActions
-from message_filter import CustomFilter
+from message_filter import HappyFilter, NotHappyFilter, BotijoReaction
 
 def main():
     updater = Updater('TOKEN')
-    custom_filter = CustomFilter()
+    happy_filter = HappyFilter()
+    unhappy_filter = NotHappyFilter()
+    botijo = BotijoReaction()
     updater.dispatcher.add_handler(CommandHandler('start', BotActions.start))
     updater.dispatcher.add_handler(CommandHandler('hola', BotActions.hola))
     updater.dispatcher.add_handler(CommandHandler('macho', BotActions.macho))
@@ -22,7 +24,12 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('sad', BotActions.sad_reactions))
     updater.dispatcher.add_handler(CommandHandler('search', BotActions.search))
     updater.dispatcher.add_handler(CommandHandler('pole', BotActions.pole))
-    updater.dispatcher.add_handler(MessageHandler(custom_filter, BotActions.happy))
+    updater.dispatcher.add_handler(CommandHandler('porro', BotActions.hora_porro))
+    updater.dispatcher.add_handler(CommandHandler('pi', BotActions.horacio_pi))
+    updater.dispatcher.add_handler(MessageHandler(happy_filter, BotActions.happy))
+    updater.dispatcher.add_handler(MessageHandler(unhappy_filter, BotActions.not_happy))
+    updater.dispatcher.add_handler(MessageHandler(botijo, BotActions.botijo_react))
+
     updater.start_polling()
     updater.idle()
 

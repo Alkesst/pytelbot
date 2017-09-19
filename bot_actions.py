@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# made with python 3
+# made with python 2
 # pylint: disable=C1001
 # pylint: disable=C0111
 # pylint: disable=C0412
 # pylint: disable=C0301
+# pylint: disable=R0904
 """Methods for the CommandHandler"""
 import random
 import os
@@ -15,8 +16,13 @@ from telegram_tweet import TweetFromTelegram
 from special_actions import SpecialActions
 
 
+
 class BotActions():
     """Makes actions with the bot"""
+    dict_pole = {}
+    dict_porro = {}
+    dict_pi = {}
+
     @staticmethod
     def start(update):
         """Initialize the bot"""
@@ -99,8 +105,10 @@ class BotActions():
         help_text += "/search   Manda un meme con el texto que le introduzcas\n"
         help_text += "/sad      Manda un meme de sad reacts only\n"
         help_text += "/tweet    @pytwe_bot manda un tweet con el texto tras el comando, ahora con soporte de utf-8\n"
-        help_text += "/pole     Le da la pole a aquella persona que consiga mandar un mensaje a las M:S == 00:00"
-        help_text += " Puede haber más de una persona con pole"
+        help_text += "/pole     Le da la pole a aquella persona que consiga mandar el primer mensaje del día\n"
+        help_text += "/porro    Le da la hora porro al primero en usar el comando en la hora porro ;)\n"
+        help_text += "/pi       Le da la horacio pi al primero en usar el comando en la horacio pi :O\n\n\n"
+        help_text += "Además interactúa con: :), :(, botijos...\n"
         return help_text
 
     @staticmethod
@@ -176,17 +184,96 @@ class BotActions():
 
     @staticmethod
     def pole(bot, updater):
-        if updater.message.date.strftime('%M:%S') == '00:00':
-            bot.send_message(chat_id=updater.message.chat.id,
-                             reply_to_message_id=updater.message.message_id,
-                             text="Muy bien crack has hecho la pole")
+        current_time = updater.message.date
+        if current_time.hour == 0 and (current_time.minute >= 0 and current_time.minute < 15):
+            if updater.message.chat.id not in BotActions.dict_pole:
+                BotActions.dict_pole[updater.message.chat.id] = updater.message.from_user.id
+                bot.send_message(chat_id=updater.message.chat.id,
+                                 reply_to_message_id=updater.message.message_id,
+                                 text="Muy bien crack has hecho la pole")
+                to_twitter = TweetFromTelegram()
+                text_to_tweet = "¡La pole se la ha llevado "
+                text_to_tweet += "" #Twitter_User
+                text_to_tweet += " desde el grupo "
+                text_to_tweet += updater.message.chat.title + "!"
+                text_to_tweet = text_to_tweet.encode('utf-8')
+                to_twitter.new_tweet(text_to_tweet)
+                # THREAD
+            else:
+                bot.send_message(chat_id=updater.message.chat.id,
+                                 reply_to_message_id=updater.message.message_id,
+                                 text="nice try pole, máquina")
         else:
             bot.send_message(chat_id=updater.message.chat.id,
                              reply_to_message_id=updater.message.message_id,
-                             text="nice try pole, máquina")
+                             text="No estás en horario de pole... :S")
 
     @staticmethod
     def happy(bot, update):
-        bot.send_message(chat_id=update.message.chat_id,
+        bot.send_message(chat_id=update.message.chat.id,
                          text="cállate ya macho",
                          reply_to_message_id=update.message.message_id)
+
+    @staticmethod
+    def not_happy(bot, update):
+        bot.send_message(chat_id=update.message.chat.id,
+                         text="alegra esa cara de comepollas que tienes",
+                         reply_to_message_id=update.message.message_id)
+
+    @staticmethod
+    def botijo_react(bot, update):
+        bot.send_message(chat_id=update.message.chat.id,
+                         text="like! ;)",
+                         reply_to_message_id=update.message.message_id)
+
+    @staticmethod
+    def hora_porro(bot, updater):
+        current_time = updater.message.date
+        if current_time.hour == 4 and current_time.minute == 20:
+            if updater.message.chat.id not in BotActions.dict_porro:
+                BotActions.dict_porro[updater.message.chat.id] = updater.message.from_user.id
+                bot.send_message(chat_id=updater.message.chat.id,
+                                 reply_to_message_id=updater.message.message_id,
+                                 text="Vaya fiera, te has llevado la hora porro bro")
+                to_twitter = TweetFromTelegram()
+                text_to_tweet = "¡La hora porro se la lleva "
+                text_to_tweet += "" #Twitter_User
+                text_to_tweet += " desde el grupo "
+                text_to_tweet += updater.message.chat.title + "!"
+                text_to_tweet = text_to_tweet.encode('utf-8')
+                to_twitter.new_tweet(text_to_tweet)
+                # THREAD
+            else:
+                bot.send_message(chat_id=updater.message.chat.id,
+                                 reply_to_message_id=updater.message.message_id,
+                                 text="Ya se han llevado la hora porro ;)")
+        else:
+            bot.send_message(chat_id=updater.message.chat.id,
+                             reply_to_message_id=updater.message.message_id,
+                             text="No estás en el horario necesario... >_<")
+
+    @staticmethod
+    def horacio_pi(bot, updater):
+        current_time = updater.message.date
+        if current_time.hour == 3 and current_time.minute == 14:
+            if updater.message.chat.id not in BotActions.dict_porro:
+                BotActions.dict_porro[updater.message.chat.id] = updater.message.from_user.id
+                bot.send_message(chat_id=updater.message.chat.id,
+                                 reply_to_message_id=updater.message.message_id,
+                                 text="Te acabas de llevar la horacio pi :O")
+                to_twitter = TweetFromTelegram()
+                text_to_tweet = "¡La hora pi se la lleva "
+                text_to_tweet += "" #Twitter_User
+                text_to_tweet += " desde el grupo "
+                text_to_tweet += updater.message.chat.title + "!"
+                text_to_tweet = text_to_tweet.encode('utf-8')
+                to_twitter.new_tweet(text_to_tweet)
+                # THREAD
+            else:
+                bot.send_message(chat_id=updater.message.chat.id,
+                                 reply_to_message_id=updater.message.message_id,
+                                 text="Fuiste demasiado lento para la horacio pi :/")
+        else:
+            bot.send_message(chat_id=updater.message.chat.id,
+                             reply_to_message_id=updater.message.message_id,
+                             text="Fuck you fam, this is not the pi hour :@")
