@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 # made with python 3
 # pylint: disable=C1001
-from telegram.ext import Updater, CommandHandler
+from telegram.ext import Updater, CommandHandler, MessageHandler
 from bot_actions import BotActions
-
+from message_filter import CustomFilter
 
 def main():
     updater = Updater('TOKEN')
+    custom_filter = CustomFilter()
     updater.dispatcher.add_handler(CommandHandler('start', BotActions.start))
     updater.dispatcher.add_handler(CommandHandler('hola', BotActions.hola))
     updater.dispatcher.add_handler(CommandHandler('macho', BotActions.macho))
@@ -20,7 +21,8 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('tweet', BotActions.tweet))
     updater.dispatcher.add_handler(CommandHandler('sad', BotActions.sad_reactions))
     updater.dispatcher.add_handler(CommandHandler('search', BotActions.search))
-    updater.dispatcher.add_handler(CommandHandler('prueba', BotActions.prueba))
+    updater.dispatcher.add_handler(CommandHandler('pole', BotActions.pole))
+    updater.dispatcher.add_handler(MessageHandler(custom_filter, BotActions.happy))
     updater.start_polling()
     updater.idle()
 

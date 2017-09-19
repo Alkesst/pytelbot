@@ -2,10 +2,12 @@
 # -*- coding: utf-8 -*-
 # made with python 3
 # pylint: disable=C1001
+# pylint: disable=C0111
+# pylint: disable=C0412
+# pylint: disable=C0301
 """Methods for the CommandHandler"""
 import random
 import os
-from datetime import datetime
 from os import listdir
 from time import gmtime
 from os.path import isfile, join
@@ -97,7 +99,7 @@ class BotActions():
         help_text += "/search   Manda un meme con el texto que le introduzcas\n"
         help_text += "/sad      Manda un meme de sad reacts only\n"
         help_text += "/tweet    @pytwe_bot manda un tweet con el texto tras el comando, ahora con soporte de utf-8\n"
-        help_text += "/pole     Le da la pole a aquella persona que use el comando cuando el tiempo unix % ((3600*24) + 7200) sea 0."
+        help_text += "/pole     Le da la pole a aquella persona que consiga mandar un mensaje a las M:S == 00:00"
         help_text += " Puede haber más de una persona con pole"
         return help_text
 
@@ -111,8 +113,8 @@ class BotActions():
             link = to_twitter.new_tweet(text_to_tweet)
             if link == "error":
                 bot.send_message(chat_id=update.message.chat.id,
-                                  text="Intenta no poner carácteres especiales :)"
-                                 , reply_to_message_id=update.message.message_id)
+                                 text="Intenta no poner carácteres especiales :)",
+                                 reply_to_message_id=update.message.message_id)
             else:
                 mensaje = "Ya he publicado tu tweet: " + link
                 BotActions.tweet_to_log(link, update.message.from_user.first_name)
@@ -174,15 +176,17 @@ class BotActions():
 
     @staticmethod
     def pole(bot, updater):
-        message_time = datetime.utcfromtimestamp(updater.message.date).strftime('%H:%M:%S')
-        if message_time == '22:00:00':
+        if updater.message.date.strftime('%M:%S') == '00:00':
             bot.send_message(chat_id=updater.message.chat.id,
-                            reply_to_message_id=updater.message.message_id,
-                            text="Muy bien crack has hecho la pole")
+                             reply_to_message_id=updater.message.message_id,
+                             text="Muy bien crack has hecho la pole")
         else:
             bot.send_message(chat_id=updater.message.chat.id,
                              reply_to_message_id=updater.message.message_id,
-                             text="nice try pole, maquina")
+                             text="nice try pole, máquina")
 
-    # añadir alguna manera de que si el mensaje de telegram contiene alguna imagen
-    # que se descargue la imagen y se publique en twitter.
+    @staticmethod
+    def happy(bot, update):
+        bot.send_message(chat_id=update.message.chat_id,
+                         text="cállate ya macho",
+                         reply_to_message_id=update.message.message_id)
