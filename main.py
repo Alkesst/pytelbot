@@ -28,6 +28,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('pole', BotActions.pole))
     updater.dispatcher.add_handler(CommandHandler('porro', BotActions.hora_porro))
     updater.dispatcher.add_handler(CommandHandler('pi', BotActions.horacio_pi))
+    updater.dispatcher.add_handler(CommandHandler('communism', BotActions.comunism))
     updater.dispatcher.add_handler(CommandHandler('set_tw_acc', BotActions.add_twitter_account))
     updater.dispatcher.add_handler(CommandHandler('info', BotActions.info_user_group))
     updater.dispatcher.add_handler(CommandHandler('twitter_acc', BotActions.send_twitter_acc))
