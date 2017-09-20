@@ -392,7 +392,7 @@ class BotActions():
     def mensajes_callback(bot, update):
         user_id = update.message.from_user.id
         chat_id = update.message.chat.id
-        BotActions.add_user(chat_id, user_id)
+        BotActions.add_user(user_id, chat_id)
         BotActions.incrementa_mensajes(user_id, chat_id)
 
     @staticmethod
@@ -530,7 +530,7 @@ class BotActions():
         chat_id = update.message.chat.id
         message_text = u""
         if chat_id != user_id:
-            BotActions.add_user(chat_id, user_id)
+            BotActions.add_user(user_id, chat_id)
             BotActions.incrementa_mensajes(user_id, chat_id)
             user_name = update.message.from_user.first_name + "\n"
             info_text_group = BotActions.info_text(user_id, chat_id)
