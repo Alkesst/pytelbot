@@ -9,7 +9,7 @@ class User(object):
     """User es una clase que representa un usuario de la base de datos"""
     def __init__(self, userid=None, twitter_user=None, ping=0, nude=0, animal=0):
         super(User, self).__init__()
-        if isinstance(userid, sqlite3.Row) or isinstance(userid, tuple):
+        if isinstance(userid, (sqlite3.Row, tuple)):
             self.__userid = userid[0]
             self.twitter_user = userid[1]
             self.__ping_number = userid[2]
@@ -78,7 +78,7 @@ class UserGroup(object):
     """UserGroup almacena la información de un usuario de la base de datos"""
     def __init__(self, userid, groupid, message_number=0, pole_number=0, porro=0, pi=0):
         super(UserGroup, self).__init__()
-        if isinstance(userid, sqlite3.Row) or isinstance(userid, tuple):
+        if isinstance(userid, (sqlite3.Row, tuple)):
             self.__userid = userid[0]
             self.__groupid = userid[1]
             self.__message_number = userid[2]
@@ -162,12 +162,22 @@ class UserGroup(object):
     def __str__(self):
         return 'UserGroup(%d, %d, %d, %d, %d, %d)' % (self.userid,
                                                       self.groupid,
-                                                      self.message_number, 
-                                                      self.pole_number, 
-                                                      self.porro_number, 
+                                                      self.message_number,
+                                                      self.pole_number,
+                                                      self.porro_number,
                                                       self.pi_number)
 
 
+
+def __checc(user):
+    """__checc"""
+    if not isinstance(user, User):
+        raise AttributeError("El parámetro debe ser de tipo almacenamiento.User")
+
+def __clocc(user_group):
+    """___clocc"""
+    if not isinstance(user_group, UserGroup):
+        raise AttributeError("El parámetro debe ser de tipo almacenamiento.UserGroup")
 
 class Almacenamiento(object):
     """
@@ -211,32 +221,24 @@ class Almacenamiento(object):
         """Cierra la conexión con la base de datos"""
         self.db.close()
 
-    def __checc(self, user):
-        if not isinstance(user, User):
-            raise AttributeError("El parámetro debe ser de tipo almacenamiento.User")
-
-    def __clocc(self, user_group):
-        if not isinstance(user_group, UserGroup):
-            raise AttributeError("El parámetro debe ser de tipo almacenamiento.UserGroup")
-
     def obtener_usuario(self, user):
         """Busca un usuario por id o por usuario de twitter"""
-        self.__checc(user)
+        __checc(user)
         userid = user.userid
         twitter_user = user.twitter_user
         if userid != None:
             self.c.execute("SELECT * FROM `user` WHERE `userid` = ?", (userid,))
             res = self.c.fetchall()
-            return None if len(res) == 0 else User(res[0])
+            return None if not res else User(res[0])
         elif twitter_user != None:
             self.c.execute("SELECT * FROM `user` WHERE `twitter_user` = ?", (twitter_user,))
-            return None if len(res) == 0 else User(res[0])
+            return None if not res else User(res[0])
         else:
             raise AttributeError("No se ha declarado buscar por userid o por user de twitter")
 
     def insertar_usuario(self, user):
         """Inserta un usuario"""
-        self.__checc(user)
+        __checc(user)
         self.c.execute('INSERT INTO user VALUES (?,?,?,?,?)', (user.userid, str(user.twitter_user),
                                                                user.ping_number, user.nude_number,
                                                                user.animal_number))
@@ -244,108 +246,158 @@ class Almacenamiento(object):
 
     def eliminar_usuario(self, user):
         """Elimina un usuario. Solo es necesario el parámetro userid"""
-        self.__checc(user)
+        __checc(user)
         self.c.execute('DELETE FROM user WHERE userid = ?', (user.userid,))
         self.db.commit()
         return self.c.rowcount != 0
 
     def modificar_usuario(self, user):
         """Modifica un usuario"""
-        self.__checc(user)
-        oldUser = self.obtener_usuario(user)
-        if oldUser.twitter_user != user.twitter_user:
-            self.c.execute('UPDATE user SET twitter_user = ? WHERE userid = ?', (user.twitter_user, user.userid))
-        if oldUser.ping_number != user.ping_number:
-            self.c.execute('UPDATE user SET ping_number = ? WHERE userid = ?', (user.ping_number, user.userid))
-        if oldUser.nude_number != user.nude_number:
-            self.c.execute('UPDATE user SET nude_number = ? WHERE userid = ?', (user.nude_number, user.userid))
-        if oldUser.animal_number != user.animal_number:
-            self.c.execute('UPDATE user SET animal_number = ? WHERE userid = ?', (user.animal_number, user.userid))
+        __checc(user)
+        old_user = self.obtener_usuario(user)
+        if old_user.twitter_user != user.twitter_user:
+            self.c.execute(
+                'UPDATE user SET twitter_user = ? WHERE userid = ?',
+                (user.twitter_user, user.userid)
+            )
+        if old_user.ping_number != user.ping_number:
+            self.c.execute(
+                'UPDATE user SET ping_number = ? WHERE userid = ?',
+                (user.ping_number, user.userid)
+            )
+        if old_user.nude_number != user.nude_number:
+            self.c.execute(
+                'UPDATE user SET nude_number = ? WHERE userid = ?',
+                (user.nude_number, user.userid)
+            )
+        if old_user.animal_number != user.animal_number:
+            self.c.execute(
+                'UPDATE user SET animal_number = ? WHERE userid = ?',
+                (user.animal_number, user.userid)
+            )
         self.db.commit()
 
     def aumentar_ping_number(self, user):
-        """Aumenta el ping_number de un usuario. Obligatorio el campo userid, el resto no es necesario"""
-        self.__checc(user)
-        u = self.obtener_usuario(user)
-        u.ping_number += 1
-        self.modificar_usuario(u)
+        """Aumenta el ping_number de un usuario. Obligatorio el campo userid, el resto no son
+        necesarios"""
+        __checc(user)
+        full_u = self.obtener_usuario(user)
+        full_u.ping_number += 1
+        self.modificar_usuario(full_u)
 
     def aumentar_nude_number(self, user):
-        """Aumenta el nude_number de un usuario. Obligatorio el campo userid, el resto no es necesario"""
-        self.__checc(user)
-        u = self.obtener_usuario(user)
-        u.nude_number += 1
-        self.modificar_usuario(u)
+        """Aumenta el nude_number de un usuario. Obligatorio el campo userid, el resto no son
+        necesarios"""
+        __checc(user)
+        full_u = self.obtener_usuario(user)
+        full_u.nude_number += 1
+        self.modificar_usuario(full_u)
 
     def aumentar_animal_number(self, user):
-        """Aumenta el animal_number de un usuario. Obligatorio el campo userid, el resto no es necesario"""
-        self.__checc(user)
-        u = self.obtener_usuario(user)
-        u.animal_number += 1
-        self.modificar_usuario(u)
+        """Aumenta el animal_number de un usuario. Obligatorio el campo userid, el resto no son
+        necesarios"""
+        __checc(user)
+        full_u = self.obtener_usuario(user)
+        full_u.animal_number += 1
+        self.modificar_usuario(full_u)
 
 
     def obtener_usuario_del_grupo(self, user_group):
         """Busca un usuario del grupo por id"""
-        self.__clocc(user_group)
-        self.c.execute("SELECT * FROM `user_group` WHERE `userid` = ? AND `groupid` = ?", (user_group.userid, user_group.groupid))
+        __clocc(user_group)
+        self.c.execute(
+            "SELECT * FROM `user_group` WHERE `userid` = ? AND `groupid` = ?",
+            (user_group.userid, user_group.groupid)
+        )
         res = self.c.fetchall()
-        return None if len(res) == 0 else UserGroup(res[0], None)
+        return None if not res else UserGroup(res[0], None)
 
     def insertar_usuario_del_grupo(self, user_group):
         """Inserta info de un usuario de un grupo"""
-        self.__clocc(user_group)
+        __clocc(user_group)
         self.c.execute('INSERT INTO `user_group` VALUES (?,?,?,?,?,?)', (user_group.userid,
-                                                                         user_group.groupid, user_group.message_number,
-                                                                         user_group.pole_number, user_group.porro_number,
+                                                                         user_group.groupid,
+                                                                         user_group.message_number,
+                                                                         user_group.pole_number,
+                                                                         user_group.porro_number,
                                                                          user_group.pi_number))
         self.db.commit()
 
     def eliminar_usuario_del_grupo(self, user_group):
         """Elimina un usuario de un grupo. Solo es necesario el parámetro userid y el groupid"""
-        self.__clocc(user_group)
-        self.c.execute('DELETE FROM `user_group` WHERE userid = ? AND groupid = ?', (user_group.userid, user_group.groupid))
+        __clocc(user_group)
+        self.c.execute(
+            'DELETE FROM `user_group` WHERE userid = ? AND groupid = ?',
+            (user_group.userid, user_group.groupid)
+        )
         self.db.commit()
         return self.c.rowcount != 0
 
     def modificar_usuario_del_grupo(self, user_group):
         """Modifica info de un usuario de un grupo"""
-        self.__clocc(user_group)
-        oldUser = self.obtener_usuario_del_grupo(user_group)
-        if oldUser.message_number != user_group.message_number:
-            self.c.execute('UPDATE `user_group` SET message_number = ? WHERE userid = ? AND groupid = ?', (user_group.message_number, user_group.userid, user_group.groupid))
-        if oldUser.pole_number != user_group.pole_number:
-            self.c.execute('UPDATE `user_group` SET pole_number = ? WHERE userid = ? AND groupid = ?', (user_group.pole_number, user_group.userid, user_group.groupid))
-        if oldUser.porro_number != user_group.porro_number:
-            self.c.execute('UPDATE `user_group` SET porro_number = ? WHERE userid = ? AND groupid = ?', (user_group.porro_number, user_group.userid, user_group.groupid))
-        if oldUser.pi_number != user_group.pi_number:
-            self.c.execute('UPDATE `user_group` SET pi_number = ? WHERE userid = ? AND groupid = ?', (user_group.pi_number, user_group.userid, user_group.groupid))
+        __clocc(user_group)
+        old_user = self.obtener_usuario_del_grupo(user_group)
+        if old_user.message_number != user_group.message_number:
+            self.c.execute(
+                'UPDATE `user_group` SET message_number = ? WHERE userid = ? AND groupid = ?',
+                (user_group.message_number, user_group.userid, user_group.groupid)
+            )
+        if old_user.pole_number != user_group.pole_number:
+            self.c.execute(
+                'UPDATE `user_group` SET pole_number = ? WHERE userid = ? AND groupid = ?',
+                (user_group.pole_number, user_group.userid, user_group.groupid)
+            )
+        if old_user.porro_number != user_group.porro_number:
+            self.c.execute(
+                'UPDATE `user_group` SET porro_number = ? WHERE userid = ? AND groupid = ?',
+                (user_group.porro_number, user_group.userid, user_group.groupid)
+            )
+        if old_user.pi_number != user_group.pi_number:
+            self.c.execute(
+                'UPDATE `user_group` SET pi_number = ? WHERE userid = ? AND groupid = ?',
+                (user_group.pi_number, user_group.userid, user_group.groupid)
+            )
         self.db.commit()
 
     def aumentar_message_number(self, user_group):
-        """Aumentar el message_number de un usuario en un grupo. Se requiere userid y groupid, el resto no"""
-        self.__clocc(user_group)
-        ug = self.obtener_usuario_del_grupo(user_group)
-        ug.message_number += 1
-        self.modificar_usuario_del_grupo(ug)
+        """Aumenta el message_number de un usuario en un grupo. Se requieren userid y groupid
+        presentes en el objecto, el resto no"""
+        __clocc(user_group)
+        full_ug = self.obtener_usuario_del_grupo(user_group)
+        full_ug.message_number += 1
+        self.modificar_usuario_del_grupo(full_ug)
 
     def aumentar_pole_number(self, user_group):
-        """Aumentar el pole_number de un usuario en un grupo. Se requiere userid y groupid, el resto no"""
-        self.__clocc(user_group)
-        ug = self.obtener_usuario_del_grupo(user_group)
-        ug.pole_number += 1
-        self.modificar_usuario_del_grupo(ug)
+        """Aumenta el pole_number de un usuario en un grupo. Se requieren userid y groupid
+        presentes en el objecto, el resto no"""
+        __clocc(user_group)
+        full_ug = self.obtener_usuario_del_grupo(user_group)
+        full_ug.pole_number += 1
+        self.modificar_usuario_del_grupo(full_ug)
 
     def aumentar_porro_number(self, user_group):
-        """Aumentar el porro_number de un usuario en un grupo. Se requiere userid y groupid, el resto no"""
-        self.__clocc(user_group)
-        ug = self.obtener_usuario_del_grupo(user_group)
-        ug.porro_number += 1
-        self.modificar_usuario_del_grupo(ug)
+        """Aumenta el porro_number de un usuario en un grupo. Se requieren userid y groupid
+        presentes en el objecto, el resto no"""
+        __clocc(user_group)
+        full_ug = self.obtener_usuario_del_grupo(user_group)
+        full_ug.porro_number += 1
+        self.modificar_usuario_del_grupo(full_ug)
 
     def aumentar_pi_number(self, user_group):
-        """Aumentar el pi_number de un usuario en un grupo. Se requiere userid y groupid, el resto no"""
-        self.__clocc(user_group)
-        ug = self.obtener_usuario_del_grupo(user_group)
-        ug.pi_number += 1
-        self.modificar_usuario_del_grupo(ug)
+        """Aumenta el pi_number de un usuario en un grupo. Se requieren userid y groupid
+        presentes en el objecto, el resto no"""
+        __clocc(user_group)
+        full_ug = self.obtener_usuario_del_grupo(user_group)
+        full_ug.pi_number += 1
+        self.modificar_usuario_del_grupo(full_ug)
+
+    def calcular_total_mensajes(self, user):
+        """Calcula la cantidad de mensajes total enviados por un usuario entre todos los grupos.
+        Puede devolver None si no hay mensajes almacenados para ese usuario."""
+        __checc(user)
+        self.c.execute(
+            "SELECT SUM(message_number) as total_messages FROM user_group WHERE userid = ?",
+            (user.userid,)
+        )
+        res = self.c.fetchall()
+        return res[0][0] if res else None
