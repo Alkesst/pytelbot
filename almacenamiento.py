@@ -67,7 +67,11 @@ class User(object):
             raise AttributeError("Solo enteros")
 
     def __str__(self):
-        return 'User(%d, u"%s", %d, %d, %d)' % (self.userid, self.twitter_user, self.ping_number, self.nude_number, self.animal_number)
+        return 'User(%d, u"%s", %d, %d, %d)' % (self.userid,
+                                                self.twitter_user,
+                                                self.ping_number,
+                                                self.nude_number,
+                                                self.animal_number)
 
 
 class UserGroup(object):
@@ -149,14 +153,19 @@ class UserGroup(object):
         return self.__pi_number
 
     @pi_number.setter
-    def pole_number(self, val):
+    def pi_number(self, val):
         if isinstance(val, int):
             self.__pi_number = val
         else:
             raise AttributeError('Solo enteros')
 
     def __str__(self):
-        return 'UserGroup(%d, %d, %d, %d, %d, %d)' % (self.userid, self.groupid, self.message_number, self.pole_number, self.porro_number, self.pi_number)
+        return 'UserGroup(%d, %d, %d, %d, %d, %d)' % (self.userid,
+                                                      self.groupid,
+                                                      self.message_number, 
+                                                      self.pole_number, 
+                                                      self.porro_number, 
+                                                      self.pi_number)
 
 
 
@@ -228,7 +237,9 @@ class Almacenamiento(object):
     def insertar_usuario(self, user):
         """Inserta un usuario"""
         self.__checc(user)
-        self.c.execute('INSERT INTO user VALUES (?,?,?,?,?)', (user.userid, str(user.twitter_user), user.ping_number, user.nude_number, user.animal_number))
+        self.c.execute('INSERT INTO user VALUES (?,?,?,?,?)', (user.userid, str(user.twitter_user),
+                                                               user.ping_number, user.nude_number,
+                                                               user.animal_number))
         self.db.commit()
 
     def eliminar_usuario(self, user):
@@ -284,7 +295,10 @@ class Almacenamiento(object):
     def insertar_usuario_del_grupo(self, user_group):
         """Inserta info de un usuario de un grupo"""
         self.__clocc(user_group)
-        self.c.execute('INSERT INTO `user_group` VALUES (?,?,?,?,?,?)', (user_group.userid, user_group.groupid, user_group.message_number, user_group.pole_number, user_group.porro_number, user_group.pi_number))
+        self.c.execute('INSERT INTO `user_group` VALUES (?,?,?,?,?,?)', (user_group.userid,
+                                                                         user_group.groupid, user_group.message_number,
+                                                                         user_group.pole_number, user_group.porro_number,
+                                                                         user_group.pi_number))
         self.db.commit()
 
     def eliminar_usuario_del_grupo(self, user_group):
