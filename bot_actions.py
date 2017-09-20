@@ -14,7 +14,7 @@ from os import listdir
 from time import gmtime
 from os.path import isfile, join
 from telegram_tweet import TweetFromTelegram
-# from special_actions import SpecialActions
+from special_actions import SpecialActions
 from almacenamiento import Almacenamiento, User, UserGroup
 
 
@@ -368,7 +368,7 @@ class BotActions():
         # WORKING
         """Add a new user into the Data Base. It also creates the communication between this class and the Data Base"""
         if BotActions.data is None:
-            BotActions.data = Almacenamiento("/home/alkesst/Documentos/data.db")
+            BotActions.data = Almacenamiento("/home/pi/Documentos/pytel_stuff/data.db")
         user = User(user_id)
         if BotActions.data.obtener_usuario(user) is None:
             BotActions.data.insertar_usuario(user)
