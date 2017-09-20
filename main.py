@@ -2,12 +2,16 @@
 # -*- coding: utf-8 -*-
 # made with python 2
 # pylint: disable=C1001
+import json
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from bot_actions import BotActions
 from message_filter import HappyFilter, NotHappyFilter, BotijoReaction
 
 def main():
-    updater = Updater('TOKEN')
+    json_config = open("tokens.json", 'r')
+    tokens = json.load(json_config)
+    json_config.close()
+    updater = Updater(tokens["telegram"])
     happy_filter = HappyFilter()
     unhappy_filter = NotHappyFilter()
     def on_error(bot, update, error):

@@ -239,7 +239,7 @@ class Almacenamiento(object):
     def insertar_usuario(self, user):
         """Inserta un usuario"""
         __checc(user)
-        self.c.execute('INSERT INTO user VALUES (?,?,?,?,?)', (user.userid, str(user.twitter_user),
+        self.c.execute('INSERT INTO user VALUES (?,?,?,?,?)', (user.userid, user.twitter_user,
                                                                user.ping_number, user.nude_number,
                                                                user.animal_number))
         self.db.commit()
