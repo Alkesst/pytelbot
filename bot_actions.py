@@ -388,12 +388,12 @@ class BotActions():
     def mensajes_callback(bot, update):
         user_id = update.message.from_user.id
         chat_id = update.message.chat.id
+        BotActions.add_user(chat_id, user_id)
         BotActions.incrementa_mensajes(user_id, chat_id)
 
     @staticmethod
     def incrementa_mensajes(user_id, chat_id):
         # WORKING
-        BotActions.add_user(user_id, chat_id)
         if chat_id != user_id:
             user = UserGroup(user_id, chat_id)
             BotActions.data.aumentar_message_number(user)
@@ -438,17 +438,21 @@ class BotActions():
         user_id = update.message.from_user.id
         BotActions.add_user(user_id, chat_id)
         BotActions.incrementa_mensajes(user_id, chat_id)
-        twitter_acc = update.message.text[12:len(update.message.text)]
-        if not twitter_acc:
-            text = 'No es un formato válido para una cuenta de twitter :('
-        elif twitter_acc[0] != '@':
-            text = 'No es un formato válido para una cuenta de twitter :('
+        text = u""
+        if chat_id != user_id:
+            text = u"Este comando solo se puede usar en un chat privado"
         else:
-            user = BotActions.get_user(user_id)
-            user.twitter_user = twitter_acc
-            BotActions.data.modificar_usuario(user)
-            text = 'se ha añadido la cuenta de twitter ' + twitter_acc
-        bot.send_message(chat_id=update.message.chat.id,
+            twitter_acc = update.message.text[12:len(update.message.text)]
+            if not twitter_acc:
+                text = u'No es un formato válido para una cuenta de twitter :('
+            elif twitter_acc[0] != '@':
+                text = u'No es un formato válido para una cuenta de twitter :('
+            else:
+                user = BotActions.get_user(user_id)
+                user.twitter_user = twitter_acc
+                BotActions.data.modificar_usuario(user)
+                text = u'Se ha añadido la cuenta de twitter ' + twitter_acc
+        bot.send_message(chat_id=chat_id,
                          text=text)
 
     @staticmethod
@@ -513,21 +517,27 @@ class BotActions():
 
     @staticmethod
     def info_user_group(bot, update):
-        # WORK
+        # WORKING
         """Send a message with all the info from the user group"""
         user_id = update.message.from_user.id
         chat_id = update.message.chat.id
-        BotActions.add_user(chat_id, user_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
-        user_name = update.message.from_user.first_name + "\n"
-        info_text_group = BotActions.info_text(user_id, chat_id)
-        info_text_personal = BotActions.info_text_personal(user_id)
-        message_text = "Estas son las estadísticas grupales de " + user_name + info_text_group
-        message_text += "Estas son las estadísticas personales de " + user_name + info_text_personal
+        message_text = u""
+        if chat_id != user_id:
+            BotActions.add_user(chat_id, user_id)
+            BotActions.incrementa_mensajes(user_id, chat_id)
+            user_name = update.message.from_user.first_name + "\n"
+            info_text_group = BotActions.info_text(user_id, chat_id)
+            info_text_personal = BotActions.info_text_personal(user_id)
+            message_text = u"Estas son las estadísticas grupales de " + user_name + info_text_group
+            message_text += u"Estas son las estadísticas personales de " + user_name + info_text_personal
+            message_text = message_text.encode('utf-8')
+        else:
+            message_text = u"Este comando solo se puede usar en un grupo :("
         bot.send_message(chat_id=chat_id, text=message_text)
 
     @staticmethod
     def info_text(user_id, chat_id):
+        # WORKING
         info_text_group = BotActions.get_messages(user_id, chat_id) + "\n"
         info_text_group += BotActions.get_pole(user_id, chat_id) + "\n"
         info_text_group += BotActions.get_porro(user_id, chat_id) + "\n"
@@ -536,6 +546,7 @@ class BotActions():
 
     @staticmethod
     def info_text_personal(user_id):
+        # WORKING
         info_text_personal = BotActions.get_nudes(user_id) + "\n"
         info_text_personal += BotActions.get_pings(user_id) + "\n"
         info_text_personal += BotActions.get_animals(user_id) + "\n"
@@ -543,6 +554,7 @@ class BotActions():
 
     @staticmethod
     def get_nudes(user_id):
+        # WORKING
         user = BotActions.get_user(user_id)
         nude_number = user.nude_number
         nudes_text = "Has usado " + str(nude_number) + " el comando /nudes!"
@@ -550,6 +562,7 @@ class BotActions():
 
     @staticmethod
     def get_pings(user_id):
+        # WORKING
         user = BotActions.get_user(user_id)
         ping_number = user.ping_number
         ping_text = "Has usado " + str(ping_number) + " el comando /ping!"
@@ -557,6 +570,7 @@ class BotActions():
 
     @staticmethod
     def get_animals(user_id):
+        # WORKING
         user = BotActions.get_user(user_id)
         animal_number = user.animal_number
         animal_text = "Has usado " + str(animal_number) + " el comando /animals!"
@@ -570,4 +584,9 @@ class BotActions():
         BotActions.incrementa_mensajes(user_id, chat_id)
         user = BotActions.get_user(user_id)
         twitter_account = user.twitter_user
-        bot.send_message(chat_id=user_id, text="Esta es la cuenta que tienes puesta actualmente: " + twitter_account)
+        text = u""
+        if not twitter_account:
+            text = u"No hay ninguna cuenta asociada actualmente :("
+        else:
+            text = u"Ésta es la cuenta que tienes asociada actualmente: " + twitter_account
+        bot.send_message(chat_id=user_id, text=text)

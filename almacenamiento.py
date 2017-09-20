@@ -162,9 +162,9 @@ class UserGroup(object):
     def __str__(self):
         return 'UserGroup(%d, %d, %d, %d, %d, %d)' % (self.userid,
                                                       self.groupid,
-                                                      self.message_number, 
-                                                      self.pole_number, 
-                                                      self.porro_number, 
+                                                      self.message_number,
+                                                      self.pole_number,
+                                                      self.porro_number,
                                                       self.pi_number)
 
 
@@ -237,7 +237,7 @@ class Almacenamiento(object):
     def insertar_usuario(self, user):
         """Inserta un usuario"""
         self.__checc(user)
-        self.c.execute('INSERT INTO user VALUES (?,?,?,?,?)', (user.userid, str(user.twitter_user),
+        self.c.execute('INSERT INTO user VALUES (?,?,?,?,?)', (user.userid, user.twitter_user ,
                                                                user.ping_number, user.nude_number,
                                                                user.animal_number))
         self.db.commit()
