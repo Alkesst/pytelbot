@@ -353,7 +353,7 @@ class BotActions():
             bot.send_message(chat_id=user_id, text="Esta macro solo funciona en grupos")
 
     @staticmethod
-    def comunism(bot, update):
+    def comunist_meme(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.add_user(user_id, chat_id)
@@ -361,7 +361,7 @@ class BotActions():
         video = open("/home/pi/Documentos/pytel_stuff/comunist_meme.mp4", 'rb')
         bot.send_video(chat_id=chat_id,
                        reply_to_message_id=update.message.message_id,
-                       video=video, caption="communism will prevail")
+                       video=video, caption="communism will prevail!")
 
     @staticmethod
     def add_user(user_id, chat_id):
