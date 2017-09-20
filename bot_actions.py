@@ -129,7 +129,7 @@ class BotActions():
         help_text += "/hola     Te saluda cordialmente\n"
         help_text += "/macho    Te manda un audio para que te vayas a la mierda\n"
         help_text += "/nudes    Te manda un meme aleatorio de un repertorio de memes\n"
-        help_text += "/animals  Te manda un animal aleatorio de un repertorio de aniamlitos\n"
+        help_text += "/animals  Te manda un animal aleatorio de un repertorio de animalitos\n"
         help_text += "/id       Manda el ID del usuario que ha ejecutado el comando\n"
         help_text += "/id_c     Manda el ID del chat en el que se ha ejecutado el comando\n"
         help_text += "/search   Manda un meme con el texto que le introduzcas\n"
@@ -141,6 +141,7 @@ class BotActions():
         help_text += "/set_tw_acc   Agrega a la base de datos un usuario de twitter con el formato @Twitter_User\n"
         help_text += "/info     Te manda toda la información acerca de tu cuenta\n"
         help_text += "/twitter_acc  Te manda por privado la cuenta que tienes puesta de twitter actualmente\n"
+        helt_text += "/comunist     Te manda el mejor meme comunista actual\n"
         help_text += "Además interactúa con: :), :(, botijos...\n"
         return help_text
 
@@ -367,22 +368,25 @@ class BotActions():
     def add_user(user_id, chat_id):
         # WORKING
         """Add a new user into the Data Base. It also creates the communication between this class and the Data Base"""
-        if BotActions.data is None:
-            BotActions.data = Almacenamiento("/home/pi/Documentos/pytel_stuff/data.db")
-        user = User(user_id)
-        if BotActions.data.obtener_usuario(user) is None:
-            BotActions.data.insertar_usuario(user)
-        if chat_id != user_id:
-            user = UserGroup(user_id, chat_id)
-            if BotActions.data.obtener_usuario_del_grupo(user) is None:
-                BotActions.data.insertar_usuario_del_grupo(user)
-        current_time = datetime.now()
-        if not BotActions.dict_pole and ((current_time.hour == 0 and current_time.minute >= 15) or current_time.hour > 0):
-            BotActions.dict_pole = {}
-        if not BotActions.dict_pi and ((current_time.hour == 3 and current_time.minute >= 14) or current_time.hour > 3):
-            BotActions.dict_pi = {}
-        if not BotActions.dict_porro and ((current_time.hour == 4 and current_time.minute >= 20) or current_time.hour > 4):
-            BotActions.dict_porro = {}
+        try:
+            if BotActions.data is None:
+                BotActions.data = Almacenamiento("/home/pi/Documentos/pytel_stuff/data.db")
+            user = User(user_id)
+            if BotActions.data.obtener_usuario(user) is None:
+                BotActions.data.insertar_usuario(user)
+            if chat_id != user_id:
+                user = UserGroup(user_id, chat_id)
+                if BotActions.data.obtener_usuario_del_grupo(user) is None:
+                    BotActions.data.insertar_usuario_del_grupo(user)
+            current_time = datetime.now()
+            if not BotActions.dict_pole and ((current_time.hour == 0 and current_time.minute >= 15) or current_time.hour > 0):
+                BotActions.dict_pole = {}
+            if not BotActions.dict_pi and ((current_time.hour == 3 and current_time.minute >= 14) or current_time.hour > 3):
+                BotActions.dict_pi = {}
+            if not BotActions.dict_porro and ((current_time.hour == 4 and current_time.minute >= 20) or current_time.hour > 4):
+                BotActions.dict_porro = {}
+        except Exception as err:
+            print err
 
     @staticmethod
     def mensajes_callback(bot, update):
@@ -394,9 +398,12 @@ class BotActions():
     @staticmethod
     def incrementa_mensajes(user_id, chat_id):
         # WORKING
-        if chat_id != user_id:
-            user = UserGroup(user_id, chat_id)
-            BotActions.data.aumentar_message_number(user)
+        try:
+            if chat_id != user_id:
+                user = UserGroup(user_id, chat_id)
+                BotActions.data.aumentar_message_number(user)
+        except Exception as err:
+            print err
 
     @staticmethod
     def incrementa_nudes(user_id, chat_id):
@@ -550,6 +557,7 @@ class BotActions():
         info_text_personal = BotActions.get_nudes(user_id) + "\n"
         info_text_personal += BotActions.get_pings(user_id) + "\n"
         info_text_personal += BotActions.get_animals(user_id) + "\n"
+        info_text_personal += BotActions.get_all_messages(user_id) + "\n"
         return info_text_personal
 
     @staticmethod
@@ -575,6 +583,13 @@ class BotActions():
         animal_number = user.animal_number
         animal_text = "Has usado " + str(animal_number) + " el comando /animals!"
         return animal_text
+
+    @staticmethod
+    def get_all_messages(user_id):
+        user = BotActions.get_user(user_id)
+        total_messages = BotActions.data.calcular_total_mensajes(user)
+        mensaje_total = "En total has enviado " + str(total_messages) + " mensajes en todos los grupos!"
+        return mensaje_total
 
     @staticmethod
     def send_twitter_acc(bot, update):
