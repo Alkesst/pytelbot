@@ -124,26 +124,26 @@ class BotActions():
 
     @staticmethod
     def help_commands():
-        help_text = "/start     Inicializa el bot\n"
-        help_text += "/ping     Comprueba si el bot está encendido\n"
-        help_text += "/hola     Te saluda cordialmente\n"
-        help_text += "/macho    Te manda un audio para que te vayas a la mierda\n"
-        help_text += "/nudes    Te manda un meme aleatorio de un repertorio de memes\n"
-        help_text += "/animals  Te manda un animal aleatorio de un repertorio de animalitos\n"
-        help_text += "/id       Manda el ID del usuario que ha ejecutado el comando\n"
-        help_text += "/id_c     Manda el ID del chat en el que se ha ejecutado el comando\n"
-        help_text += "/search   Manda un meme con el texto que le introduzcas\n"
-        help_text += "/sad      Manda un meme de sad reacts only\n"
-        help_text += "/tweet    @pytwe_bot manda un tweet con el texto tras el comando, ahora con soporte de utf-8\n"
-        help_text += "/pole     Le da la pole a aquella persona que consiga mandar el primer mensaje del día\n"
-        help_text += "/porro    Le da la hora porro al primero en usar el comando en la hora porro ;)\n"
-        help_text += "/pi       Le da la horacio pi al primero en usar el comando en la horacio pi :O\n"
-        help_text += "/set_tw_acc   Agrega a la base de datos un usuario de twitter con el formato @Twitter_User\n"
-        help_text += "/info     Te manda toda la información acerca de tu cuenta\n"
-        help_text += "/twitter_acc  Te manda por privado la cuenta que tienes puesta de twitter actualmente\n"
-        helt_text += "/comunist     Te manda el mejor meme comunista actual\n"
-        help_text += "Además interactúa con: :), :(, botijos...\n"
-        return help_text
+        help_text = u"/start     Inicializa el bot\n"
+        help_text += u"/ping     Comprueba si el bot está encendido\n"
+        help_text += u"/hola     Te saluda cordialmente\n"
+        help_text += u"/macho    Te manda un audio para que te vayas a la mierda\n"
+        help_text += u"/nudes    Te manda un meme aleatorio de un repertorio de memes\n"
+        help_text += u"/animals  Te manda un animal aleatorio de un repertorio de animalitos\n"
+        help_text += u"/id       Manda el ID del usuario que ha ejecutado el comando\n"
+        help_text += u"/id_c     Manda el ID del chat en el que se ha ejecutado el comando\n"
+        help_text += u"/search   Manda un meme con el texto que le introduzcas\n"
+        help_text += u"/sad      Manda un meme de sad reacts only\n"
+        help_text += u"/tweet    @pytwe_bot manda un tweet con el texto tras el comando, ahora con soporte de utf-8\n"
+        help_text += u"/pole     Le da la pole a aquella persona que consiga mandar el primer mensaje del día\n"
+        help_text += u"/porro    Le da la hora porro al primero en usar el comando en la hora porro ;)\n"
+        help_text += u"/pi       Le da la horacio pi al primero en usar el comando en la horacio pi :O\n"
+        help_text += u"/set_tw_acc   Agrega a la base de datos un usuario de twitter con el formato @Twitter_User\n"
+        help_text += u"/info     Te manda toda la información acerca de tu cuenta\n"
+        help_text += u"/twitter_acc  Te manda por privado la cuenta que tienes puesta de twitter actualmente\n"
+        helt_text += u"/comunist     Te manda el mejor meme comunista actual\n"
+        help_text += u"Además interactúa con: :), :(, botijos...\n"
+        return help_text.encode('utf-8')
 
     @staticmethod
     def tweet(bot, update):
