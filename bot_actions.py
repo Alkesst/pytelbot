@@ -141,9 +141,9 @@ class BotActions():
         help_text += u"/set_tw_acc   Agrega a la base de datos un usuario de twitter con el formato @Twitter_User\n"
         help_text += u"/info     Te manda toda la información acerca de tu cuenta\n"
         help_text += u"/twitter_acc  Te manda por privado la cuenta que tienes puesta de twitter actualmente\n"
-        helt_text += u"/comunist     Te manda el mejor meme comunista actual\n"
+        help_text += u"/comunist     Te manda el mejor meme comunista actual\n"
         help_text += u"Además interactúa con: :), :(, botijos...\n"
-        return help_text.encode('utf-8')
+        return help_text
 
     @staticmethod
     def tweet(bot, update):
@@ -225,37 +225,35 @@ class BotActions():
 
     @staticmethod
     def pole(bot, update):
+        #Working
         current_time = update.message.date
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.add_user(user_id, chat_id)
         BotActions.incrementa_mensajes(user_id, chat_id)
+        pole_text = u""
         if chat_id != user_id:
             if current_time.hour == 0 and (current_time.minute >= 0 and current_time.minute < 15):
                 if update.message.chat.id not in BotActions.dict_pole:
                     BotActions.dict_pole[update.message.chat.id] = update.message.from_user.id
                     BotActions.incrementa_pole(user_id, chat_id)
-                    bot.send_message(chat_id=update.message.chat.id,
-                                     reply_to_message_id=update.message.message_id,
-                                     text="Muy bien crack has hecho la pole")
+                    pole_text = u"Muy bien crack has hecho la pole"
                     to_twitter = TweetFromTelegram()
-                    text_to_tweet = "¡La pole se la ha llevado "
-                    text_to_tweet += BotActions.get_twitter_acc(update.message.fro_user.id)
-                    text_to_tweet += " desde el grupo "
+                    text_to_tweet = u"¡La pole se la ha llevado "
+                    text_to_tweet += BotActions.get_twitter_acc(update.message.from_user.id)
+                    text_to_tweet += u" desde el grupo "
                     text_to_tweet += update.message.chat.title + "!"
                     text_to_tweet = text_to_tweet.encode('utf-8')
                     to_twitter.new_tweet(text_to_tweet)
-                    # THREAD
                 else:
-                    bot.send_message(chat_id=update.message.chat.id,
-                                     reply_to_message_id=update.message.message_id,
-                                     text="nice try pole, máquina")
+                    pole_text = u"nice try, máquina"
             else:
-                bot.send_message(chat_id=update.message.chat.id,
-                                 reply_to_message_id=update.message.message_id,
-                                 text="No estás en horario de pole... :S")
+                pole_text = u"No estás en horario de pole... :S"
         else:
-            bot.send_message(chat_id=user_id, text="Esta macro solo funciona en grupos")
+            pole_text = u"Esta macro solo funciona en grupos"
+        bot.send_message(chat_id=update.message.chat.id,
+                         reply_to_message_id=update.message.message_id,
+                         text=pole_text)
 
     @staticmethod
     def happy(bot, update):
@@ -294,31 +292,29 @@ class BotActions():
         BotActions.add_user(user_id, chat_id)
         BotActions.incrementa_mensajes(user_id, chat_id)
         current_time = update.message.date
+        porro_text = u""
         if chat_id != user_id:
             if current_time.hour == 4 and current_time.minute == 20:
                 if update.message.chat.id not in BotActions.dict_porro:
                     BotActions.dict_porro[update.message.chat.id] = update.message.from_user.id
                     BotActions.incrementa_porro(user_id, chat_id)
-                    bot.send_message(chat_id=update.message.chat.id,
-                                     reply_to_message_id=update.message.message_id,
-                                     text="Vaya fiera, te has llevado la hora porro bro")
+                    porro_text = u"Vaya fiera, te has llevado la hora porro bro"
                     to_twitter = TweetFromTelegram()
-                    text_to_tweet = "¡La hora porro se la lleva "
+                    text_to_tweet = u"¡La hora porro se la lleva "
                     text_to_tweet += BotActions.get_twitter_acc(update.message.from_user.id)
-                    text_to_tweet += " desde el grupo "
+                    text_to_tweet += u" desde el grupo "
                     text_to_tweet += update.message.chat.title + "!"
                     text_to_tweet = text_to_tweet.encode('utf-8')
                     to_twitter.new_tweet(text_to_tweet)
                 else:
-                    bot.send_message(chat_id=update.message.chat.id,
-                                     reply_to_message_id=update.message.message_id,
-                                     text="Ya se han llevado la hora porro ;)")
+                    porro_text = u"Ya se han llevado la hora porro ;)"
             else:
-                bot.send_message(chat_id=update.message.chat.id,
-                                 reply_to_message_id=update.message.message_id,
-                                 text="No estás en el horario necesario... >_<")
+                porro_text = u"No estás en el horario necesario... >_<"
         else:
-            bot.send_message(chat_id=user_id, text="Esta macro solo funciona en grupos")
+            porro_text = u"Esta macro solo funciona en grupos"
+        bot.send_message(chat_id=update.message.chat.id,
+                         reply_to_message_id=update.message.message_id,
+                         text=porro_text)
 
     @staticmethod
     def horacio_pi(bot, update):
@@ -327,31 +323,29 @@ class BotActions():
         user_id = update.message.from_user.id
         BotActions.add_user(user_id, chat_id)
         BotActions.incrementa_mensajes(user_id, chat_id)
+        pi_text = u""
         if chat_id != user_id:
             if current_time.hour == 3 and current_time.minute == 14:
                 if update.message.chat.id not in BotActions.dict_pi:
                     BotActions.dict_pi[update.message.chat.id] = update.message.from_user.id
                     BotActions.incrementa_pi(user_id, chat_id)
-                    bot.send_message(chat_id=update.message.chat.id,
-                                     reply_to_message_id=update.message.message_id,
-                                     text="Te acabas de llevar la horacio pi :O")
+                    pi_text = u"Te acabas de llevar la horacio pi :O"
                     to_twitter = TweetFromTelegram()
-                    text_to_tweet = "¡La hora pi se la lleva "
+                    text_to_tweet = u"¡La hora pi se la lleva "
                     text_to_tweet += BotActions.get_twitter_acc(update.message.from_user.id)
-                    text_to_tweet += " desde el grupo "
+                    text_to_tweet += u" desde el grupo "
                     text_to_tweet += update.message.chat.title + "!"
                     text_to_tweet = text_to_tweet.encode('utf-8')
                     to_twitter.new_tweet(text_to_tweet)
                 else:
-                    bot.send_message(chat_id=update.message.chat.id,
-                                     reply_to_message_id=update.message.message_id,
-                                     text="Fuiste demasiado lento para la horacio pi :/")
+                    pi_text = u"Fuiste demasiado lento para la horacio pi :/"
             else:
-                bot.send_message(chat_id=update.message.chat.id,
-                                 reply_to_message_id=update.message.message_id,
-                                 text="Fuck you fam, this is not the pi hour :@")
+                    pi_text = u"Que te jodan, no estás en horario pi"
         else:
-            bot.send_message(chat_id=user_id, text="Esta macro solo funciona en grupos")
+            pi_text = u"Esa macro solo funciona en grupos :("
+        bot.send_message(chat_id=update.message.chat.id,
+                         reply_to_message_id=update.message.message_id,
+                         text=pi_text)
 
     @staticmethod
     def comunist_meme(bot, update):
