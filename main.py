@@ -40,10 +40,10 @@ def main():
     updater.dispatcher.add_handler(MessageHandler(happy_filter, BotActions.happy))
     updater.dispatcher.add_handler(MessageHandler(unhappy_filter, BotActions.not_happy))
     updater.dispatcher.add_handler(MessageHandler(botijo, BotActions.botijo_react))
-    updater.dispatcher.add_handler(MessageHandler(Filters.all, BotActions.mensajes_callback))
     updater.dispatcher.add_handler(MessageHandler(insulto_filter, BotActions.insulto_react))
     updater.dispatcher.add_handler(MessageHandler(easy_filter, BotActions.easy_command))
     updater.dispatcher.add_handler(MessageHandler(pasa_filter, BotActions.when_te_pasa))
+    updater.dispatcher.add_handler(MessageHandler(Filters.all, BotActions.mensajes_callback))
     updater.start_polling()
     updater.idle()
 
