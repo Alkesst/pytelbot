@@ -18,7 +18,6 @@ from special_actions import SpecialActions
 from almacenamiento import Almacenamiento, User, UserGroup
 
 
-
 class BotActions():
     """Makes actions with the bot"""
     dict_pole = {}
@@ -225,7 +224,7 @@ class BotActions():
 
     @staticmethod
     def pole(bot, update):
-        #Working
+        # Working
         current_time = update.message.date
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
@@ -340,7 +339,7 @@ class BotActions():
                 else:
                     pi_text = u"Fuiste demasiado lento para la horacio pi :/"
             else:
-                    pi_text = u"Que te jodan, no estás en horario pi"
+                pi_text = u"Que te jodan, no estás en horario pi"
         else:
             pi_text = u"Esa macro solo funciona en grupos :("
         bot.send_message(chat_id=update.message.chat.id,
@@ -362,25 +361,22 @@ class BotActions():
     def add_user(user_id, chat_id):
         # WORKING
         """Add a new user into the Data Base. It also creates the communication between this class and the Data Base"""
-        try:
-            if BotActions.data is None:
-                BotActions.data = Almacenamiento("/home/pi/Documentos/pytel_stuff/data.db")
-            user = User(user_id)
-            if BotActions.data.obtener_usuario(user) is None:
-                BotActions.data.insertar_usuario(user)
-            if chat_id != user_id:
-                user = UserGroup(user_id, chat_id)
-                if BotActions.data.obtener_usuario_del_grupo(user) is None:
-                    BotActions.data.insertar_usuario_del_grupo(user)
-            current_time = datetime.now()
-            if not BotActions.dict_pole and ((current_time.hour == 0 and current_time.minute >= 15) or current_time.hour > 0):
-                BotActions.dict_pole = {}
-            if not BotActions.dict_pi and ((current_time.hour == 3 and current_time.minute >= 14) or current_time.hour > 3):
-                BotActions.dict_pi = {}
-            if not BotActions.dict_porro and ((current_time.hour == 4 and current_time.minute >= 20) or current_time.hour > 4):
-                BotActions.dict_porro = {}
-        except Exception as err:
-            print err
+        if BotActions.data is None:
+            BotActions.data = Almacenamiento("/home/pi/Documentos/pytel_stuff/data.db")
+        user = User(user_id)
+        if BotActions.data.obtener_usuario(user) is None:
+            BotActions.data.insertar_usuario(user)
+        if chat_id != user_id:
+            user = UserGroup(user_id, chat_id)
+            if BotActions.data.obtener_usuario_del_grupo(user) is None:
+                BotActions.data.insertar_usuario_del_grupo(user)
+        current_time = datetime.now()
+        if not BotActions.dict_pole and ((current_time.hour == 0 and current_time.minute >= 15) or current_time.hour > 0):
+            BotActions.dict_pole = {}
+        if not BotActions.dict_pi and ((current_time.hour == 3 and current_time.minute >= 14) or current_time.hour > 3):
+            BotActions.dict_pi = {}
+        if not BotActions.dict_porro and ((current_time.hour == 4 and current_time.minute >= 20) or current_time.hour > 4):
+            BotActions.dict_porro = {}
 
     @staticmethod
     def mensajes_callback(bot, update):
@@ -392,12 +388,9 @@ class BotActions():
     @staticmethod
     def incrementa_mensajes(user_id, chat_id):
         # WORKING
-        try:
-            if chat_id != user_id:
-                user = UserGroup(user_id, chat_id)
-                BotActions.data.aumentar_message_number(user)
-        except Exception as err:
-            print err
+        if chat_id != user_id:
+            user = UserGroup(user_id, chat_id)
+            BotActions.data.aumentar_message_number(user)
 
     @staticmethod
     def incrementa_nudes(user_id, chat_id):
@@ -599,3 +592,54 @@ class BotActions():
         else:
             text = u"Ésta es la cuenta que tienes asociada actualmente: " + twitter_account
         bot.send_message(chat_id=user_id, text=text)
+
+    @staticmethod
+    def easy_command(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.add_user(user_id, chat_id)
+        BotActions.incrementa_mensajes(user_id, chat_id)
+        bot.send_message(chat_id=chat_id,
+                         text="que es facil",
+                         reply_to_message_id=update.message.message_id)
+
+    @staticmethod
+    def insulto_react(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.add_user(user_id, chat_id)
+        BotActions.incrementa_mensajes(user_id, chat_id)
+        name = bot.message.text[10:len(bot.message.text)]
+        insulto = BotActions.get_random_insult("insultos.txt")
+        bot.send_message(chat_id=update.message.chat.id,
+                         text=name + " eres un " + insulto)
+
+    @staticmethod
+    def get_random_insult(file_name):
+        insults = BotActions.read_lines(file_name)
+        lines = len(insults)
+        random_pos = int(round(random.random()*lines, 0))
+        return insults[random_pos][0:len(insults[random_pos])-1]
+
+    @staticmethod
+    def read_lines(file_name):
+        list_ret = []
+        opened_file = open(file_name, 'rb')
+        has_next = True
+        while has_next:
+            line = opened_file.readline().lower()
+            if not line:
+                has_next = False
+            else:
+                list_ret.append(line)
+        return list_ret
+
+    @staticmethod
+    def when_te_pasa(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.add_user(user_id, chat_id)
+        BotActions.incrementa_mensajes(user_id, chat_id)
+        bot.send_message(chat_id=chat_id,
+                         text="si xD",
+                         reply_to_message_id=update.message.message_id)

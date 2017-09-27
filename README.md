@@ -2,13 +2,13 @@
 ###### A Telegram bot.
 
 ## INTRODUCTION:   
-Made with Python-Telegram-Bot API (https://python-telegram-bot.org/) and Python 2.7.10
+Made with Python-Telegram-Bot API (https://python-telegram-bot.org/) and Python 2.7
 All methods and all the replies from the bot are in spanish.
 
 
 
-This associate a COMMAND (/COMMAND in telegram chat) with a method (default_method). Is not necessary to
-call the method, just is needed to make a reference.
+This associate a COMMAND (/COMMAND in telegram chat) with a method (default_method). It is not necessary to
+call the method, it just needs to be referenced.
 ```python
     updater.dispatcher.add_handler(CommandHandler('COMMAND', default_method)
 ```
@@ -27,12 +27,12 @@ The method random_file_name gives a random file name from a specific path.
 
 For example, if the path is full of images
 it returns one random image name.
-you can add conditions to avoid getting non-image file_name, i.e. the .DS_Store file in MacOS
+you can add conditions to avoid getting non-image file names, i.e. the .DS_Store file in MacOS
 ```python
 onlyfiles = [f for f in listdir(path) if isfile(join(path, f)) and f != '.DS_Store']
 ```
 
-The parse_mode='Markdown' is for using a style in the message, for example, when using '__' for send an italic text.
+The parse_mode='Markdown' is to use a style in the message, for example, when using '__' for send an italic text.
 
 ```python
     bot.send_message(chat_id=chat_id, text='`' + str(chat_id) + '`', reply_to_message_id=update.message.message_id, parse_mode='Markdown')
@@ -41,7 +41,7 @@ The parse_mode='Markdown' is for using a style in the message, for example, when
 The module telegram_tweet.py connects the telegram bot with @PyTwe_bot (http://www.github.com/alkesst/pytwe-bot).
 The method new_tweet post a tweet and returns the link of that tweet.
 
-All the methods' arguments are bot and update. With bot you can make actions like, sending messages, photos, etc...
+All the methods' arguments are bot and update. With bot you can do actions like, sending messages, photos, etc...
 With update you can get information of the message like the chat object, user object, etc...
 
 
@@ -75,7 +75,7 @@ First of all we need to create a script that pulls the changes from git, and the
 ```
 
 
-Is requiered to use this code, because the service will start immediatly when the rpi turns on, so, we need to
+It is requiered to use the following code, because the service will start immediatly when the rpi turns on, so, we need to
 check if there is internet conection before trying to pull from git.
 ```sh
 STATE=$(ping -q -w 1 -c 1 `ip r | grep default | cut -d ' ' -f 3` > /dev/null && echo ok || echo error)
@@ -90,7 +90,7 @@ while [  $STATE == "error" ]; do
 
 ### Service:
 
-Made the script, now you need to create a .service file with this code:
+Made the script, now you need to create a .service file with the following code:
 ```
 [Unit]
 Description=PyTwe-Bot
@@ -107,7 +107,7 @@ WantedBy=multi-user.target
 
 ### Enabling service and moving to the path:
 
-When you have your .service file, you need to move the file into /etc/systemd/system/ and use this command:
+When you have your .service file, you need to move the file into /etc/systemd/system/ and use the following command:
 ```sh
     sudo systemctl enable pytwe.service
 ```

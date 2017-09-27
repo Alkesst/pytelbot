@@ -5,18 +5,19 @@
 import json
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from bot_actions import BotActions
-from message_filter import HappyFilter, NotHappyFilter, BotijoReaction
+import message_filter
 
 def main():
     json_config = open("tokens.json", 'r')
     tokens = json.load(json_config)
     json_config.close()
     updater = Updater(tokens["telegram"])
-    happy_filter = HappyFilter()
-    unhappy_filter = NotHappyFilter()
-    def on_error(bot, update, error):
-        print(error)
-    botijo = BotijoReaction()
+    happy_filter = message_filter.HappyFilter()
+    unhappy_filter = message_filter.NotHappyFilter()
+    insulto_filter = message_filter.InsultoReact()
+    easy_filter = message_filter.EasyReact()
+    pasa_filter = message_filter.CuandoTePasaReact()
+    botijo = message_filter.BotijoReaction()
     updater.dispatcher.add_handler(CommandHandler('start', BotActions.start))
     updater.dispatcher.add_handler(CommandHandler('hola', BotActions.hola))
     updater.dispatcher.add_handler(CommandHandler('macho', BotActions.macho))
@@ -40,7 +41,9 @@ def main():
     updater.dispatcher.add_handler(MessageHandler(unhappy_filter, BotActions.not_happy))
     updater.dispatcher.add_handler(MessageHandler(botijo, BotActions.botijo_react))
     updater.dispatcher.add_handler(MessageHandler(Filters.all, BotActions.mensajes_callback))
-    updater.dispatcher.add_error_handler(on_error)
+    updater.dispatcher.add_handler(MessageHandler(insulto_filter, BotActions.insulto_react))
+    updater.dispatcher.add_handler(MessageHandler(easy_filter, BotActions.easy_command))
+    updater.dispatcher.add_handler(MessageHandler(pasa_filter, BotActions.when_te_pasa))
     updater.start_polling()
     updater.idle()
 
