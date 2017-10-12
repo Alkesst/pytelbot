@@ -7,9 +7,13 @@
 # pylint: disable=C0301
 # pylint: disable=R0904
 """Methods for the CommandHandler"""
+import subprocess
 import random
 import os
-from datetime import datetime
+from argparse import _AppendAction
+
+import nltk
+from datetime import datetime, time
 from os import listdir
 from time import gmtime
 from os.path import isfile, join
@@ -18,7 +22,7 @@ from special_actions import SpecialActions
 from almacenamiento import Almacenamiento, User, UserGroup
 
 
-class BotActions():
+class BotActions(object):
     """Makes actions with the bot"""
     dict_pole = {}
     dict_porro = {}
@@ -68,7 +72,7 @@ class BotActions():
         """Search a random file inside a path"""
         onlyfiles = [f for f in listdir(path) if isfile(join(path, f)) and f != '.DS_Store']
         lines = len(onlyfiles)
-        random_file = int(round(random.random()*lines, 0))
+        random_file = int(round(random.random() * lines, 0))
         return path + "/" + onlyfiles[random_file]
 
     @staticmethod
@@ -89,7 +93,8 @@ class BotActions():
         BotActions.add_user(user_id, chat_id)
         BotActions.incrementa_mensajes(user_id, chat_id)
         bot.send_message(chat_id=chat_id, text='`' + str(update.message.from_user.id) +
-                         '`', reply_to_message_id=update.message.message_id, parse_mode='Markdown')
+                                               '`', reply_to_message_id=update.message.message_id,
+                         parse_mode='Markdown')
 
     @staticmethod
     def id_chat(bot, update):
@@ -141,6 +146,7 @@ class BotActions():
         help_text += u"/info     Te manda toda la información acerca de tu cuenta\n"
         help_text += u"/twitter_acc  Te manda por privado la cuenta que tienes puesta de twitter actualmente\n"
         help_text += u"/comunist     Te manda el mejor meme comunista actual\n"
+        help_text += u"/current_status      Te manda la información actual de la raspberry pi"
         help_text += u"Además interactúa con: :), :(, botijos...\n"
         return help_text
 
@@ -153,7 +159,7 @@ class BotActions():
         list_id = BotActions.read_ids_from_file("ids.txt")
         if update.message.from_user.id in list_id:
             to_twitter = TweetFromTelegram()
-            text_to_tweet = update.message.text[7:len(update.message.text)]
+            text_to_tweet = update.message.text[7:]
             text_to_tweet = text_to_tweet.encode('utf-8')
             link = to_twitter.new_tweet(text_to_tweet)
             if link == "error":
@@ -203,7 +209,7 @@ class BotActions():
         BotActions.add_user(user_id, chat_id)
         BotActions.incrementa_mensajes(user_id, chat_id)
         # si en el grupo hay más de un bot hay que arreglar la mención de /search@PyTel_bot
-        text = update.message.text[8:len(update.message.text)]
+        text = update.message.text[8:]
         text = text.encode('utf-8')
         SpecialActions.create_image_search("meme_template_search.png", text)
         bot.send_photo(chat_id=chat_id,
@@ -230,9 +236,8 @@ class BotActions():
         user_id = update.message.from_user.id
         BotActions.add_user(user_id, chat_id)
         BotActions.incrementa_mensajes(user_id, chat_id)
-        pole_text = u""
         if chat_id != user_id:
-            if current_time.hour == 0 and (current_time.minute >= 0 and current_time.minute < 15):
+            if current_time.hour == 0 and (0 <= current_time.minute < 15):
                 if update.message.chat.id not in BotActions.dict_pole:
                     BotActions.dict_pole[update.message.chat.id] = update.message.from_user.id
                     BotActions.incrementa_pole(user_id, chat_id)
@@ -291,7 +296,6 @@ class BotActions():
         BotActions.add_user(user_id, chat_id)
         BotActions.incrementa_mensajes(user_id, chat_id)
         current_time = update.message.date
-        porro_text = u""
         if chat_id != user_id:
             if current_time.hour == 4 and current_time.minute == 20:
                 if update.message.chat.id not in BotActions.dict_porro:
@@ -322,7 +326,6 @@ class BotActions():
         user_id = update.message.from_user.id
         BotActions.add_user(user_id, chat_id)
         BotActions.incrementa_mensajes(user_id, chat_id)
-        pi_text = u""
         if chat_id != user_id:
             if current_time.hour == 3 and current_time.minute == 14:
                 if update.message.chat.id not in BotActions.dict_pi:
@@ -371,11 +374,14 @@ class BotActions():
             if BotActions.data.obtener_usuario_del_grupo(user) is None:
                 BotActions.data.insertar_usuario_del_grupo(user)
         current_time = datetime.now()
-        if not BotActions.dict_pole and ((current_time.hour == 0 and current_time.minute >= 15) or current_time.hour > 0):
+        if not BotActions.dict_pole and ((current_time.hour == 0 and current_time.minute >= 15)
+                                         or current_time.hour > 0):
             BotActions.dict_pole = {}
-        if not BotActions.dict_pi and ((current_time.hour == 3 and current_time.minute >= 14) or current_time.hour > 3):
+        if not BotActions.dict_pi and ((current_time.hour == 3 and current_time.minute >= 14)
+                                       or current_time.hour > 3):
             BotActions.dict_pi = {}
-        if not BotActions.dict_porro and ((current_time.hour == 4 and current_time.minute >= 20) or current_time.hour > 4):
+        if not BotActions.dict_porro and ((current_time.hour == 4 and current_time.minute >= 20)
+                                          or current_time.hour > 4):
             BotActions.dict_porro = {}
 
     @staticmethod
@@ -432,11 +438,10 @@ class BotActions():
         user_id = update.message.from_user.id
         BotActions.add_user(user_id, chat_id)
         BotActions.incrementa_mensajes(user_id, chat_id)
-        text = u""
         if chat_id != user_id:
             text = u"Este comando solo se puede usar en un chat privado"
         else:
-            twitter_acc = update.message.text[12:len(update.message.text)]
+            twitter_acc = update.message.text[12:]
             if not twitter_acc:
                 text = u'No es un formato válido para una cuenta de twitter :('
             elif twitter_acc[0] != '@':
@@ -507,15 +512,12 @@ class BotActions():
         pi_text = "Has hecho " + str(pi_number) + " horas pi!"
         return pi_text
 
-    # Añadir metodos para conseguir las estadísticas de /nudes, /ping etc
-
     @staticmethod
     def info_user_group(bot, update):
         # WORKING
         """Send a message with all the info from the user group"""
         user_id = update.message.from_user.id
         chat_id = update.message.chat.id
-        message_text = u""
         if chat_id != user_id:
             BotActions.add_user(user_id, chat_id)
             BotActions.incrementa_mensajes(user_id, chat_id)
@@ -586,7 +588,6 @@ class BotActions():
         BotActions.incrementa_mensajes(user_id, chat_id)
         user = BotActions.get_user(user_id)
         twitter_account = user.twitter_user
-        text = u""
         if not twitter_account:
             text = u"No hay ninguna cuenta asociada actualmente :("
         else:
@@ -604,22 +605,22 @@ class BotActions():
                          reply_to_message_id=update.message.message_id)
 
     @staticmethod
-    def insulto_react(bot, update):
+    def insulto_method(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.add_user(user_id, chat_id)
         BotActions.incrementa_mensajes(user_id, chat_id)
-        name = bot.message.text[10:len(bot.message.text)]
+        name = update.message.text[10:]
         insulto = BotActions.get_random_insult("insultos.txt")
-        bot.send_message(chat_id=update.message.chat.id,
+        bot.send_message(chat_id=chat_id,
                          text=name + " eres un " + insulto)
 
     @staticmethod
     def get_random_insult(file_name):
         insults = BotActions.read_lines(file_name)
         lines = len(insults)
-        random_pos = int(round(random.random()*lines, 0))
-        return insults[random_pos][0:len(insults[random_pos])-1]
+        random_pos = int(round(random.random() * lines, 0))
+        return insults[random_pos][0:-1]
 
     @staticmethod
     def read_lines(file_name):
@@ -627,7 +628,7 @@ class BotActions():
         opened_file = open(file_name, 'rb')
         has_next = True
         while has_next:
-            line = opened_file.readline().lower()
+            line = opened_file.readline().lower().decode('utf-8')
             if not line:
                 has_next = False
             else:
@@ -643,3 +644,56 @@ class BotActions():
         bot.send_message(chat_id=chat_id,
                          text="si xD",
                          reply_to_message_id=update.message.message_id)
+
+    @staticmethod
+    def current_status(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.add_user(user_id, chat_id)
+        BotActions.incrementa_mensajes(user_id, chat_id)
+        bot.send_message(chat_id=chat_id,
+                         text=BotActions.status_message())
+
+    @staticmethod
+    def status_message():
+        uptime_command = subprocess.check_output(["uptime"])
+        tokenizer = nltk.tokenize.RegexpTokenizer(r'[0-9:]+')
+        tokenized_uptime = tokenizer.tokenize(uptime_command)
+        actual_uptime = tokenized_uptime[1]
+
+        current_temp = subprocess.check_output(["/opt/vc/bin/vcgencmd", "measure_temp"])
+        current_mem = subprocess.check_output(["free", "-h"])
+        current_mem = current_mem.splitlines()
+        tokenizer = nltk.tokenize.RegexpTokenizer(r'[M0-9]+')
+        tokenized_mem = tokenizer.tokenize(current_mem[1])
+        cont = 0
+        used_mem = None
+        free_mem = None
+        for items in tokenized_mem:
+            if cont == 2:
+                used_mem = items
+            elif cont == 3:
+                free_mem = items
+            cont += 1
+        message = u"Current RPI 3 status: \n" + "Used Memory: " + str(used_mem)
+        message += u"\nFree Memory: " + str(free_mem) + "\n" + str(current_temp) + "\n"
+        message += u"Uptime: " + str(actual_uptime) + "\n"
+        return message
+
+    @staticmethod
+    def thicc(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.add_user(user_id, chat_id)
+        BotActions.incrementa_mensajes(user_id, chat_id)
+        bot.send_photo(chat_id=chat_id,
+                       photo=open('/home/pi/Documentos/pytel_stuff/192.png'),
+                       reply_to_message_id=update.message.message_id)
+
+    # TODO
+    #@staticmethod
+    #def habeces(bot, update):
+    #    pass
+    #@staticmethod
+    #def gracias(bot, update):
+    #    pass

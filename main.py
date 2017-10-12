@@ -5,19 +5,24 @@
 import json
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from bot_actions import BotActions
-import message_filter
+from message_filter import *
+
 
 def main():
     json_config = open("tokens.json", 'r')
     tokens = json.load(json_config)
     json_config.close()
     updater = Updater(tokens["telegram"])
-    happy_filter = message_filter.HappyFilter()
-    unhappy_filter = message_filter.NotHappyFilter()
-    insulto_filter = message_filter.InsultoReact()
-    easy_filter = message_filter.EasyReact()
-    pasa_filter = message_filter.CuandoTePasaReact()
-    botijo = message_filter.BotijoReaction()
+    happy_filter = HappyFilter()
+    unhappy_filter = NotHappyFilter()
+    insulto_filter = Insulto()
+    easy_filter = EasyReact()
+    pasa_filter = CuandoTePasaReact()
+    botijo = BotijoReaction()
+    thicc = Thicc()
+    # TODO
+    #gracias = Gracias()
+    #habeces = AVeces()
     updater.dispatcher.add_handler(CommandHandler('start', BotActions.start))
     updater.dispatcher.add_handler(CommandHandler('hola', BotActions.hola))
     updater.dispatcher.add_handler(CommandHandler('macho', BotActions.macho))
@@ -37,15 +42,21 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('set_tw_acc', BotActions.add_twitter_account))
     updater.dispatcher.add_handler(CommandHandler('info', BotActions.info_user_group))
     updater.dispatcher.add_handler(CommandHandler('twitter_acc', BotActions.send_twitter_acc))
+    updater.dispatcher.add_handler(CommandHandler('current_status', BotActions.current_status))
     updater.dispatcher.add_handler(MessageHandler(happy_filter, BotActions.happy))
     updater.dispatcher.add_handler(MessageHandler(unhappy_filter, BotActions.not_happy))
     updater.dispatcher.add_handler(MessageHandler(botijo, BotActions.botijo_react))
-    updater.dispatcher.add_handler(MessageHandler(insulto_filter, BotActions.insulto_react))
+    updater.dispatcher.add_handler(MessageHandler(insulto_filter, BotActions.insulto_method))
     updater.dispatcher.add_handler(MessageHandler(easy_filter, BotActions.easy_command))
     updater.dispatcher.add_handler(MessageHandler(pasa_filter, BotActions.when_te_pasa))
+    updater.dispatcher.add_handler(MessageHandler(thicc, BotActions.thicc))
+    # TODO
+    #updater.dispatcher.add_handler(MessageHandler(gracias, BotActions.gracias))
+    #updater.dispatcher.add_handler(MessageHandler(habeces, BotActions.habeces))
     updater.dispatcher.add_handler(MessageHandler(Filters.all, BotActions.mensajes_callback))
     updater.start_polling()
     updater.idle()
+
 
 if __name__ == "__main__":
     main()
