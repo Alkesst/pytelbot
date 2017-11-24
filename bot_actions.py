@@ -10,10 +10,8 @@
 import subprocess
 import random
 import os
-from argparse import _AppendAction
-
 import nltk
-from datetime import datetime, time
+from datetime import datetime
 from os import listdir
 from time import gmtime
 from os.path import isfile, join
@@ -28,6 +26,11 @@ class BotActions(object):
     dict_porro = {}
     dict_pi = {}
     data = None
+    stickers = ['CAADBAADJQADuE-EEuya2udZTudYAg', 'CAADBAADLAADuE - EElvaPQABlkaHMAI', 'CAADBAADQAADuE-EEs7AEGXnB5sOAg']
+
+    # CAADBAADJQADuE-EEuya2udZTudYAg reverted
+    # CAADBAADLAADuE - EElvaPQABlkaHMAI
+    # CAADBAADQAADuE-EEs7AEGXnB5sOAg
 
     @staticmethod
     def start(bot, update):
@@ -690,10 +693,61 @@ class BotActions(object):
                        photo=open('/home/pi/Documentos/pytel_stuff/192.png'),
                        reply_to_message_id=update.message.message_id)
 
+    @staticmethod
+    def spain(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.add_user(user_id, chat_id)
+        BotActions.incrementa_mensajes(user_id, chat_id)
+        bot.send_photo(chat_id=chat_id,
+                       photo=open('/home/pi/Documentos/pytel_stuff/spainreact.jpg'),
+                       reply_to_message_id=update.message.message_id)
+
+    @staticmethod
+    def cocaine(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.add_user(user_id, chat_id)
+        BotActions.incrementa_mensajes(user_id, chat_id)
+        bot.send_video(chat_id=chat_id,
+                       video=open('/home/pi/Documentos/pytel_stuff/cocaine.mp4'),
+                       reply_to_message_id=update.message.message_id)
+
+    @staticmethod
+    def sad(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.add_user(user_id, chat_id)
+        BotActions.incrementa_mensajes(user_id, chat_id)
+        bot.send_message(chat_id=chat_id,
+                         text="sad reacts only",
+                         reply_to_message_id=update.message.message_id)
+
+    @staticmethod
+    def reverte(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.add_user(user_id, chat_id)
+        BotActions.incrementa_mensajes(user_id, chat_id)
+        rnd = int(round(random.random() * len(BotActions.stickers), 0)) - 1
+        bot.sendSticker(chat_id=chat_id, sticker=BotActions.stickers[rnd],
+                        reply_to_message_id=update.message.message_id)
+
+    @staticmethod
+    def reverted(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.add_user(user_id, chat_id)
+        BotActions.incrementa_mensajes(user_id, chat_id)
+        bot.send_photo(chat_id=chat_id, photo=open('/home/pi/Documentos/pytel_stuff/reverted.png'))
+
+
+
+    #
     # TODO
-    #@staticmethod
-    #def habeces(bot, update):
+    # @staticmethod
+    # def habeces(bot, update):
     #    pass
-    #@staticmethod
-    #def gracias(bot, update):
+    # @staticmethod
+    # def gracias(bot, update):
     #    pass

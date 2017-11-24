@@ -7,12 +7,12 @@ from telegram.ext import BaseFilter
 
 class HappyFilter(BaseFilter):
     def filter(self, message):
-        return message.text == ':)'
+        return message.text == ':)' or message.text == ':-)'
 
 
 class NotHappyFilter(BaseFilter):
     def filter(self, message):
-        return message.text == ':('
+        return message.text == ':(' or message.text == ':-('
 
 
 class BotijoReaction(BaseFilter):
@@ -48,3 +48,37 @@ class AVeces(BaseFilter):
 class Gracias(BaseFilter):
     def filter(self, message):
         return message.text == 'gracias @pytel_bot' or message.text == '@pytel_bot gracias'
+
+
+class SadReacts(BaseFilter):
+    def filter(self, message):
+        return "sad" in message.text.lower()
+
+
+class BuenosDias(BaseFilter):
+    def filter(self, message):
+        text = message.text.lower()
+        return "buenos dias españa" in text or \
+               "buenos días españa" in text or \
+               "buenos días, españa" in text or \
+               "buenos dias, españa" in text
+
+
+class ReverteReact(BaseFilter):
+    def filter(self, message):
+        text = message.text.lower()
+        return 'arturo pérez-reverte' in text or \
+            'arturo perez-reverte' in text or \
+            'arturo parez reverte' in text or \
+            'perez reverte' in text or \
+            'pérez-reverte' in text or \
+            'perez-reverte' in text or \
+            'reverte' in text
+
+
+class RevertedReact(BaseFilter):
+    def filter(self, message):
+        text = message.text.lower()
+        return 'reverted' in text or \
+            'arturo perez reverted' in text or \
+            'perez reverted' in text
