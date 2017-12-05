@@ -47,7 +47,7 @@ class AVeces(BaseFilter):
 
 class Gracias(BaseFilter):
     def filter(self, message):
-        return message.text == 'gracias @pytel_bot' or message.text == '@pytel_bot gracias'
+        return message.text == 'gracias @pytel_bot' or message.text == '@pytel_bot gracias' or message.text == 'gracias'
 
 
 class SadReacts(BaseFilter):
@@ -58,6 +58,7 @@ class SadReacts(BaseFilter):
 class BuenosDias(BaseFilter):
     def filter(self, message):
         text = message.text.lower()
+        text = text.encode('utf-8')
         return "buenos dias españa" in text or \
                "buenos días españa" in text or \
                "buenos días, españa" in text or \
@@ -67,6 +68,7 @@ class BuenosDias(BaseFilter):
 class ReverteReact(BaseFilter):
     def filter(self, message):
         text = message.text.lower()
+        text = text.encode('utf-8')
         return 'arturo pérez-reverte' in text or \
             'arturo perez-reverte' in text or \
             'arturo parez reverte' in text or \
@@ -79,6 +81,12 @@ class ReverteReact(BaseFilter):
 class RevertedReact(BaseFilter):
     def filter(self, message):
         text = message.text.lower()
+        text = text.encode('utf-8')
         return 'reverted' in text or \
             'arturo perez reverted' in text or \
             'perez reverted' in text
+
+
+class Xdd(BaseFilter):
+    def filter(self, message):
+        return message.text == 'xd'

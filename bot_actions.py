@@ -11,6 +11,7 @@ import subprocess
 import random
 import os
 import nltk
+import logging
 from datetime import datetime
 from os import listdir
 from time import gmtime
@@ -27,6 +28,7 @@ class BotActions(object):
     dict_pi = {}
     data = None
     stickers = ['CAADBAADJQADuE-EEuya2udZTudYAg', 'CAADBAADLAADuE - EElvaPQABlkaHMAI', 'CAADBAADQAADuE-EEs7AEGXnB5sOAg']
+    logging.basicConfig(filename="botActions.log", level=logging.DEBUG)
 
     # CAADBAADJQADuE-EEuya2udZTudYAg reverted
     # CAADBAADLAADuE - EElvaPQABlkaHMAI
@@ -639,6 +641,14 @@ class BotActions(object):
         return list_ret
 
     @staticmethod
+    def graciasReact(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.add_user(user_id, chat_id)
+        BotActions.incrementa_mensajes(user_id, chat_id)
+        bot.send_message(chat_id=chat_id, text='de nada supollita', reply_to_message_id=update.message.message_id)
+
+    @staticmethod
     def when_te_pasa(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
@@ -741,7 +751,13 @@ class BotActions(object):
         BotActions.incrementa_mensajes(user_id, chat_id)
         bot.send_photo(chat_id=chat_id, photo=open('/home/pi/Documentos/pytel_stuff/reverted.png'))
 
-
+    @staticmethod
+    def xd_react(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.add_user(user_id, chat_id)
+        BotActions.incrementa_mensajes(user_id, chat_id)
+        bot.send_message(chat_id=chat_id, text="XD lol")
 
     #
     # TODO
