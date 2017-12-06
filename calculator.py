@@ -60,10 +60,3 @@ class Calculator():
             except ValueError:
                 operator.append(item)
         return (operands, operator)
-
-
-def main():
-    calc = Calculator('10 ^ 2')
-    print calc.result
-
-main()

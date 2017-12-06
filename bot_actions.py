@@ -151,8 +151,14 @@ class BotActions(object):
         help_text += u"/info     Te manda toda la información acerca de tu cuenta\n"
         help_text += u"/twitter_acc  Te manda por privado la cuenta que tienes puesta de twitter actualmente\n"
         help_text += u"/comunist     Te manda el mejor meme comunista actual\n"
-        help_text += u"/current_status      Te manda la información actual de la raspberry pi"
-        help_text += u"Además interactúa con: :), :(, botijos...\n"
+        help_text += u"/current_status      Te manda la información actual de la raspberry pi\n"
+        help_text += u"/thicc     Te manda un thicc human\n"
+        help_text += u"/cocaine   Manda un video sobre porqué no deberías tomar cocaína\n"
+        help_text += u"/reverted  Te manda una imagen invertida\n"
+        help_text += u"/barman    Le pides un Dyc al barman\n"
+        help_text += u"/gustar    Buen copy paste twittero\n"
+        help_text += u"/dato      Te manda datos curiosos para ampliar tu cultura general\n"
+        help_text += u"Además interactúa con: :), :(, botijos, xd, sad, etc...\n"
         return help_text
 
     @staticmethod
@@ -740,7 +746,7 @@ class BotActions(object):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        bot.send_message(chat_id=chat_id, text="XD lol",
+        bot.send_message(chat_id=chat_id, text="que te jodan, macho",
                          reply_to_message_id=update.message.message_id)
 
     @staticmethod
@@ -759,9 +765,57 @@ class BotActions(object):
         bot.send_message(chat_id=chat_id, text="Raul White Branch",
                          reply_to_message_id=update.message.message_id)
 
+    # @staticmethod
+    # def calculator(bot, update):
+    #     chat_id = update.message.chat.id
+    #     user_id = update.message.from_user.id
+    #     BotActions.common_process(chat_id, user_id)
+        # TODO calculadora; /dato "En Palma de mallorca hay 80 veces los habitantes de benamejí"
+
     @staticmethod
-    def calculator(bot, update):
+    def useless_data(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        # TODO calculadora; /dato "En Palma de mallorca hay 80 veces los habitantes de benamejí"
+        dato = u''
+        dato += BotActions.get_random_insult("insults.txt")
+        bot.send_message(chat_id=chat_id, text=dato, reply_to_message_id=update.message.message_id)
+
+
+    @staticmethod
+    def barman(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        bot.send_message(chat_id=chat_id, text='`Póngame un Dyc`', parse_mode='Markdown',
+                         reply_to_message_id=update.message.message_id)
+
+    @staticmethod
+    def gustar(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        bot.send_message(chat_id=chat_id, text='`ＳＩ　ＥＬ　ＴＲＵＣＯ　ＰＡＲＡ'
+                                               '　ＧＵＳＴＡＲＬＥ　Ａ　ＡＬＧＵＩＥＮ　ＥＳ　ＰＡＳＡＲ　ＤＥ'
+                                               '　ＥＳＡ　ＰＥＲＳＯＮＡ　ＣＲＥＯ　ＱＵＥ　ＴＯＤＯ　ＥＬ　ＭＵＮＤＯ'
+                                               '　ＥＳＴＡ　ＥＮＡＭＯＲＡＤＯ　ＤＥ　ＭＩ`', parse_mode='Markdown',
+                         reply_to_message_id=update.message.message_id)
+
+    @staticmethod
+    def vallecas(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        cad = '`ME \nVIENE \nUN \nTIO \nQUE\nSE\nQUIERE\nHACER\nUN\nTATUAJE\nY\nME ' \
+              '\nPREGUNTA\nSI\nDUELE\nY\nLE\nDIGO:\nDEPENDE\nDE\nLA\nZONA\nY\nME\nDICE:\nDE\nLA\nZONA\nDE\nVALLECAS`'
+        bot.send_message(chat_id=chat_id, text=cad, parse_mode='Markdown',
+                         reply_to_message_id=update.message.message_id)
+
+    @staticmethod
+    def insults(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        insult = u''
+        insult += BotActions.get_random_insult("insults.txt")
+        bot.send_message(chat_id=chat_id, text=u'Ets un ' + insult)
