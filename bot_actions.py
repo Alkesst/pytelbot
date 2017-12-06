@@ -158,6 +158,8 @@ class BotActions(object):
         help_text += u"/barman    Le pides un Dyc al barman\n"
         help_text += u"/gustar    Buen copy paste twittero\n"
         help_text += u"/dato      Te manda datos curiosos para ampliar tu cultura general\n"
+        help_text += u"/insults   Te insulta en un lenguaje arcaico\n"
+        help_text += u"/vallecas  Te dice si duele hacerse un tatuaje en la zona de vallecas\n"
         help_text += u"Además interactúa con: :), :(, botijos, xd, sad, etc...\n"
         return help_text
 
@@ -757,20 +759,12 @@ class BotActions(object):
         bot.send_message(chat_id=chat_id, text="a veces",
                          reply_to_message_id=update.message.message_id)
 
-    @staticmethod
-    def white_branch(bot, update):
-        chat_id = update.message.chat.id
-        user_id = update.message.from_user.id
-        BotActions.common_process(chat_id, user_id)
-        bot.send_message(chat_id=chat_id, text="Raul White Branch",
-                         reply_to_message_id=update.message.message_id)
-
     # @staticmethod
     # def calculator(bot, update):
     #     chat_id = update.message.chat.id
     #     user_id = update.message.from_user.id
     #     BotActions.common_process(chat_id, user_id)
-        # TODO calculadora; /dato "En Palma de mallorca hay 80 veces los habitantes de benamejí"
+        # TODO calculadora;
 
     @staticmethod
     def useless_data(bot, update):
@@ -778,7 +772,7 @@ class BotActions(object):
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
         dato = u''
-        dato += BotActions.get_random_insult("insults.txt")
+        dato += BotActions.get_random_insult("useless_data.txt")
         bot.send_message(chat_id=chat_id, text=dato, reply_to_message_id=update.message.message_id)
 
 

@@ -55,7 +55,8 @@ class Gracias(BaseFilter):
 
 class SadReacts(BaseFilter):
     def filter(self, message):
-        return " sad " in message.text.lower() or message.text.lower() == 'sad'
+        return " sad " in message.text.lower() or message.text.lower() == 'sad' or \
+                'sad ' in message.text.lower() or ' sad' in message.text.lower()
 
 
 class BuenosDias(BaseFilter):
@@ -93,12 +94,3 @@ class ReverteReact(BaseFilter):
 class Xdd(BaseFilter):
     def filter(self, message):
         return 'xd' in message.text
-
-
-
-class WhiteBranch(BaseFilter):
-    def filter(self, message):
-        text = message.text.lower()
-        text = text.encode('utf-8')
-        return '@raulwhite' in text or 'raúl' in text or \
-            'raul blanco' in text or 'raúl blanco' in text
