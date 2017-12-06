@@ -37,7 +37,8 @@ class Insulto(BaseFilter):
 
 class Thicc(BaseFilter):
     def filter(self, message):
-        return 'thicc' in message.text
+        text = message.text.lower()
+        return 'thicc' in text or 't h i c c' in text
 
 
 class AVeces(BaseFilter):
@@ -47,7 +48,9 @@ class AVeces(BaseFilter):
 
 class Gracias(BaseFilter):
     def filter(self, message):
-        return message.text == 'gracias @pytel_bot' or message.text == '@pytel_bot gracias' or message.text == 'gracias'
+        text = message.text.lower()
+        return message.text == 'gracias @pytel_bot' or message.text == '@pytel_bot gracias' or \
+               message.text == 'gracias' or "gracias" in text
 
 
 class SadReacts(BaseFilter):
@@ -89,4 +92,14 @@ class RevertedReact(BaseFilter):
 
 class Xdd(BaseFilter):
     def filter(self, message):
-        return message.text == 'xd'
+        return 'xd' in message.text
+
+
+
+class WhiteBranch(BaseFilter):
+    def filter(self, message):
+        text = message.text.lower()
+        text = text.encode('utf-8')
+        return '@raulwhite' in text or 'raúl' in text or \
+            'raul blanco' in text or 'raúl blanco' in text
+
