@@ -39,26 +39,29 @@ class BotActions(object):
         """Initialize the bot"""
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         bot.send_message(text='Hola, mundo!', chat_id=chat_id)
+
 
     @staticmethod
     def hola(bot, update):
         """Reply with a cordial salute"""
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        bot.send_message(chat_id=chat_id, text='Hola, {}!'.format(update.message.from_user.first_name))
+
+    @staticmethod
+    def common_process(chat_id, user_id):
         BotActions.add_user(user_id, chat_id)
         BotActions.incrementa_mensajes(user_id, chat_id)
-        bot.send_message(chat_id=chat_id, text='Hola, {}!'.format(update.message.from_user.first_name))
 
     @staticmethod
     def macho(bot, update):
         """Reply if you are altered"""
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         bot.send_audio(chat_id=chat_id, audio=open('/home/pi/Documentos/pytel_stuff/macho.mp3', 'rb'))
 
     @staticmethod
@@ -95,8 +98,7 @@ class BotActions(object):
         # WORKING
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         bot.send_message(chat_id=chat_id, text='`' + str(update.message.from_user.id) +
                                                '`', reply_to_message_id=update.message.message_id,
                          parse_mode='Markdown')
@@ -106,8 +108,7 @@ class BotActions(object):
         # WORKING
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         bot.send_message(chat_id=chat_id, text='`' + str(chat_id) + '`',
                          reply_to_message_id=update.message.message_id, parse_mode='Markdown')
 
@@ -115,8 +116,7 @@ class BotActions(object):
     def help(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         help_text = BotActions.help_commands()
         bot.send_message(chat_id=user_id, text=help_text)
 
@@ -151,16 +151,23 @@ class BotActions(object):
         help_text += u"/info     Te manda toda la información acerca de tu cuenta\n"
         help_text += u"/twitter_acc  Te manda por privado la cuenta que tienes puesta de twitter actualmente\n"
         help_text += u"/comunist     Te manda el mejor meme comunista actual\n"
-        help_text += u"/current_status      Te manda la información actual de la raspberry pi"
-        help_text += u"Además interactúa con: :), :(, botijos...\n"
+        help_text += u"/current_status      Te manda la información actual de la raspberry pi\n"
+        help_text += u"/thicc     Te manda un thicc human\n"
+        help_text += u"/cocaine   Manda un video sobre porqué no deberías tomar cocaína\n"
+        help_text += u"/reverted  Te manda una imagen invertida\n"
+        help_text += u"/barman    Le pides un Dyc al barman\n"
+        help_text += u"/gustar    Buen copy paste twittero\n"
+        help_text += u"/dato      Te manda datos curiosos para ampliar tu cultura general\n"
+        help_text += u"/insults   Te insulta en un lenguaje arcaico\n"
+        help_text += u"/vallecas  Te dice si duele hacerse un tatuaje en la zona de vallecas\n"
+        help_text += u"Además interactúa con: :), :(, botijos, xd, sad, etc...\n"
         return help_text
 
     @staticmethod
     def tweet(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         list_id = BotActions.read_ids_from_file("ids.txt")
         if update.message.from_user.id in list_id:
             to_twitter = TweetFromTelegram()
@@ -211,8 +218,7 @@ class BotActions(object):
     def search(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         # si en el grupo hay más de un bot hay que arreglar la mención de /search@PyTel_bot
         text = update.message.text[8:]
         text = text.encode('utf-8')
@@ -226,8 +232,7 @@ class BotActions(object):
     def sad_reacts(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         video = open("/home/pi/Documentos/pytel_stuff/sad_reactions_only.mp4", 'rb')
         bot.send_video(chat_id=chat_id,
                        reply_to_message_id=update.message.message_id,
@@ -239,8 +244,7 @@ class BotActions(object):
         current_time = update.message.date
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         if chat_id != user_id:
             if current_time.hour == 0 and (0 <= current_time.minute < 15):
                 if update.message.chat.id not in BotActions.dict_pole:
@@ -268,8 +272,7 @@ class BotActions(object):
     def happy(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         bot.send_message(chat_id=update.message.chat.id,
                          text="cállate ya macho",
                          reply_to_message_id=update.message.message_id)
@@ -278,8 +281,7 @@ class BotActions(object):
     def not_happy(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         bot.send_message(chat_id=update.message.chat.id,
                          text="alegra esa cara de comepollas que tienes",
                          reply_to_message_id=update.message.message_id)
@@ -288,8 +290,7 @@ class BotActions(object):
     def botijo_react(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         bot.send_message(chat_id=update.message.chat.id,
                          text="like! ;)",
                          reply_to_message_id=update.message.message_id)
@@ -298,8 +299,7 @@ class BotActions(object):
     def hora_porro(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         current_time = update.message.date
         if chat_id != user_id:
             if current_time.hour == 4 and current_time.minute == 20:
@@ -329,8 +329,7 @@ class BotActions(object):
         current_time = update.message.date
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         if chat_id != user_id:
             if current_time.hour == 3 and current_time.minute == 14:
                 if update.message.chat.id not in BotActions.dict_pi:
@@ -358,8 +357,7 @@ class BotActions(object):
     def comunist_meme(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         video = open("/home/pi/Documentos/pytel_stuff/comunist_meme.mp4", 'rb')
         bot.send_video(chat_id=chat_id,
                        reply_to_message_id=update.message.message_id,
@@ -393,8 +391,7 @@ class BotActions(object):
     def mensajes_callback(bot, update):
         user_id = update.message.from_user.id
         chat_id = update.message.chat.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
 
     @staticmethod
     def incrementa_mensajes(user_id, chat_id):
@@ -441,8 +438,7 @@ class BotActions(object):
     def add_twitter_account(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         if chat_id != user_id:
             text = u"Este comando solo se puede usar en un chat privado"
         else:
@@ -524,8 +520,7 @@ class BotActions(object):
         user_id = update.message.from_user.id
         chat_id = update.message.chat.id
         if chat_id != user_id:
-            BotActions.add_user(user_id, chat_id)
-            BotActions.incrementa_mensajes(user_id, chat_id)
+            BotActions.common_process(chat_id, user_id)
             user_name = update.message.from_user.first_name + "\n"
             info_text_group = BotActions.info_text(user_id, chat_id)
             info_text_personal = BotActions.info_text_personal(user_id)
@@ -589,8 +584,7 @@ class BotActions(object):
     def send_twitter_acc(bot, update):
         chat_id = update.message.chat_id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         user = BotActions.get_user(user_id)
         twitter_account = user.twitter_user
         if not twitter_account:
@@ -603,8 +597,7 @@ class BotActions(object):
     def easy_command(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         bot.send_message(chat_id=chat_id,
                          text="que es facil",
                          reply_to_message_id=update.message.message_id)
@@ -613,8 +606,7 @@ class BotActions(object):
     def insulto_method(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         name = update.message.text[10:]
         insulto = BotActions.get_random_insult("insultos.txt")
         bot.send_message(chat_id=chat_id,
@@ -641,19 +633,18 @@ class BotActions(object):
         return list_ret
 
     @staticmethod
-    def graciasReact(bot, update):
+    def gracias_react(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
-        bot.send_message(chat_id=chat_id, text='de nada supollita', reply_to_message_id=update.message.message_id)
+        BotActions.common_process(chat_id, user_id)
+        bot.send_message(chat_id=chat_id, text='de nada supollita',
+                         reply_to_message_id=update.message.message_id)
 
     @staticmethod
     def when_te_pasa(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         bot.send_message(chat_id=chat_id,
                          text="si xD",
                          reply_to_message_id=update.message.message_id)
@@ -662,8 +653,7 @@ class BotActions(object):
     def current_status(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         bot.send_message(chat_id=chat_id,
                          text=BotActions.status_message())
 
@@ -694,21 +684,27 @@ class BotActions(object):
         return message
 
     @staticmethod
-    def thicc(bot, update):
+    def thicc_boi(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         bot.send_photo(chat_id=chat_id,
                        photo=open('/home/pi/Documentos/pytel_stuff/192.png'),
                        reply_to_message_id=update.message.message_id)
 
     @staticmethod
+    def thicc_react(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        bot.send_message(chat_id=chat_id, text='thicc boi',
+                         reply_to_message_id=update.message.message_id)
+
+    @staticmethod
     def spain(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         bot.send_photo(chat_id=chat_id,
                        photo=open('/home/pi/Documentos/pytel_stuff/spainreact.jpg'),
                        reply_to_message_id=update.message.message_id)
@@ -717,8 +713,7 @@ class BotActions(object):
     def cocaine(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         bot.send_video(chat_id=chat_id,
                        video=open('/home/pi/Documentos/pytel_stuff/cocaine.mp4'),
                        reply_to_message_id=update.message.message_id)
@@ -727,8 +722,7 @@ class BotActions(object):
     def sad(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         bot.send_message(chat_id=chat_id,
                          text="sad reacts only",
                          reply_to_message_id=update.message.message_id)
@@ -737,8 +731,7 @@ class BotActions(object):
     def reverte(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         rnd = int(round(random.random() * len(BotActions.stickers), 0)) - 1
         bot.sendSticker(chat_id=chat_id, sticker=BotActions.stickers[rnd],
                         reply_to_message_id=update.message.message_id)
@@ -747,23 +740,76 @@ class BotActions(object):
     def reverted(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         bot.send_photo(chat_id=chat_id, photo=open('/home/pi/Documentos/pytel_stuff/reverted.png'))
 
     @staticmethod
     def xd_react(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
-        BotActions.incrementa_mensajes(user_id, chat_id)
-        bot.send_message(chat_id=chat_id, text="XD lol")
+        BotActions.common_process(chat_id, user_id)
+        bot.send_message(chat_id=chat_id, text="que te jodan, macho",
+                         reply_to_message_id=update.message.message_id)
 
-    #
-    # TODO
+    @staticmethod
+    def habeces(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        bot.send_message(chat_id=chat_id, text="a veces",
+                         reply_to_message_id=update.message.message_id)
+
     # @staticmethod
-    # def habeces(bot, update):
-    #    pass
-    # @staticmethod
-    # def gracias(bot, update):
-    #    pass
+    # def calculator(bot, update):
+    #     chat_id = update.message.chat.id
+    #     user_id = update.message.from_user.id
+    #     BotActions.common_process(chat_id, user_id)
+        # TODO calculadora;
+
+    @staticmethod
+    def useless_data(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        dato = u''
+        dato += BotActions.get_random_insult("useless_data.txt")
+        bot.send_message(chat_id=chat_id, text=dato, reply_to_message_id=update.message.message_id)
+
+
+    @staticmethod
+    def barman(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        bot.send_message(chat_id=chat_id, text='`Póngame un Dyc`', parse_mode='Markdown',
+                         reply_to_message_id=update.message.message_id)
+
+    @staticmethod
+    def gustar(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        bot.send_message(chat_id=chat_id, text='`ＳＩ　ＥＬ　ＴＲＵＣＯ　ＰＡＲＡ'
+                                               '　ＧＵＳＴＡＲＬＥ　Ａ　ＡＬＧＵＩＥＮ　ＥＳ　ＰＡＳＡＲ　ＤＥ'
+                                               '　ＥＳＡ　ＰＥＲＳＯＮＡ　ＣＲＥＯ　ＱＵＥ　ＴＯＤＯ　ＥＬ　ＭＵＮＤＯ'
+                                               '　ＥＳＴＡ　ＥＮＡＭＯＲＡＤＯ　ＤＥ　ＭＩ`', parse_mode='Markdown',
+                         reply_to_message_id=update.message.message_id)
+
+    @staticmethod
+    def vallecas(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        cad = '`ME \nVIENE \nUN \nTIO \nQUE\nSE\nQUIERE\nHACER\nUN\nTATUAJE\nY\nME ' \
+              '\nPREGUNTA\nSI\nDUELE\nY\nLE\nDIGO:\nDEPENDE\nDE\nLA\nZONA\nY\nME\nDICE:\nDE\nLA\nZONA\nDE\nVALLECAS`'
+        bot.send_message(chat_id=chat_id, text=cad, parse_mode='Markdown',
+                         reply_to_message_id=update.message.message_id)
+
+    @staticmethod
+    def insults(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        insult = u''
+        insult += BotActions.get_random_insult("insults.txt")
+        bot.send_message(chat_id=chat_id, text=u'Ets un ' + insult)
