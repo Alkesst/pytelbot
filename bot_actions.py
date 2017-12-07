@@ -659,28 +659,13 @@ class BotActions(object):
 
     @staticmethod
     def status_message():
-        uptime_command = subprocess.check_output(["uptime"])
-        tokenizer = nltk.tokenize.RegexpTokenizer(r'[0-9:]+')
-        tokenized_uptime = tokenizer.tokenize(uptime_command)
-        actual_uptime = tokenized_uptime[1]
-
-        current_temp = subprocess.check_output(["/opt/vc/bin/vcgencmd", "measure_temp"])
-        current_mem = subprocess.check_output(["free", "-h"])
-        current_mem = current_mem.splitlines()
-        tokenizer = nltk.tokenize.RegexpTokenizer(r'[M0-9]+')
-        tokenized_mem = tokenizer.tokenize(current_mem[1])
-        cont = 0
-        used_mem = None
-        free_mem = None
-        for items in tokenized_mem:
-            if cont == 2:
-                used_mem = items
-            elif cont == 3:
-                free_mem = items
-            cont += 1
-        message = u"Current RPI 3 status: \n" + "Used Memory: " + str(used_mem)
-        message += u"\nFree Memory: " + str(free_mem) + "\n" + str(current_temp) + "\n"
-        message += u"Uptime: " + str(actual_uptime) + "\n"
+        """ Reprogramado por @melchor629 """
+        current_uptime = subprocess.check_output(["uptime", "-p"])[3:]
+        current_temp = subprocess.check_output(["/opt/vc/bin/vcgencmd", "measure_temp"])[5:]
+        free_output = subprocess.check_output(['free']).splitlines()
+        free_output = dict(zip(free_output[0].split(), free_output[1].split()[1:]))
+        message = u"Current RPI 3 status:\nUsed Memory: {}KB + {}KB\nFree Memory: {}KB\nTotal Memory: {}KB\nTemperature: {}Uptime: {}"
+        message = message.format(free_output['used'], free_output['buff/cache'], free_output['free'], free_output['total'], current_temp, current_uptime)
         return message
 
     @staticmethod
