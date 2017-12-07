@@ -10,7 +10,6 @@
 import subprocess
 import random
 import os
-import nltk
 import logging
 from datetime import datetime
 from os import listdir
@@ -28,7 +27,8 @@ class BotActions(object):
     dict_pi = {}
     data = None
     stickers = ['CAADBAADJQADuE-EEuya2udZTudYAg', 'CAADBAADLAADuE - EElvaPQABlkaHMAI', 'CAADBAADQAADuE-EEs7AEGXnB5sOAg']
-    logging.basicConfig(filename="botActions.log", level=logging.DEBUG)
+    logging.basicConfig(format='%(name)s - %(asctime)s - %(levelname)s - %(message)s',
+                        filename="botActions.log", level=logging.DEBUG)
 
     # CAADBAADJQADuE-EEuya2udZTudYAg reverted
     # CAADBAADLAADuE - EElvaPQABlkaHMAI
@@ -769,7 +769,6 @@ class BotActions(object):
         dato = u''
         dato += BotActions.get_random_insult("useless_data.txt")
         bot.send_message(chat_id=chat_id, text=dato, reply_to_message_id=update.message.message_id)
-
 
     @staticmethod
     def barman(bot, update):
