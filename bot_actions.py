@@ -151,10 +151,10 @@ class BotActions(object):
         help_text += u"/info     Te manda toda la información acerca de tu cuenta\n"
         help_text += u"/twitter_acc  Te manda por privado la cuenta que tienes puesta de twitter actualmente\n"
         help_text += u"/comunist     Te manda el mejor meme comunista actual\n"
-        help_text += u"/current_status      Te manda la información actual de la raspberry pi\n"
+        help_text += u"/current_status [unidad]     Te manda la información actual de la raspberry pi,"
+        help_text += u"/current_status MB, lo manda en megaBytes, /current_status B lo manda en bytes.\n"
         help_text += u"/thicc     Te manda un thicc human\n"
         help_text += u"/cocaine   Manda un video sobre porqué no deberías tomar cocaína\n"
-        help_text += u"/reverted  Te manda una imagen invertida\n"
         help_text += u"/barman    Le pides un Dyc al barman\n"
         help_text += u"/gustar    Buen copy paste twittero\n"
         help_text += u"/dato      Te manda datos curiosos para ampliar tu cultura general\n"
@@ -650,22 +650,32 @@ class BotActions(object):
                          reply_to_message_id=update.message.message_id)
 
     @staticmethod
-    def current_status(bot, update):
+    def current_status(bot, update, args):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
         bot.send_message(chat_id=chat_id,
-                         text=BotActions.status_message())
+                         text=BotActions.status_message(args))
 
     @staticmethod
-    def status_message():
+    def status_message(args):
         """ Reprogramado por @melchor629 """
         current_uptime = subprocess.check_output(["uptime", "-p"])[3:]
         current_temp = subprocess.check_output(["/opt/vc/bin/vcgencmd", "measure_temp"])[5:]
-        free_output = subprocess.check_output(['free']).splitlines()
+        free_output = None
+        memory_units = None
+        if len(args) > 0 and (args[0].lower() == 'mb' or args[0].lower() == 'm'):
+            free_output = subprocess.check_output(['free', '-m']).splitlines()
+            memory_units = 'MB'
+        elif len(args) > 0 and args[0].lower() == 'b':
+            free_output = subprocess.check_output(['free', '-b']).splitlines()
+            memory_units = 'B'
+        else:
+            free_output = subprocess.check_output(['free']).splitlines()
+            memory_units = 'KB'
         free_output = dict(zip(free_output[0].split(), free_output[1].split()[1:]))
-        message = u"Current RPI 3 status:\nUsed Memory: {}KB + {}KB\nFree Memory: {}KB\nTotal Memory: {}KB\nTemperature: {}Uptime: {}"
-        message = message.format(free_output['used'], free_output['buff/cache'], free_output['free'], free_output['total'], current_temp, current_uptime)
+        message = u"Current RPI 3 status:\nUsed Memory: {}{u} + {}{u}\nFree Memory: {}{u}\nTotal Memory: {}{u}\nTemperature: {}Uptime: {}"
+        message = message.format(free_output['used'], free_output['buff/cache'], free_output['free'], free_output['total'], current_temp, current_uptime, u=memory_units)
         return message
 
     @staticmethod

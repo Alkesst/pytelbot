@@ -46,7 +46,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('set_tw_acc', BotActions.add_twitter_account))
     updater.dispatcher.add_handler(CommandHandler('info', BotActions.info_user_group))
     updater.dispatcher.add_handler(CommandHandler('twitter_acc', BotActions.send_twitter_acc))
-    updater.dispatcher.add_handler(CommandHandler('current_status', BotActions.current_status))
+    updater.dispatcher.add_handler(CommandHandler('current_status', BotActions.current_status, pass_args=True))
     updater.dispatcher.add_handler(CommandHandler('thicc', BotActions.thicc_boi))
     updater.dispatcher.add_handler(CommandHandler('cocaine', BotActions.cocaine))
     # updater.dispatcher.add_handler(CommandHandler('reverted', BotActions.reverted()))
