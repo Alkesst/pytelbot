@@ -1,1 +1,37 @@
 ¿Sabías que en Palma de Mallorca hay exactamente 80,02959285 veces más población que en Benamejí?
+En fotografía y cine no hay un consenso sobre dónde acaba el plano medio y empieza el primer plano. Cada director los llama como quiere
+Tiritas, al igual que Rimmel, es una marca. El término real es "apósito"
+Estoy escrito en Python 2, aunque sea una mierda y mi creador prefiera python 3
+Mi novia está de erasmus, y la basura está sin sacar
+Si realizas 0.2 + 0.1 en cualquier procesador, el resultado será 0.30000000000000004 y no 0.3
+Un Autómata Finito Determinista rechaza una cadena w en un número de pasos igual a la longitud de la cadena w
+Después de salir de fiesta, quevedo siempre iba a mear a la misma esquina, hasta que los dueños se enfadaron y pusieron una cruz en esa esquina con un cartel diciendo "Donde hay cruces, no se mea." y Quevedo, a la siguiente noche, respondió con "donde se mea, no se ponen cruces."
+En Lucena se fabrican muebles
+La línea de la concepción hace frontera con Ceuta
+Haskell Curry odiaba la comida con curry
+@frostg_bot es un bot de twitter que cada 30 minutos publica un tweet acerca de como es la gente
+EA se llevó 800k downvotes en una publicación de reddit en la que defendían los micropagos
+Un montículo binario es 150 veces más rápido que una cola de prioridad, y el montículo zurdo es 2 veces más rápido que el montículo binario
+Un árbol de búsqueda binario (Binary Search Tree) es 256 veces más rápido que un conjunto ordenado enlazado (Linked Sorted Set)
+La teoría dice que los nodos enlazados son más eficientes que los arrays, sin embargo, por como se crean los nodos en memoria, en la práctica los arrays son más eficientes
+#include <iostream> int main(){ std::cout<<"Esto es un dato\n"; return 0;}
+#include <stdio.h> int main(){ printf("Esto es un dato\n"); return 0;}
+print("Esto es un dato")
+Algunos de estos datos inútiles han sido aportados por la comunidad fiel a este bot.
+Mi código es público y se encuentra en el GitHub de @alkesst
+Estoy hosteado en una Raspberry Pi 3 model B y corro sobre un Hubo un tomate (Ubuntu mate)
+Antequera está a 5000 metros de altura respecto al nivel del mar.
+El post más popular de Reddit solo tiene 349k upvotes, y el más odiado, antes del post de EA defendiendo los micropagos, era un post con 24k downvotes
+Tengo 633432025 razones para ligar contigo
+No intentéis mandar ningún mensaje a 633432025 porque igual es un número de teléfono aleatorio (se me ocurio jeje).
+@Groctel suele revisar los datos, y avisa al creador de sus errores
+Airbourne dio un concierto en Málaga el pasado 6 de octubre de 2017
+Al día 9 de diciembre de 2017 sonó Runnin' Wild de Airbourne en el local Lebistrot de antequera
+Le pedí 15€ a mi madre para ir al concierto de Estopa. Al final fueron para porros
+GitHub, a diferencia de otros gestores de versiones, crea instancias cada vez que se modifican los ficheros
+En el despacho de ITERA no se folla
+Según el lema de Parikh, un LCL siempre cumple la CP
+Gonzalo lo goza explicando el machihembrado para demostrar que el producto cartesiano de dos conjuntos infinitos numerables es infinito numerable
+Hay un grupo de metal extremo llamado Anaal Nathrakh. El nombre de la banda proviene de un hechizo del mago Merlín, el cual fue tomado de la película de John Boorman, Excalibur (1981). Según Michael Everson, en su página web menciona que, Anaal Nathrakh significa "Aliento de Serpiente".
+una vez que entras en VIM no sabes como salir
+Gonzalo acostumbra a segregar muchas toxinas a lo largo de sus clases.
