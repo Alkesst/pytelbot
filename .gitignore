@@ -104,7 +104,7 @@ ENV/
 meme_template_search.png
 .DS_Store
 ids.txt
-tokens.json
 *.db
 .idea/
 data.db
+*.json

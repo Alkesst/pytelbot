@@ -2,19 +2,17 @@
 ###### A Telegram bot.
 
 ## INTRODUCTION:   
-Made with Python-Telegram-Bot API (https://python-telegram-bot.org/) and Python 2.7
-All methods and all the replies from the bot are in spanish.
-
-
 
 This associate a COMMAND (/COMMAND in telegram chat) with a method (default_method). It is not necessary to
 call the method, it just needs to be referenced.
 ```python
-    updater.dispatcher.add_handler(CommandHandler('COMMAND', default_method)
+from telegram.ext import CommandHandler, Updater
+uptader = Updater('token')    
+updater.dispatcher.add_handler(CommandHandler('COMMAND', default_method)
 ```
 
 
-For example, the command /start, is associated with BotActions.start() method.
+In example, the command /start, is associated with BotActions.start() method.
 ```python
     updater.dispatcher.add_handler(CommandHandler('start'), BotActions.start)
 ```
@@ -38,13 +36,19 @@ The parse_mode='Markdown' is to use a style in the message, for example, when us
     bot.send_message(chat_id=chat_id, text='`' + str(chat_id) + '`', reply_to_message_id=update.message.message_id, parse_mode='Markdown')
 ```
 
-The module telegram_tweet.py connects the telegram bot with @PyTwe_bot (http://www.github.com/alkesst/pytwe-bot).
+The module telegram_tweet.py connects the telegram bot with[@Pytwe_bot](http://www.github.com/alkesst/pytwe-bot).
 The method new_tweet post a tweet and returns the link of that tweet.
 
 All the methods' arguments are bot and update. With bot you can do actions like, sending messages, photos, etc...
 With update you can get information of the message like the chat object, user object, etc...
 
+## Dependencies
+- Python 3.x
+- Tweepy
+- Python-Telegram-Bot
 
+### JSON:
+This bot uses json for getting the tokens. Also, if an user calls the /tweet command, it will internally check if the user id is in the list of ids.
 
 ## AUTOMATE THE BOT:
 
@@ -70,7 +74,7 @@ First of all we need to create a script that pulls the changes from git, and the
     echo
     echo "Pull done..."
     echo "Initializating PyTel-Bot..."
-    python main.py
+    python3 main.py
 
 ```
 
@@ -112,7 +116,7 @@ When you have your .service file, you need to move the file into /etc/systemd/sy
     sudo systemctl enable pytwe.service
 ```
 
-Spoiler: you will need to move first your service where you want and then use sudo mv pytwe_service /etc/systemd/system
+Spoiler: you will need to move first your service where you want and then use *__sudo mv pytwe_service /etc/systemd/system__*
 
 Don't forget this:
 ```sh

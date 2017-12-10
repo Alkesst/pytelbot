@@ -62,7 +62,7 @@ class BotActions(object):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        bot.send_audio(chat_id=chat_id, audio=open('/home/pi/Documentos/pytel_stuff/macho.mp3', 'rb'))
+        bot.send_audio(chat_id=chat_id, audio=open('../pytel_stuff/macho.mp3', 'rb'))
 
     @staticmethod
     def send_memes(bot, update):
@@ -72,7 +72,7 @@ class BotActions(object):
         user_id = update.message.from_user.id
         BotActions.add_user(user_id, chat_id)
         BotActions.incrementa_nudes(user_id, chat_id)
-        file_name = BotActions.random_file_name('/home/pi/Documentos/pytel_stuff/Memes')
+        file_name = BotActions.random_file_name('../pytel_stuff/Memes')
         bot.send_photo(chat_id=chat_id, photo=open(file_name, 'rb'))
 
     @staticmethod
@@ -128,7 +128,7 @@ class BotActions(object):
         user_id = update.message.from_user.id
         BotActions.add_user(user_id, chat_id)
         BotActions.incrementa_animales(user_id, chat_id)
-        file_name = BotActions.random_file_name('/home/pi/Documentos/pytel_stuff/Animals')
+        file_name = BotActions.random_file_name('../pytel_stuff/Animals')
         bot.send_photo(chat_id=chat_id, photo=open(file_name, 'rb'))
 
     @staticmethod
@@ -174,15 +174,10 @@ class BotActions(object):
             text_to_tweet = update.message.text[7:]
             text_to_tweet = text_to_tweet
             link = to_twitter.new_tweet(text_to_tweet)
-            if link == "error":
-                bot.send_message(chat_id=update.message.chat.id,
-                                 text="Intenta no poner carácteres especiales :)",
-                                 reply_to_message_id=update.message.message_id)
-            else:
-                mensaje = "Ya he publicado tu tweet: " + link
-                BotActions.tweet_to_log(link, update.message.from_user.first_name)
-                bot.send_message(chat_id=update.message.chat.id, text=mensaje,
-                                 reply_to_message_id=update.message.message_id)
+            mensaje = "Ya he publicado tu tweet: " + link
+            BotActions.tweet_to_log(link, update.message.from_user.first_name)
+            bot.send_message(chat_id=update.message.chat.id, text=mensaje,
+                             reply_to_message_id=update.message.message_id)
         else:
             bot.send_message(chat_id=update.message.chat.id,
                              text="Creo que no se te permite enviar tweets... :s",
@@ -233,7 +228,7 @@ class BotActions(object):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        video = open("/home/pi/Documentos/pytel_stuff/sad_reactions_only.mp4", 'rb')
+        video = open("../pytel_stuff/sad_reactions_only.mp4", 'rb')
         bot.send_video(chat_id=chat_id,
                        reply_to_message_id=update.message.message_id,
                        video=video, caption="sad reacts only")
@@ -385,7 +380,7 @@ class BotActions(object):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        video = open("/home/pi/Documentos/pytel_stuff/comunist_meme.mp4", 'rb')
+        video = open("../pytel_stuff/comunist_meme.mp4", 'rb')
         bot.send_video(chat_id=chat_id,
                        reply_to_message_id=update.message.message_id,
                        video=video, caption="communism will prevail!")
@@ -394,8 +389,8 @@ class BotActions(object):
     def add_user(user_id, chat_id):
         # WORKING
         """Add a new user into the Data Base. It also creates the communication between this class and the Data Base"""
-        if BotActions.data is None:  # /home/pi/Documentos/pytel_stuff/
-            BotActions.data = Almacenamiento("data.db")
+        if BotActions.data is None:  #
+            BotActions.data = Almacenamiento("../pytel_stuff/data.db")
         user = User(user_id)
         if BotActions.data.obtener_usuario(user) is None:
             BotActions.data.insertar_usuario(user)
@@ -703,7 +698,7 @@ class BotActions(object):
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
         bot.send_photo(chat_id=chat_id,
-                       photo=open('/home/pi/Documentos/pytel_stuff/192.png'),
+                       photo=open('../pytel_stuff/192.png'),
                        reply_to_message_id=update.message.message_id)
 
     @staticmethod
@@ -720,7 +715,7 @@ class BotActions(object):
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
         bot.send_photo(chat_id=chat_id,
-                       photo=open('/home/pi/Documentos/pytel_stuff/spainreact.jpg'),
+                       photo=open('../pytel_stuff/spainreact.jpg'),
                        reply_to_message_id=update.message.message_id)
 
     @staticmethod
@@ -729,7 +724,7 @@ class BotActions(object):
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
         bot.send_video(chat_id=chat_id,
-                       video=open('/home/pi/Documentos/pytel_stuff/cocaine.mp4'),
+                       video=open('../pytel_stuff/cocaine.mp4'),
                        reply_to_message_id=update.message.message_id)
 
     @staticmethod
@@ -755,7 +750,7 @@ class BotActions(object):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        bot.send_photo(chat_id=chat_id, photo=open('/home/pi/Documentos/pytel_stuff/reverted.png'))
+        bot.send_photo(chat_id=chat_id, photo=open('../pytel_stuff/reverted.png'))
 
     @staticmethod
     def xd_react(bot, update):
