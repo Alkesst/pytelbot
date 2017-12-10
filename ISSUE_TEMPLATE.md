@@ -16,3 +16,7 @@
     In example:
     
         Command used approximately at 19:26h (24h format) on 9th of December.
+
+
+
+Before opening a new issue be sure that the bot is running using /ping.
