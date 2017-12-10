@@ -198,7 +198,7 @@ class BotActions(object):
 
     @staticmethod
     def read_ids_from_file(file_name):
-        opened_file = open(file_name, 'r')
+        opened_file = open(file_name, 'rb')
         ids = []
         has_next = True
         while has_next:
@@ -698,7 +698,7 @@ class BotActions(object):
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
         bot.send_photo(chat_id=chat_id,
-                       photo=open('../pytel_stuff/192.png'),
+                       photo=open('../pytel_stuff/192.png', 'rb'),
                        reply_to_message_id=update.message.message_id)
 
     @staticmethod
@@ -715,7 +715,7 @@ class BotActions(object):
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
         bot.send_photo(chat_id=chat_id,
-                       photo=open('../pytel_stuff/spainreact.jpg'),
+                       photo=open('../pytel_stuff/spainreact.jpg', 'rb'),
                        reply_to_message_id=update.message.message_id)
 
     @staticmethod
@@ -724,7 +724,7 @@ class BotActions(object):
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
         bot.send_video(chat_id=chat_id,
-                       video=open('../pytel_stuff/cocaine.mp4'),
+                       video=open('../pytel_stuff/cocaine.mp4', 'rb'),
                        reply_to_message_id=update.message.message_id)
 
     @staticmethod
@@ -750,7 +750,7 @@ class BotActions(object):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        bot.send_photo(chat_id=chat_id, photo=open('../pytel_stuff/reverted.png'))
+        bot.send_photo(chat_id=chat_id, photo=open('../pytel_stuff/reverted.png', 'rb'))
 
     @staticmethod
     def xd_react(bot, update):
