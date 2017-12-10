@@ -16,4 +16,4 @@ echo "Pull done..."
 echo "Initializating PyTel-Bot..."
 echo
 echo "Bot running"
-python main.py
+python3 main.py
