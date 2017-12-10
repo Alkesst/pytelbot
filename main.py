@@ -4,8 +4,8 @@
 # pylint: disable=C1001
 import json
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-from bot_actions import BotActions
-from message_filter import *
+from pytel_bot.bot_actions import BotActions
+from pytel_bot.message_filter import *
 
 
 def main():

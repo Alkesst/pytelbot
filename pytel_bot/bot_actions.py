@@ -11,13 +11,13 @@ import subprocess
 import random
 import os
 import logging
-from datetime import datetime
 from os import listdir
 from time import gmtime
 from os.path import isfile, join
-from telegram_tweet import TweetFromTelegram
-from special_actions import SpecialActions
-from almacenamiento import Almacenamiento, User, UserGroup
+from threading import Timer
+from pytel_bot.telegram_tweet import TweetFromTelegram
+from pytel_bot.special_actions import SpecialActions
+from pytel_bot.almacenamiento import Almacenamiento, User, UserGroup
 
 
 class BotActions(object):
@@ -248,6 +248,10 @@ class BotActions(object):
         if chat_id != user_id:
             if current_time.hour == 0 and (0 <= current_time.minute < 15):
                 if update.message.chat.id not in BotActions.dict_pole:
+                    if not BotActions.dict_pole:
+                        #Cuando pasen las 00:15:10, se borrará el diccionario
+                        remaining_time = (15 - current_time.minute) * 60 + 60 - current_time.second + 10
+                        Timer(remaining_time, BotActions.delete_pole).start()
                     BotActions.dict_pole[update.message.chat.id] = update.message.from_user.id
                     BotActions.incrementa_pole(user_id, chat_id)
                     pole_text = u"Muy bien crack has hecho la pole"
@@ -267,6 +271,21 @@ class BotActions(object):
         bot.send_message(chat_id=update.message.chat.id,
                          reply_to_message_id=update.message.message_id,
                          text=pole_text)
+
+    @staticmethod
+    def delete_pole():
+        BotActions.dict_pole = {}
+        logging.info("El diccionario de poles se ha reiniciado")
+
+    @staticmethod
+    def delete_pi():
+        BotActions.dict_pi = {}
+        logging.info("El diccionario de poles se ha reiniciado")
+
+    @staticmethod
+    def delete_porro():
+        BotActions.dict_porro = {}
+        logging.info("El diccionario de poles se ha reiniciado")
 
     @staticmethod
     def happy(bot, update):
@@ -304,6 +323,10 @@ class BotActions(object):
         if chat_id != user_id:
             if current_time.hour == 4 and current_time.minute == 20:
                 if update.message.chat.id not in BotActions.dict_porro:
+                    if not BotActions.dict_porro:
+                        #Cuando pasen las 04:21:10 se borrará el diccionario
+                        remaining_time = 60 - current_time.second + 10
+                        Timer(remaining_time, BotActions.delete_porro).start()
                     BotActions.dict_porro[update.message.chat.id] = update.message.from_user.id
                     BotActions.incrementa_porro(user_id, chat_id)
                     porro_text = u"Vaya fiera, te has llevado la hora porro bro"
@@ -333,6 +356,10 @@ class BotActions(object):
         if chat_id != user_id:
             if current_time.hour == 3 and current_time.minute == 14:
                 if update.message.chat.id not in BotActions.dict_pi:
+                    if not BotActions.dict_pi:
+                        #Cuando pasen las 03:15:10 se borrará el diccionario
+                        remaining_time = 60 - current_time.second + 10
+                        Timer(remaining_time, BotActions.delete_pi).start()
                     BotActions.dict_pi[update.message.chat.id] = update.message.from_user.id
                     BotActions.incrementa_pi(user_id, chat_id)
                     pi_text = u"Te acabas de llevar la horacio pi :O"
@@ -376,19 +403,9 @@ class BotActions(object):
             user = UserGroup(user_id, chat_id)
             if BotActions.data.obtener_usuario_del_grupo(user) is None:
                 BotActions.data.insertar_usuario_del_grupo(user)
-        current_time = datetime.now()
-        if not BotActions.dict_pole and ((current_time.hour == 0 and current_time.minute >= 15)
-                                         or current_time.hour > 0):
-            BotActions.dict_pole = {}
-        if not BotActions.dict_pi and ((current_time.hour == 3 and current_time.minute >= 14)
-                                       or current_time.hour > 3):
-            BotActions.dict_pi = {}
-        if not BotActions.dict_porro and ((current_time.hour == 4 and current_time.minute >= 20)
-                                          or current_time.hour > 4):
-            BotActions.dict_porro = {}
 
     @staticmethod
-    def mensajes_callback(bot, update):
+    def mensajes_callback(_, update):
         user_id = update.message.from_user.id
         chat_id = update.message.chat.id
         BotActions.common_process(chat_id, user_id)
