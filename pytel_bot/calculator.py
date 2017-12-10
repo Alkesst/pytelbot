@@ -6,7 +6,7 @@ import logging
 
 class Calculator():
     """Main behaviour"""
-    def __init__(self,input_str):
+    def __init__(self,input_str: str):
         self.logging = logging.basicConfig(filename='caluclator.log', level=logging.INFO)
         self.input = input_str
         self.result = 'undefined'

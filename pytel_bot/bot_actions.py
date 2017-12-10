@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# made with python 2
+# made with python 3
 # pylint: disable=C1001
 # pylint: disable=C0111
 # pylint: disable=C0412
@@ -16,7 +16,7 @@ from time import gmtime
 from os.path import isfile, join
 from threading import Timer
 from pytel_bot.telegram_tweet import TweetFromTelegram
-from pytel_bot.special_actions import SpecialActions
+# from pytel_bot.special_actions import SpecialActions
 from pytel_bot.almacenamiento import Almacenamiento, User, UserGroup
 
 
@@ -133,34 +133,34 @@ class BotActions(object):
 
     @staticmethod
     def help_commands():
-        help_text = u"/start     Inicializa el bot\n"
-        help_text += u"/ping     Comprueba si el bot está encendido\n"
-        help_text += u"/hola     Te saluda cordialmente\n"
-        help_text += u"/macho    Te manda un audio para que te vayas a la mierda\n"
-        help_text += u"/nudes    Te manda un meme aleatorio de un repertorio de memes\n"
-        help_text += u"/animals  Te manda un animal aleatorio de un repertorio de animalitos\n"
-        help_text += u"/id       Manda el ID del usuario que ha ejecutado el comando\n"
-        help_text += u"/id_c     Manda el ID del chat en el que se ha ejecutado el comando\n"
-        help_text += u"/search   Manda un meme con el texto que le introduzcas\n"
-        help_text += u"/sad      Manda un meme de sad reacts only\n"
-        help_text += u"/tweet    @pytwe_bot manda un tweet con el texto tras el comando, ahora con soporte de utf-8\n"
-        help_text += u"/pole     Le da la pole a aquella persona que consiga mandar el primer mensaje del día\n"
-        help_text += u"/porro    Le da la hora porro al primero en usar el comando en la hora porro ;)\n"
-        help_text += u"/pi       Le da la horacio pi al primero en usar el comando en la horacio pi :O\n"
-        help_text += u"/set_tw_acc   Agrega a la base de datos un usuario de twitter con el formato @Twitter_User\n"
-        help_text += u"/info     Te manda toda la información acerca de tu cuenta\n"
-        help_text += u"/twitter_acc  Te manda por privado la cuenta que tienes puesta de twitter actualmente\n"
-        help_text += u"/comunist     Te manda el mejor meme comunista actual\n"
-        help_text += u"/current_status [unidad]     Te manda la información actual de la raspberry pi,"
-        help_text += u"/current_status MB, lo manda en megaBytes, /current_status B lo manda en bytes.\n"
-        help_text += u"/thicc     Te manda un thicc human\n"
-        help_text += u"/cocaine   Manda un video sobre porqué no deberías tomar cocaína\n"
-        help_text += u"/barman    Le pides un Dyc al barman\n"
-        help_text += u"/gustar    Buen copy paste twittero\n"
-        help_text += u"/dato      Te manda datos curiosos para ampliar tu cultura general\n"
-        help_text += u"/insults   Te insulta en un lenguaje arcaico\n"
-        help_text += u"/vallecas  Te dice si duele hacerse un tatuaje en la zona de vallecas\n"
-        help_text += u"Además interactúa con: :), :(, botijos, xd, sad, etc...\n"
+        help_text = "/start     Inicializa el bot\n"
+        help_text += "/ping     Comprueba si el bot está encendido\n"
+        help_text += "/hola     Te saluda cordialmente\n"
+        help_text += "/macho    Te manda un audio para que te vayas a la mierda\n"
+        help_text += "/nudes    Te manda un meme aleatorio de un repertorio de memes\n"
+        help_text += "/animals  Te manda un animal aleatorio de un repertorio de animalitos\n"
+        help_text += "/id       Manda el ID del usuario que ha ejecutado el comando\n"
+        help_text += "/id_c     Manda el ID del chat en el que se ha ejecutado el comando\n"
+        help_text += "/search   Manda un meme con el texto que le introduzcas\n"
+        help_text += "/sad      Manda un meme de sad reacts only\n"
+        help_text += "/tweet    @pytwe_bot manda un tweet con el texto tras el comando, ahora con soporte de utf-8\n"
+        help_text += "/pole     Le da la pole a aquella persona que consiga mandar el primer mensaje del día\n"
+        help_text += "/porro    Le da la hora porro al primero en usar el comando en la hora porro ;)\n"
+        help_text += "/pi       Le da la horacio pi al primero en usar el comando en la horacio pi :O\n"
+        help_text += "/set_tw_acc   Agrega a la base de datos un usuario de twitter con el formato @Twitter_User\n"
+        help_text += "/info     Te manda toda la información acerca de tu cuenta\n"
+        help_text += "/twitter_acc  Te manda por privado la cuenta que tienes puesta de twitter actualmente\n"
+        help_text += "/comunist     Te manda el mejor meme comunista actual\n"
+        help_text += "/current_status [unidad]     Te manda la información actual de la raspberry pi,"
+        help_text += "/current_status MB, lo manda en megaBytes, /current_status B lo manda en bytes.\n"
+        help_text += "/thicc     Te manda un thicc human\n"
+        help_text += "/cocaine   Manda un video sobre porqué no deberías tomar cocaína\n"
+        help_text += "/barman    Le pides un Dyc al barman\n"
+        help_text += "/gustar    Buen copy paste twittero\n"
+        help_text += "/dato      Te manda datos curiosos para ampliar tu cultura general\n"
+        help_text += "/insults   Te insulta en un lenguaje arcaico\n"
+        help_text += "/vallecas  Te dice si duele hacerse un tatuaje en la zona de vallecas\n"
+        help_text += "Además interactúa con: :), :(, botijos, xd, sad, etc...\n"
         return help_text
 
     @staticmethod
@@ -172,7 +172,7 @@ class BotActions(object):
         if update.message.from_user.id in list_id:
             to_twitter = TweetFromTelegram()
             text_to_tweet = update.message.text[7:]
-            text_to_tweet = text_to_tweet.encode('utf-8')
+            text_to_tweet = text_to_tweet
             link = to_twitter.new_tweet(text_to_tweet)
             if link == "error":
                 bot.send_message(chat_id=update.message.chat.id,
@@ -221,7 +221,7 @@ class BotActions(object):
         BotActions.common_process(chat_id, user_id)
         # si en el grupo hay más de un bot hay que arreglar la mención de /search@PyTel_bot
         text = update.message.text[8:]
-        text = text.encode('utf-8')
+        text = text
         SpecialActions.create_image_search("meme_template_search.png", text)
         bot.send_photo(chat_id=chat_id,
                        photo=open("generated_meme_search.png", 'rb'),
@@ -249,25 +249,25 @@ class BotActions(object):
             if current_time.hour == 0 and (0 <= current_time.minute < 15):
                 if update.message.chat.id not in BotActions.dict_pole:
                     if not BotActions.dict_pole:
-                        #Cuando pasen las 00:15:10, se borrará el diccionario
+                        # Cuando pasen las 00:15:10, se borrará el diccionario
                         remaining_time = (15 - current_time.minute) * 60 + 60 - current_time.second + 10
                         Timer(remaining_time, BotActions.delete_pole).start()
                     BotActions.dict_pole[update.message.chat.id] = update.message.from_user.id
                     BotActions.incrementa_pole(user_id, chat_id)
-                    pole_text = u"Muy bien crack has hecho la pole"
+                    pole_text = "Muy bien crack has hecho la pole"
                     to_twitter = TweetFromTelegram()
-                    text_to_tweet = u"¡La pole se la ha llevado "
+                    text_to_tweet = "¡La pole se la ha llevado "
                     text_to_tweet += BotActions.get_twitter_acc(update.message.from_user.id)
-                    text_to_tweet += u" desde el grupo "
+                    text_to_tweet += " desde el grupo "
                     text_to_tweet += update.message.chat.title + "!"
-                    text_to_tweet = text_to_tweet.encode('utf-8')
+                    text_to_tweet = text_to_tweet
                     to_twitter.new_tweet(text_to_tweet)
                 else:
-                    pole_text = u"nice try, máquina"
+                    pole_text = "nice try, máquina"
             else:
-                pole_text = u"No estás en horario de pole... :S"
+                pole_text = "No estás en horario de pole... :S"
         else:
-            pole_text = u"Esta macro solo funciona en grupos"
+            pole_text = "Esta macro solo funciona en grupos"
         bot.send_message(chat_id=update.message.chat.id,
                          reply_to_message_id=update.message.message_id,
                          text=pole_text)
@@ -324,25 +324,25 @@ class BotActions(object):
             if current_time.hour == 4 and current_time.minute == 20:
                 if update.message.chat.id not in BotActions.dict_porro:
                     if not BotActions.dict_porro:
-                        #Cuando pasen las 04:21:10 se borrará el diccionario
+                        # Cuando pasen las 04:21:10 se borrará el diccionario
                         remaining_time = 60 - current_time.second + 10
                         Timer(remaining_time, BotActions.delete_porro).start()
                     BotActions.dict_porro[update.message.chat.id] = update.message.from_user.id
                     BotActions.incrementa_porro(user_id, chat_id)
-                    porro_text = u"Vaya fiera, te has llevado la hora porro bro"
+                    porro_text = "Vaya fiera, te has llevado la hora porro bro"
                     to_twitter = TweetFromTelegram()
-                    text_to_tweet = u"¡La hora porro se la lleva "
+                    text_to_tweet = "¡La hora porro se la lleva "
                     text_to_tweet += BotActions.get_twitter_acc(update.message.from_user.id)
-                    text_to_tweet += u" desde el grupo "
+                    text_to_tweet += " desde el grupo "
                     text_to_tweet += update.message.chat.title + "!"
-                    text_to_tweet = text_to_tweet.encode('utf-8')
+                    text_to_tweet = text_to_tweet
                     to_twitter.new_tweet(text_to_tweet)
                 else:
-                    porro_text = u"Ya se han llevado la hora porro ;)"
+                    porro_text = "Ya se han llevado la hora porro ;)"
             else:
-                porro_text = u"No estás en el horario necesario... >_<"
+                porro_text = "No estás en el horario necesario... >_<"
         else:
-            porro_text = u"Esta macro solo funciona en grupos"
+            porro_text = "Esta macro solo funciona en grupos"
         bot.send_message(chat_id=update.message.chat.id,
                          reply_to_message_id=update.message.message_id,
                          text=porro_text)
@@ -357,25 +357,25 @@ class BotActions(object):
             if current_time.hour == 3 and current_time.minute == 14:
                 if update.message.chat.id not in BotActions.dict_pi:
                     if not BotActions.dict_pi:
-                        #Cuando pasen las 03:15:10 se borrará el diccionario
+                        # Cuando pasen las 03:15:10 se borrará el diccionario
                         remaining_time = 60 - current_time.second + 10
                         Timer(remaining_time, BotActions.delete_pi).start()
                     BotActions.dict_pi[update.message.chat.id] = update.message.from_user.id
                     BotActions.incrementa_pi(user_id, chat_id)
-                    pi_text = u"Te acabas de llevar la horacio pi :O"
+                    pi_text = "Te acabas de llevar la horacio pi :O"
                     to_twitter = TweetFromTelegram()
-                    text_to_tweet = u"¡La hora pi se la lleva "
+                    text_to_tweet = "¡La hora pi se la lleva "
                     text_to_tweet += BotActions.get_twitter_acc(update.message.from_user.id)
-                    text_to_tweet += u" desde el grupo "
+                    text_to_tweet += " desde el grupo "
                     text_to_tweet += update.message.chat.title + "!"
-                    text_to_tweet = text_to_tweet.encode('utf-8')
+                    text_to_tweet = text_to_tweet
                     to_twitter.new_tweet(text_to_tweet)
                 else:
-                    pi_text = u"Fuiste demasiado lento para la horacio pi :/"
+                    pi_text = "Fuiste demasiado lento para la horacio pi :/"
             else:
-                pi_text = u"Que te jodan, no estás en horario pi"
+                pi_text = "Que te jodan, no estás en horario pi"
         else:
-            pi_text = u"Esa macro solo funciona en grupos :("
+            pi_text = "Esa macro solo funciona en grupos :("
         bot.send_message(chat_id=update.message.chat.id,
                          reply_to_message_id=update.message.message_id,
                          text=pi_text)
@@ -394,8 +394,8 @@ class BotActions(object):
     def add_user(user_id, chat_id):
         # WORKING
         """Add a new user into the Data Base. It also creates the communication between this class and the Data Base"""
-        if BotActions.data is None:
-            BotActions.data = Almacenamiento("/home/pi/Documentos/pytel_stuff/data.db")
+        if BotActions.data is None:  # /home/pi/Documentos/pytel_stuff/
+            BotActions.data = Almacenamiento("data.db")
         user = User(user_id)
         if BotActions.data.obtener_usuario(user) is None:
             BotActions.data.insertar_usuario(user)
@@ -457,7 +457,7 @@ class BotActions(object):
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
         if chat_id != user_id:
-            text = u"Este comando solo se puede usar en un chat privado"
+            text = "Este comando solo se puede usar en un chat privado"
         else:
             twitter_acc = update.message.text[12:]
             if not twitter_acc:
@@ -541,11 +541,11 @@ class BotActions(object):
             user_name = update.message.from_user.first_name + "\n"
             info_text_group = BotActions.info_text(user_id, chat_id)
             info_text_personal = BotActions.info_text_personal(user_id)
-            message_text = u"Estas son las estadísticas grupales de " + user_name + info_text_group
-            message_text += u"Estas son las estadísticas personales de " + user_name + info_text_personal
-            message_text = message_text.encode('utf-8')
+            message_text = "Estas son las estadísticas grupales de " + user_name + info_text_group
+            message_text += "Estas son las estadísticas personales de " + user_name + info_text_personal
+            message_text = message_text
         else:
-            message_text = u"Este comando solo se puede usar en un grupo :("
+            message_text = "Este comando solo se puede usar en un grupo :("
         bot.send_message(chat_id=chat_id, text=message_text)
 
     @staticmethod
@@ -605,9 +605,9 @@ class BotActions(object):
         user = BotActions.get_user(user_id)
         twitter_account = user.twitter_user
         if not twitter_account:
-            text = u"No hay ninguna cuenta asociada actualmente :("
+            text = "No hay ninguna cuenta asociada actualmente :("
         else:
-            text = u"Ésta es la cuenta que tienes asociada actualmente: " + twitter_account
+            text = "Ésta es la cuenta que tienes asociada actualmente: " + twitter_account
         bot.send_message(chat_id=user_id, text=text)
 
     @staticmethod
@@ -677,22 +677,24 @@ class BotActions(object):
     @staticmethod
     def status_message(args):
         """ Reprogramado por @melchor629 """
-        current_uptime = subprocess.check_output(["uptime", "-p"])[3:]
-        current_temp = subprocess.check_output(["/opt/vc/bin/vcgencmd", "measure_temp"])[5:]
+        current_uptime = subprocess.check_output(["uptime", "-p"]).decode('utf-8')[3:]
+        current_temp = subprocess.check_output(["/opt/vc/bin/vcgencmd", "measure_temp"]).decode('utf-8')[5:]
         free_output = None
         memory_units = None
         if len(args) > 0 and (args[0].lower() == 'mb' or args[0].lower() == 'm'):
-            free_output = subprocess.check_output(['free', '-m']).splitlines()
+            free_output = subprocess.check_output(['free', '-m']).decode('utf-8').splitlines()
             memory_units = 'MB'
         elif len(args) > 0 and args[0].lower() == 'b':
-            free_output = subprocess.check_output(['free', '-b']).splitlines()
+            free_output = subprocess.check_output(['free', '-b']).decode('utf-8').splitlines()
             memory_units = 'B'
         else:
-            free_output = subprocess.check_output(['free']).splitlines()
+            free_output = subprocess.check_output(['free']).decode('utf-8').splitlines()
             memory_units = 'KB'
         free_output = dict(zip(free_output[0].split(), free_output[1].split()[1:]))
-        message = u"Current RPI 3 status:\nUsed Memory: {}{u} + {}{u}\nFree Memory: {}{u}\nTotal Memory: {}{u}\nTemperature: {}Uptime: {}"
-        message = message.format(free_output['used'], free_output['buff/cache'], free_output['free'], free_output['total'], current_temp, current_uptime, u=memory_units)
+        message = "Current RPI 3 status:\nUsed Memory: {}{u} + {}{u}\nFree Memory: {}{u}\nTotal Memory: {}{" \
+                  "u}\nTemperature: {}Uptime: {} "
+        message = message.format(free_output['used'], free_output['buff/cache'], free_output['free'],
+                                 free_output['total'], current_temp, current_uptime, u=memory_units)
         return message
 
     @staticmethod

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# made with python 2
+# made with python 3
 # pylint: disable=C1001
 import json
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
