@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# made with python 2
+# made with python 3
 # pylint: disable=C1001
 from telegram.ext import BaseFilter
 
@@ -32,7 +32,7 @@ class EasyReact(BaseFilter):
 
 class Insulto(BaseFilter):
     def filter(self, message):
-        return message.text[0:9].lower() == u'insulta a'
+        return message.text[0:9].lower() == 'insulta a'
 
 
 class Thicc(BaseFilter):
@@ -62,7 +62,6 @@ class SadReacts(BaseFilter):
 class BuenosDias(BaseFilter):
     def filter(self, message):
         text = message.text.lower()
-        text = text.encode('utf-8')
         return "buenos dias españa" in text or \
                "buenos días españa" in text or \
                "buenos días, españa" in text or \
@@ -72,7 +71,6 @@ class BuenosDias(BaseFilter):
 class RevertedReact(BaseFilter):
     def filter(self, message):
         text = message.text.lower()
-        text = text.encode('utf-8')
         return 'reverted' in text or \
             'arturo perez reverted' in text or \
             'perez reverted' in text
@@ -81,7 +79,6 @@ class RevertedReact(BaseFilter):
 class ReverteReact(BaseFilter):
     def filter(self, message):
         text = message.text.lower()
-        text = text.encode('utf-8')
         return 'arturo pérez-reverte' in text or \
             'arturo perez-reverte' in text or \
             'arturo parez reverte' in text or \

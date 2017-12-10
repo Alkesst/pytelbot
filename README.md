@@ -1,52 +1,27 @@
 # PyTel-Bot
-###### A Telegram bot.
+###### A playful telegram bot.
+## Dependencies
+- Python 3.x
+- Tweepy
+- Python-Telegram-Bot
 
-## INTRODUCTION:   
-Made with Python-Telegram-Bot API (https://python-telegram-bot.org/) and Python 2.7
-All methods and all the replies from the bot are in spanish.
+## Introduction
+A telegram bot that interacts with the users in telegram groups. It sends photos, videos 
+and stickers.
+ 
+##### _JSON's_
+Pytel works with JSON's. The tokens are placed into tokens.json, and the main file
+will read whole tokens that allows access to the telegram and twitter apis.
 
+Also, ids.json contains the telegram users ids from the users you want allow to 
+use the /tweet feature. 
 
-
-This associate a COMMAND (/COMMAND in telegram chat) with a method (default_method). It is not necessary to
-call the method, it just needs to be referenced.
-```python
-    updater.dispatcher.add_handler(CommandHandler('COMMAND', default_method)
-```
-
-
-For example, the command /start, is associated with BotActions.start() method.
-```python
-    updater.dispatcher.add_handler(CommandHandler('start'), BotActions.start)
-```
-If you use the command /start in a chat you will see something like this:
-
-```
-    Hola, mundo!
-```
-The method random_file_name gives a random file name from a specific path.
-
-For example, if the path is full of images
-it returns one random image name.
-you can add conditions to avoid getting non-image file names, i.e. the .DS_Store file in MacOS
-```python
-onlyfiles = [f for f in listdir(path) if isfile(join(path, f)) and f != '.DS_Store']
-```
-
-The parse_mode='Markdown' is to use a style in the message, for example, when using '__' for send an italic text.
-
-```python
-    bot.send_message(chat_id=chat_id, text='`' + str(chat_id) + '`', reply_to_message_id=update.message.message_id, parse_mode='Markdown')
-```
-
-The module telegram_tweet.py connects the telegram bot with @PyTwe_bot (http://www.github.com/alkesst/pytwe-bot).
-The method new_tweet post a tweet and returns the link of that tweet.
-
-All the methods' arguments are bot and update. With bot you can do actions like, sending messages, photos, etc...
-With update you can get information of the message like the chat object, user object, etc...
+Furthermore, each time a user makes use of the /tweet feature, it will be printed
+into a log with the content of the tweet, the user who posted that tweet and the date when
+it was posted.
 
 
-
-## AUTOMATE THE BOT:
+## AUTOMATE THE BOT
 
 ### Script:
 
@@ -70,7 +45,7 @@ First of all we need to create a script that pulls the changes from git, and the
     echo
     echo "Pull done..."
     echo "Initializating PyTel-Bot..."
-    python main.py
+    python3 main.py
 
 ```
 
@@ -112,7 +87,7 @@ When you have your .service file, you need to move the file into /etc/systemd/sy
     sudo systemctl enable pytwe.service
 ```
 
-Spoiler: you will need to move first your service where you want and then use sudo mv pytwe_service /etc/systemd/system
+Spoiler: you will need to move first your service where you want and then use *__sudo mv pytwe_service /etc/systemd/system__*
 
 Don't forget this:
 ```sh
