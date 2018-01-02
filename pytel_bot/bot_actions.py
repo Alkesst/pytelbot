@@ -28,7 +28,7 @@ class BotActions(object):
     data = None
     stickers = ['CAADBAADJQADuE-EEuya2udZTudYAg', 'CAADBAADLAADuE - EElvaPQABlkaHMAI', 'CAADBAADQAADuE-EEs7AEGXnB5sOAg']
     logging.basicConfig(format='%(name)s - %(asctime)s - %(levelname)s - %(message)s',
-                        filename="botActions.log", level=logging.DEBUG)
+                        filename="botActions.log", level=logging.WARNING)
 
     # CAADBAADJQADuE-EEuya2udZTudYAg reverted
     # CAADBAADLAADuE - EElvaPQABlkaHMAI
@@ -37,6 +37,7 @@ class BotActions(object):
     @staticmethod
     def start(bot, update):
         """Initialize the bot"""
+        chat_id = update.message.chat.id
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
@@ -247,23 +248,28 @@ class BotActions(object):
                         # Cuando pasen las 00:15:10, se borrará el diccionario
                         remaining_time = (15 - current_time.minute) * 60 + 60 - current_time.second + 10
                         Timer(remaining_time, BotActions.delete_pole).start()
-                    BotActions.dict_pole[update.message.chat.id] = update.message.from_user.id
+                    BotActions.dict_pole[chat_id] = user_id
                     BotActions.incrementa_pole(user_id, chat_id)
                     pole_text = "Muy bien crack has hecho la pole"
-                    to_twitter = TweetFromTelegram()
-                    text_to_tweet = "¡La pole se la ha llevado "
-                    text_to_tweet += BotActions.get_twitter_acc(update.message.from_user.id)
-                    text_to_tweet += " desde el grupo "
-                    text_to_tweet += update.message.chat.title + "!"
-                    text_to_tweet = text_to_tweet
-                    to_twitter.new_tweet(text_to_tweet)
+                    twitter_acc = BotActions.get_twitter_acc(user_id)
+                    if twitter_acc:
+                        to_twitter = TweetFromTelegram()
+                        text_to_tweet = "¡La pole se la ha llevado "
+                        text_to_tweet += twitter_acc
+                        text_to_tweet += " desde el grupo "
+                        text_to_tweet += update.message.chat.title + "!"
+                        text_to_tweet = text_to_tweet
+                        to_twitter.new_tweet(text_to_tweet)
+                    else:
+                        pole_text += "\nDesafortunadamente no tienes cuenta de twitter así que no se publicará" \
+                                     "en twitter :( /sad"
                 else:
                     pole_text = "nice try, máquina"
             else:
                 pole_text = "No estás en horario de pole... :S"
         else:
             pole_text = "Esta macro solo funciona en grupos"
-        bot.send_message(chat_id=update.message.chat.id,
+        bot.send_message(chat_id=chat_id,
                          reply_to_message_id=update.message.message_id,
                          text=pole_text)
 
@@ -322,16 +328,21 @@ class BotActions(object):
                         # Cuando pasen las 04:21:10 se borrará el diccionario
                         remaining_time = 60 - current_time.second + 10
                         Timer(remaining_time, BotActions.delete_porro).start()
-                    BotActions.dict_porro[update.message.chat.id] = update.message.from_user.id
+                    BotActions.dict_porro[chat_id] = user_id
                     BotActions.incrementa_porro(user_id, chat_id)
                     porro_text = "Vaya fiera, te has llevado la hora porro bro"
-                    to_twitter = TweetFromTelegram()
-                    text_to_tweet = "¡La hora porro se la lleva "
-                    text_to_tweet += BotActions.get_twitter_acc(update.message.from_user.id)
-                    text_to_tweet += " desde el grupo "
-                    text_to_tweet += update.message.chat.title + "!"
-                    text_to_tweet = text_to_tweet
-                    to_twitter.new_tweet(text_to_tweet)
+                    twitter_acc = BotActions.get_twitter_acc(user_id)
+                    if twitter_acc:
+                        to_twitter = TweetFromTelegram()
+                        text_to_tweet = "¡La hora porro se la lleva "
+                        text_to_tweet += twitter_acc
+                        text_to_tweet += " desde el grupo "
+                        text_to_tweet += update.message.chat.title + "!"
+                        text_to_tweet = text_to_tweet
+                        to_twitter.new_tweet(text_to_tweet)
+                    else:
+                        porro_text += "\nDesafortunadamente no tienes cuenta de twitter así que no se publicará" \
+                                     "en twitter :( /sad"
                 else:
                     porro_text = "Ya se han llevado la hora porro ;)"
             else:
@@ -355,16 +366,21 @@ class BotActions(object):
                         # Cuando pasen las 03:15:10 se borrará el diccionario
                         remaining_time = 60 - current_time.second + 10
                         Timer(remaining_time, BotActions.delete_pi).start()
-                    BotActions.dict_pi[update.message.chat.id] = update.message.from_user.id
+                    BotActions.dict_pi[chat_id] = user_id
                     BotActions.incrementa_pi(user_id, chat_id)
+                    twitter_acc = BotActions.get_twitter_acc(user_id)
                     pi_text = "Te acabas de llevar la horacio pi :O"
-                    to_twitter = TweetFromTelegram()
-                    text_to_tweet = "¡La hora pi se la lleva "
-                    text_to_tweet += BotActions.get_twitter_acc(update.message.from_user.id)
-                    text_to_tweet += " desde el grupo "
-                    text_to_tweet += update.message.chat.title + "!"
-                    text_to_tweet = text_to_tweet
-                    to_twitter.new_tweet(text_to_tweet)
+                    if twitter_acc:
+                        to_twitter = TweetFromTelegram()
+                        text_to_tweet = "¡La hora pi se la lleva "
+                        text_to_tweet += twitter_acc
+                        text_to_tweet += " desde el grupo "
+                        text_to_tweet += update.message.chat.title + "!"
+                        text_to_tweet = text_to_tweet
+                        to_twitter.new_tweet(text_to_tweet)
+                    else:
+                        pi_text += "\nDesafortunadamente no tienes cuenta de twitter así que no se publicará" \
+                                     "en twitter :( /sad"
                 else:
                     pi_text = "Fuiste demasiado lento para la horacio pi :/"
             else:
