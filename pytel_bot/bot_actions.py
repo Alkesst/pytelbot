@@ -837,3 +837,13 @@ class BotActions(object):
         insult = u''
         insult += BotActions.get_random_insult("insults.txt")
         bot.send_message(chat_id=chat_id, text=u'Ets un ' + insult)
+
+    @staticmethod
+    def bumper_cars(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        audio = open("../pytel_stuff/bumper_cars.mp3", 'rb')
+        bot.send_audio(chat_id=chat_id,
+                       reply_to_message_id=update.message.message_id,
+                       audio=audio)

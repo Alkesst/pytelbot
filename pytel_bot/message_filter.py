@@ -91,3 +91,9 @@ class ReverteReact(BaseFilter):
 class Xdd(BaseFilter):
     def filter(self, message):
         return 'xd' in message.text
+
+
+class BumperCars(BaseFilter):
+    def filter(self, message):
+        return 'coches de choque' in message.text.lower() or \
+               'coches chocones' in message.text.lower()
