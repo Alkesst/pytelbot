@@ -1,6 +1,6 @@
 # PyTel-Bot
 ###### A playful telegram bot.
-## Dependencies
+## Requirements
 - Python 3.x
 - Tweepy
 - Python-Telegram-Bot
