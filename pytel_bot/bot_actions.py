@@ -29,6 +29,7 @@ class BotActions(object):
     stickers = ['CAADBAADJQADuE-EEuya2udZTudYAg', 'CAADBAADLAADuE - EElvaPQABlkaHMAI', 'CAADBAADQAADuE-EEs7AEGXnB5sOAg']
     logging.basicConfig(format='%(name)s - %(asctime)s - %(levelname)s - %(message)s',
                         filename="botActions.log", level=logging.WARNING)
+    ids = None
 
     # CAADBAADJQADuE-EEuya2udZTudYAg reverted
     # CAADBAADLAADuE - EElvaPQABlkaHMAI
@@ -41,8 +42,7 @@ class BotActions(object):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        bot.send_message(text='Hola, mundo!', chat_id=chat_id)
-
+        bot.send_message(text='Hola, mundo!\n Para saber mi funcionamiento utiliza /help', chat_id=chat_id)
 
     @staticmethod
     def hola(bot, update):
@@ -768,13 +768,13 @@ class BotActions(object):
         BotActions.common_process(chat_id, user_id)
         bot.send_photo(chat_id=chat_id, photo=open('../pytel_stuff/reverted.png', 'rb'))
 
-    @staticmethod
-    def xd_react(bot, update):
-        chat_id = update.message.chat.id
-        user_id = update.message.from_user.id
-        BotActions.common_process(chat_id, user_id)
-        bot.send_message(chat_id=chat_id, text="que te jodan, macho",
-                         reply_to_message_id=update.message.message_id)
+    # @staticmethod
+    # def xd_react(bot, update):
+    #     chat_id = update.message.chat.id
+    #     user_id = update.message.from_user.id
+    #     BotActions.common_process(chat_id, user_id)
+    #     bot.send_message(chat_id=chat_id, text="que te jodan, macho",
+    #                      reply_to_message_id=update.message.message_id)
 
     @staticmethod
     def habeces(bot, update):
@@ -839,6 +839,19 @@ class BotActions(object):
         bot.send_message(chat_id=chat_id, text=u'Ets un ' + insult)
 
     @staticmethod
+
+    def new_data(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        if not BotActions.ids:
+            pass
+        else:
+            pass
+        #
+        # BotActions.data.insertar_useless_data()
+
+    @staticmethod
     def bumper_cars(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
@@ -847,3 +860,4 @@ class BotActions(object):
         bot.send_audio(chat_id=chat_id,
                        reply_to_message_id=update.message.message_id,
                        audio=audio)
+

@@ -68,7 +68,7 @@ def main():
     updater.dispatcher.add_handler(MessageHandler(reverted_filter, BotActions.reverted))
     updater.dispatcher.add_handler(MessageHandler(reverte_filter, BotActions.reverte))
     updater.dispatcher.add_handler(MessageHandler(sad_filter, BotActions.sad))
-    updater.dispatcher.add_handler(MessageHandler(xd, BotActions.xd_react))
+    # updater.dispatcher.add_handler(MessageHandler(xd, BotActions.xd_react))
     updater.dispatcher.add_handler(MessageHandler(habeces, BotActions.habeces))
     updater.dispatcher.add_handler(MessageHandler(bumper_cars, BotActions.bumper_cars))
     updater.dispatcher.add_handler(MessageHandler(Filters.all, BotActions.mensajes_callback))
