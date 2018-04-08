@@ -30,10 +30,15 @@ class BotActions(object):
     logging.basicConfig(format='%(name)s - %(asctime)s - %(levelname)s - %(message)s',
                         filename="botActions.log", level=logging.WARNING)
     ids = None
+    do_not_disturb = {}
 
     # CAADBAADJQADuE-EEuya2udZTudYAg reverted
     # CAADBAADLAADuE - EElvaPQABlkaHMAI
     # CAADBAADQAADuE-EEs7AEGXnB5sOAg
+
+    @staticmethod
+    def get_disturb_status_from_db():
+        pass
 
     @staticmethod
     def start(bot, update):
@@ -292,28 +297,31 @@ class BotActions(object):
     def happy(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.common_process(chat_id, user_id)
-        bot.send_message(chat_id=update.message.chat.id,
-                         text="cállate ya macho",
-                         reply_to_message_id=update.message.message_id)
+        if not BotActions.do_not_disturb[chat_id]:
+            BotActions.common_process(chat_id, user_id)
+            bot.send_message(chat_id=update.message.chat.id,
+                             text="cállate ya macho",
+                             reply_to_message_id=update.message.message_id)
 
     @staticmethod
     def not_happy(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.common_process(chat_id, user_id)
-        bot.send_message(chat_id=update.message.chat.id,
-                         text="alegra esa cara de comepollas que tienes",
-                         reply_to_message_id=update.message.message_id)
+        if not BotActions.do_not_disturb[chat_id]:
+            BotActions.common_process(chat_id, user_id)
+            bot.send_message(chat_id=update.message.chat.id,
+                             text="alegra esa cara de comepollas que tienes",
+                             reply_to_message_id=update.message.message_id)
 
     @staticmethod
     def botijo_react(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.common_process(chat_id, user_id)
-        bot.send_message(chat_id=update.message.chat.id,
-                         text="like! ;)",
-                         reply_to_message_id=update.message.message_id)
+        if not BotActions.do_not_disturb[chat_id]:
+            BotActions.common_process(chat_id, user_id)
+            bot.send_message(chat_id=update.message.chat.id,
+                             text="like! ;)",
+                             reply_to_message_id=update.message.message_id)
 
     @staticmethod
     def hora_porro(bot, update):
@@ -406,7 +414,8 @@ class BotActions(object):
         # WORKING
         """Add a new user into the Data Base. It also creates the communication between this class and the Data Base"""
         if BotActions.data is None:  #
-            BotActions.data = Almacenamiento("../pytel_stuff/data.db")
+            # BotActions.data = Almacenamiento("../pytel_stuff/data.db")
+            BotActions.data = Almacenamiento("data.db")
         user = User(user_id)
         if BotActions.data.obtener_usuario(user) is None:
             BotActions.data.insertar_usuario(user)
@@ -625,10 +634,11 @@ class BotActions(object):
     def easy_command(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.common_process(chat_id, user_id)
-        bot.send_message(chat_id=chat_id,
-                         text="que es facil",
-                         reply_to_message_id=update.message.message_id)
+        if not BotActions.do_not_disturb[chat_id]:
+            BotActions.common_process(chat_id, user_id)
+            bot.send_message(chat_id=chat_id,
+                             text="que es facil",
+                             reply_to_message_id=update.message.message_id)
 
     @staticmethod
     def insulto_method(bot, update):
@@ -664,9 +674,10 @@ class BotActions(object):
     def gracias_react(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.common_process(chat_id, user_id)
-        bot.send_message(chat_id=chat_id, text='de nada supollita',
-                         reply_to_message_id=update.message.message_id)
+        if not BotActions.do_not_disturb[chat_id]:
+            BotActions.common_process(chat_id, user_id)
+            bot.send_message(chat_id=chat_id, text='de nada supollita',
+                            reply_to_message_id=update.message.message_id)
 
     @staticmethod
     def when_te_pasa(bot, update):
@@ -721,9 +732,10 @@ class BotActions(object):
     def thicc_react(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.common_process(chat_id, user_id)
-        bot.send_message(chat_id=chat_id, text='thicc boi',
-                         reply_to_message_id=update.message.message_id)
+        if not BotActions.do_not_disturb[chat_id]:
+            BotActions.common_process(chat_id, user_id)
+            bot.send_message(chat_id=chat_id, text='thicc boi',
+                             reply_to_message_id=update.message.message_id)
 
     @staticmethod
     def spain(bot, update):
@@ -768,21 +780,23 @@ class BotActions(object):
         BotActions.common_process(chat_id, user_id)
         bot.send_photo(chat_id=chat_id, photo=open('../pytel_stuff/reverted.png', 'rb'))
 
-    # @staticmethod
-    # def xd_react(bot, update):
-    #     chat_id = update.message.chat.id
-    #     user_id = update.message.from_user.id
-    #     BotActions.common_process(chat_id, user_id)
-    #     bot.send_message(chat_id=chat_id, text="que te jodan, macho",
-    #                      reply_to_message_id=update.message.message_id)
+    @staticmethod
+    def xd_react(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        if not BotActions.do_not_disturb[chat_id]:
+            BotActions.common_process(chat_id, user_id)
+            bot.send_message(chat_id=chat_id, text="que te jodan, macho",
+                             reply_to_message_id=update.message.message_id)
 
     @staticmethod
     def habeces(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.common_process(chat_id, user_id)
-        bot.send_message(chat_id=chat_id, text="a veces",
-                         reply_to_message_id=update.message.message_id)
+        if not BotActions.do_not_disturb[chat_id]:
+            BotActions.common_process(chat_id, user_id)
+            bot.send_message(chat_id=chat_id, text="a veces",
+                             reply_to_message_id=update.message.message_id)
 
     # @staticmethod
     # def calculator(bot, update):
@@ -839,7 +853,6 @@ class BotActions(object):
         bot.send_message(chat_id=chat_id, text=u'Ets un ' + insult)
 
     @staticmethod
-
     def new_data(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
@@ -860,3 +873,21 @@ class BotActions(object):
         bot.send_voice(chat_id=chat_id,
                        reply_to_message_id=update.message.message_id,
                        voice=voice)
+
+    @staticmethod
+    def not_disturb(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        BotActions.do_not_disturb[chat_id] = True
+        bot.send_message(chat_id=chat_id, reply_to_message_id=update.message.message_id,
+                         text="El bot se ha modificado para que no moleste en este grupo!")
+
+    @staticmethod
+    def disturb(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        BotActions.do_not_disturb[chat_id] = False
+        bot.send_message(chat_id=chat_id, reply_to_message_id=update.message.message_id,
+                         text="El bot se ha modificado para que moleste en este grupo!")

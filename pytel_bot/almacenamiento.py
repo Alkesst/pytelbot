@@ -1,9 +1,42 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+# made with python 3
 
-""" Capa de persistencia para PyTel por @melchor629 """
+""" Capa de persistencia para PyTel por @melchor629 y extendida por @alkesstt """
 
 import sqlite3
+
+
+class UselessData(object):
+    """Update by @alkesst"""
+    def __init__(self, data_id=None, data_text=None):
+        super(UselessData, self).__init__()
+        if isinstance(data_id, (sqlite3.Row, tuple)):
+            self.__data_id = data_id[0]
+            self.__data_text = data_id[1]
+        else:
+            self.__data_id = data_id
+            self.__data_text = data_text
+
+    @property
+    def data_id(self) -> int:
+        return self.__data_id
+
+    @property
+    def data_text(self) -> str:
+        return self.__data_text
+
+    @data_id.setter
+    def data_id(self, id: int):
+        self.__data_id = id
+
+    @data_text.setter
+    def data_text(self, text: str):
+        self.__data_text = text
+
+    def __str__(self):
+        return 'UselessData(%d, %s)' % (self.__data_id, self.__data_text)
+
 
 class User(object):
     """User es una clase que representa un usuario de la base de datos"""
@@ -23,48 +56,36 @@ class User(object):
             self.__animal_number = animal
 
     @property
-    def userid(self):
+    def userid(self) -> int:
         return self.__userid
 
     @userid.setter
-    def userid(self, val):
-        if isinstance(val, int):
-            self.__userid = val
-        else:
-            raise AttributeError("Solo enteros")
+    def userid(self, val: int):
+        self.__userid = val
 
     @property
-    def ping_number(self):
+    def ping_number(self) -> int:
         return self.__ping_number
 
     @ping_number.setter
-    def ping_number(self, val):
-        if isinstance(val, int):
-            self.__ping_number = val
-        else:
-            raise AttributeError("Solo enteros")
+    def ping_number(self, val: int):
+        self.__ping_number = val
 
     @property
-    def nude_number(self):
+    def nude_number(self) -> int:
         return self.__nude_number
 
     @nude_number.setter
-    def nude_number(self, val):
-        if isinstance(val, int):
-            self.__nude_number = val
-        else:
-            raise AttributeError("Solo enteros")
+    def nude_number(self, val: int):
+        self.__nude_number = val
 
     @property
-    def animal_number(self):
+    def animal_number(self) -> int:
         return self.__animal_number
 
     @animal_number.setter
-    def animal_number(self, val):
-        if isinstance(val, int):
-            self.__animal_number = val
-        else:
-            raise AttributeError("Solo enteros")
+    def animal_number(self, val: int):
+        self.__animal_number = val
 
     def __str__(self):
         return 'User(%d, u"%s", %d, %d, %d)' % (self.userid,
@@ -94,70 +115,52 @@ class UserGroup(object):
             self.__pi_number = pi
 
     @property
-    def userid(self):
+    def userid(self) -> int:
         return self.__userid
 
     @userid.setter
-    def userid(self, val):
-        if isinstance(val, int):
-            self.__userid = val
-        else:
-            raise AttributeError('Solo enteros')
+    def userid(self, val: int):
+        self.__userid = val
 
     @property
-    def groupid(self):
+    def groupid(self) -> int:
         return self.__groupid
 
     @groupid.setter
-    def groupid(self, val):
-        if isinstance(val, int):
-            self.__groupid = val
-        else:
-            raise AttributeError('Solo enteros')
+    def groupid(self, val: int):
+        self.__groupid = val
 
     @property
-    def message_number(self):
+    def message_number(self) -> int:
         return self.__message_number
 
     @message_number.setter
-    def message_number(self, val):
-        if isinstance(val, int):
-            self.__message_number = val
-        else:
-            raise AttributeError('Solo enteros')
+    def message_number(self, val: int):
+        self.__message_number = val
 
     @property
-    def pole_number(self):
+    def pole_number(self) -> int:
         return self.__pole_number
 
     @pole_number.setter
-    def pole_number(self, val):
-        if isinstance(val, int):
-            self.__pole_number = val
-        else:
-            raise AttributeError('Solo enteros')
+    def pole_number(self, val: int):
+        self.__pole_number = val
 
     @property
-    def porro_number(self):
+    def porro_number(self) -> int:
         return self.__porro_number
 
     @porro_number.setter
-    def porro_number(self, val):
-        if isinstance(val, int):
-            self.__porro_number = val
-        else:
-            raise AttributeError('Solo enteros')
+    def porro_number(self, val: int):
+        self.__porro_number = val
 
     @property
-    def pi_number(self):
+    def pi_number(self) -> int:
         return self.__pi_number
 
     @pi_number.setter
-    def pi_number(self, val):
-        if isinstance(val, int):
-            self.__pi_number = val
-        else:
-            raise AttributeError('Solo enteros')
+    def pi_number(self, val: int):
+        self.__pi_number = val
 
     def __str__(self):
         return 'UserGroup(%d, %d, %d, %d, %d, %d)' % (self.userid,
@@ -166,8 +169,6 @@ class UserGroup(object):
                                                       self.pole_number,
                                                       self.porro_number,
                                                       self.pi_number)
-
-
 
 
 class Almacenamiento(object):
@@ -206,6 +207,13 @@ class Almacenamiento(object):
             ")"
         )
 
+        self.c.execute(
+            "CREATE TABLE IF NOT EXISTS `useless_data` (\n" +
+            "  data_id INTEGER PRIMARY KEY ASC AUTOINCREMENT,\n" +
+            "  data_description INTEGER UNIQUE NOT NULL" +
+            ")"
+        )
+
         self.db.commit()
 
     def close(self):
@@ -229,6 +237,7 @@ class Almacenamiento(object):
         Almacenamiento.__checc(user)
         userid = user.userid
         twitter_user = user.twitter_user
+        res = None
         if userid != None:
             self.c.execute("SELECT * FROM `user` WHERE `userid` = ?", (userid,))
             res = self.c.fetchall()
@@ -404,3 +413,21 @@ class Almacenamiento(object):
         )
         res = self.c.fetchall()
         return res[0][0] if res else None
+
+    # Updated by @alkesst
+
+    def insertar_useless_data(self, data: UselessData):
+        self.c.execute('INSERT INTO useless_data (data_description) VALUES (?)',
+                       (data.data_text,))
+        self.db.commit()
+
+    # https://stackoverflow.com/questions/4114940/select-random-rows-in-sqlite
+    def obtener_un_dato(self) -> UselessData:
+        self.c.execute('SELECT * FROM useless_data WHERE data_id IN (SELECT data_id FROM useless_data ORDER BY RANDOM() LIMIT 1)')
+        res = self.c.fetchall()
+        return None if not res else UselessData(res[0])
+
+    def eliminar_useless_data(self, data: UselessData) -> bool:
+        self.c.execute('DELETE FROM useless_data WHERE data_id = ?', (data.data_id,))
+        self.db.commit()
+        return self.c.rowcount != 0
