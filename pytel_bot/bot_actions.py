@@ -414,8 +414,8 @@ class BotActions(object):
         # WORKING
         """Add a new user into the Data Base. It also creates the communication between this class and the Data Base"""
         if BotActions.data is None:  #
-            # BotActions.data = Almacenamiento("../pytel_stuff/data.db")
-            BotActions.data = Almacenamiento("data.db")
+            BotActions.data = Almacenamiento("../pytel_stuff/data.db")
+            # BotActions.data = Almacenamiento("data.db")
         user = User(user_id)
         if BotActions.data.obtener_usuario(user) is None:
             BotActions.data.insertar_usuario(user)
