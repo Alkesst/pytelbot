@@ -1,0 +1,3 @@
+tweepy
+python-telegram-bot
+wand

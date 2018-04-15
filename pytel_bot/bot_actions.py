@@ -20,30 +20,44 @@ from pytel_bot.telegram_tweet import TweetFromTelegram
 from pytel_bot.almacenamiento import Almacenamiento, User, UserGroup
 
 
+def with_db(func):
+    def wrapped(*args, **kwargs):
+        db = BotActions.get_data_base()
+        ret_val = func(db, *args, **kwargs)
+        db.close()
+        return ret_val
+
+    return wrapped
+
+
 class BotActions(object):
     """Makes actions with the bot"""
     dict_pole = {}
     dict_porro = {}
     dict_pi = {}
-    data = None
     stickers = ['CAADBAADJQADuE-EEuya2udZTudYAg', 'CAADBAADLAADuE - EElvaPQABlkaHMAI', 'CAADBAADQAADuE-EEs7AEGXnB5sOAg']
-    logging.basicConfig(format='%(name)s - %(asctime)s - %(levelname)s - %(message)s',
-                        filename="botActions.log", level=logging.WARNING)
+    logging.basicConfig(format='%(name)s - %(asctime)s - %(levelname)s - %(message)s', filename="botActions.log",
+                        level=logging.WARNING)
     ids = None
     do_not_disturb = {}
+    pytel_path = os.environ.get("PYTEL_PATH", "../pytel_stuff")
 
     # CAADBAADJQADuE-EEuya2udZTudYAg reverted
     # CAADBAADLAADuE - EElvaPQABlkaHMAI
     # CAADBAADQAADuE-EEs7AEGXnB5sOAg
 
     @staticmethod
+    def get_data_base():
+        return Almacenamiento(f"{BotActions.pytel_path}/data.db")
+
+    @staticmethod
     def get_disturb_status_from_db():
+        #  TODO GET FROM ALL GROUPS THE DISTURB STATUS!
         pass
 
     @staticmethod
     def start(bot, update):
         """Initialize the bot"""
-        chat_id = update.message.chat.id
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
@@ -68,7 +82,7 @@ class BotActions(object):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        bot.send_voice(chat_id=chat_id, voice=open('../pytel_stuff/macho.mp3', 'rb'))
+        bot.send_voice(chat_id=chat_id, voice=open(f'{BotActions.pytel_path}/macho.mp3', 'rb'))
 
     @staticmethod
     def send_memes(bot, update):
@@ -78,7 +92,7 @@ class BotActions(object):
         user_id = update.message.from_user.id
         BotActions.add_user(user_id, chat_id)
         BotActions.incrementa_nudes(user_id, chat_id)
-        file_name = BotActions.random_file_name('../pytel_stuff/Memes')
+        file_name = BotActions.random_file_name(f'{BotActions.pytel_path}/Memes')
         bot.send_photo(chat_id=chat_id, photo=open(file_name, 'rb'))
 
     @staticmethod
@@ -105,9 +119,8 @@ class BotActions(object):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        bot.send_message(chat_id=chat_id, text='`' + str(update.message.from_user.id) +
-                                               '`', reply_to_message_id=update.message.message_id,
-                         parse_mode='Markdown')
+        bot.send_message(chat_id=chat_id, text='`' + str(update.message.from_user.id) + '`',
+                         reply_to_message_id=update.message.message_id, parse_mode='Markdown')
 
     @staticmethod
     def id_chat(bot, update):
@@ -115,8 +128,8 @@ class BotActions(object):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        bot.send_message(chat_id=chat_id, text='`' + str(chat_id) + '`',
-                         reply_to_message_id=update.message.message_id, parse_mode='Markdown')
+        bot.send_message(chat_id=chat_id, text='`' + str(chat_id) + '`', reply_to_message_id=update.message.message_id,
+                         parse_mode='Markdown')
 
     @staticmethod
     def help(bot, update):
@@ -134,7 +147,7 @@ class BotActions(object):
         user_id = update.message.from_user.id
         BotActions.add_user(user_id, chat_id)
         BotActions.incrementa_animales(user_id, chat_id)
-        file_name = BotActions.random_file_name('../pytel_stuff/Animals')
+        file_name = BotActions.random_file_name(f'{BotActions.pytel_path}/Animals')
         bot.send_photo(chat_id=chat_id, photo=open(file_name, 'rb'))
 
     @staticmethod
@@ -185,8 +198,7 @@ class BotActions(object):
             bot.send_message(chat_id=update.message.chat.id, text=mensaje,
                              reply_to_message_id=update.message.message_id)
         else:
-            bot.send_message(chat_id=update.message.chat.id,
-                             text="Creo que no se te permite enviar tweets... :s",
+            bot.send_message(chat_id=update.message.chat.id, text="Creo que no se te permite enviar tweets... :s",
                              reply_to_message_id=update.message.message_id)
 
     @staticmethod
@@ -224,8 +236,7 @@ class BotActions(object):
         text = update.message.text[8:]
         text = text
         SpecialActions.create_image_search("meme_template_search.png", text)
-        bot.send_photo(chat_id=chat_id,
-                       photo=open("generated_meme_search.png", 'rb'),
+        bot.send_photo(chat_id=chat_id, photo=open("generated_meme_search.png", 'rb'),
                        reply_to_message_id=update.message.message_id)
         os.remove("generated_meme_search.png")
 
@@ -234,10 +245,9 @@ class BotActions(object):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        video = open("../pytel_stuff/sad_reactions_only.mp4", 'rb')
-        bot.send_video(chat_id=chat_id,
-                       reply_to_message_id=update.message.message_id,
-                       video=video, caption="sad reacts only")
+        video = open(f"{BotActions.pytel_path}/sad_reactions_only.mp4", 'rb')
+        bot.send_video(chat_id=chat_id, reply_to_message_id=update.message.message_id, video=video,
+                       caption="sad reacts only")
 
     @staticmethod
     def pole(bot, update):
@@ -274,9 +284,7 @@ class BotActions(object):
                 pole_text = "No estás en horario de pole... :S"
         else:
             pole_text = "Esta macro solo funciona en grupos"
-        bot.send_message(chat_id=chat_id,
-                         reply_to_message_id=update.message.message_id,
-                         text=pole_text)
+        bot.send_message(chat_id=chat_id, reply_to_message_id=update.message.message_id, text=pole_text)
 
     @staticmethod
     def delete_pole():
@@ -299,8 +307,7 @@ class BotActions(object):
         user_id = update.message.from_user.id
         if not BotActions.do_not_disturb[chat_id]:
             BotActions.common_process(chat_id, user_id)
-            bot.send_message(chat_id=update.message.chat.id,
-                             text="cállate ya macho",
+            bot.send_message(chat_id=update.message.chat.id, text="cállate ya macho",
                              reply_to_message_id=update.message.message_id)
 
     @staticmethod
@@ -309,8 +316,7 @@ class BotActions(object):
         user_id = update.message.from_user.id
         if not BotActions.do_not_disturb[chat_id]:
             BotActions.common_process(chat_id, user_id)
-            bot.send_message(chat_id=update.message.chat.id,
-                             text="alegra esa cara de comepollas que tienes",
+            bot.send_message(chat_id=update.message.chat.id, text="alegra esa cara de comepollas que tienes",
                              reply_to_message_id=update.message.message_id)
 
     @staticmethod
@@ -319,8 +325,7 @@ class BotActions(object):
         user_id = update.message.from_user.id
         if not BotActions.do_not_disturb[chat_id]:
             BotActions.common_process(chat_id, user_id)
-            bot.send_message(chat_id=update.message.chat.id,
-                             text="like! ;)",
+            bot.send_message(chat_id=update.message.chat.id, text="like! ;)",
                              reply_to_message_id=update.message.message_id)
 
     @staticmethod
@@ -350,16 +355,14 @@ class BotActions(object):
                         to_twitter.new_tweet(text_to_tweet)
                     else:
                         porro_text += "\nDesafortunadamente no tienes cuenta de twitter así que no se publicará" \
-                                     "en twitter :( /sad"
+                                      "en twitter :( /sad"
                 else:
                     porro_text = "Ya se han llevado la hora porro ;)"
             else:
                 porro_text = "No estás en el horario necesario... >_<"
         else:
             porro_text = "Esta macro solo funciona en grupos"
-        bot.send_message(chat_id=update.message.chat.id,
-                         reply_to_message_id=update.message.message_id,
-                         text=porro_text)
+        bot.send_message(chat_id=update.message.chat.id, reply_to_message_id=update.message.message_id, text=porro_text)
 
     @staticmethod
     def horacio_pi(bot, update):
@@ -388,41 +391,36 @@ class BotActions(object):
                         to_twitter.new_tweet(text_to_tweet)
                     else:
                         pi_text += "\nDesafortunadamente no tienes cuenta de twitter así que no se publicará" \
-                                     "en twitter :( /sad"
+                                   "en twitter :( /sad"
                 else:
                     pi_text = "Fuiste demasiado lento para la horacio pi :/"
             else:
                 pi_text = "Que te jodan, no estás en horario pi"
         else:
             pi_text = "Esa macro solo funciona en grupos :("
-        bot.send_message(chat_id=update.message.chat.id,
-                         reply_to_message_id=update.message.message_id,
-                         text=pi_text)
+        bot.send_message(chat_id=update.message.chat.id, reply_to_message_id=update.message.message_id, text=pi_text)
 
     @staticmethod
     def comunist_meme(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        video = open("../pytel_stuff/comunist_meme.mp4", 'rb')
-        bot.send_video(chat_id=chat_id,
-                       reply_to_message_id=update.message.message_id,
-                       video=video, caption="communism will prevail!")
+        video = open(f"{BotActions.pytel_path}/comunist_meme.mp4", 'rb')
+        bot.send_video(chat_id=chat_id, reply_to_message_id=update.message.message_id, video=video,
+                       caption="communism will prevail!")
 
     @staticmethod
-    def add_user(user_id, chat_id):
+    @with_db
+    def add_user(data, user_id, chat_id):
         # WORKING
         """Add a new user into the Data Base. It also creates the communication between this class and the Data Base"""
-        if BotActions.data is None:  #
-            BotActions.data = Almacenamiento("../pytel_stuff/data.db")
-            # BotActions.data = Almacenamiento("data.db")
         user = User(user_id)
-        if BotActions.data.obtener_usuario(user) is None:
-            BotActions.data.insertar_usuario(user)
+        if data.obtener_usuario(user) is None:
+            data.insertar_usuario(user)
         if chat_id != user_id:
             user = UserGroup(user_id, chat_id)
-            if BotActions.data.obtener_usuario_del_grupo(user) is None:
-                BotActions.data.insertar_usuario_del_grupo(user)
+            if data.obtener_usuario_del_grupo(user) is None:
+                data.insertar_usuario_del_grupo(user)
 
     @staticmethod
     def mensajes_callback(_, update):
@@ -431,48 +429,55 @@ class BotActions(object):
         BotActions.common_process(chat_id, user_id)
 
     @staticmethod
-    def incrementa_mensajes(user_id, chat_id):
-        # WORKING
+    @with_db
+    def incrementa_mensajes(data, user_id, chat_id):
         if chat_id != user_id:
             user = UserGroup(user_id, chat_id)
-            BotActions.data.aumentar_message_number(user)
+            data.aumentar_message_number(user)
 
     @staticmethod
-    def incrementa_nudes(user_id, chat_id):
+    @with_db
+    def incrementa_nudes(data, user_id, chat_id):
         user = User(user_id)
-        BotActions.data.aumentar_nude_number(user)
+        data.aumentar_nude_number(user)
         BotActions.incrementa_mensajes(user_id, chat_id)
 
     @staticmethod
-    def incrementa_ping(user_id, chat_id):
+    @with_db
+    def incrementa_ping(data, user_id, chat_id):
         # Work
         user = User(user_id)
-        BotActions.data.aumentar_ping_number(user)
+        data.aumentar_ping_number(user)
         BotActions.incrementa_mensajes(user_id, chat_id)
 
     @staticmethod
-    def incrementa_porro(user_id, chat_id):
+    @with_db
+    def incrementa_porro(data, user_id, chat_id):
         user = UserGroup(user_id, chat_id)
-        BotActions.data.aumentar_porro_number(user)
+        data.aumentar_porro_number(user)
 
     @staticmethod
-    def incrementa_pole(user_id, chat_id):
+    @with_db
+    def incrementa_pole(data, user_id, chat_id):
         user = UserGroup(user_id, chat_id)
-        BotActions.data.aumentar_pole_number(user)
+        data.aumentar_pole_number(user)
 
     @staticmethod
-    def incrementa_pi(user_id, chat_id):
+    @with_db
+    def incrementa_pi(data, user_id, chat_id):
         user = UserGroup(user_id, chat_id)
-        BotActions.data.aumentar_pi_number(user)
+        data.aumentar_pi_number(user)
 
     @staticmethod
-    def incrementa_animales(user_id, chat_id):
+    @with_db
+    def incrementa_animales(data, user_id, chat_id):
         user = User(user_id)
-        BotActions.data.aumentar_animal_number(user)
+        data.aumentar_animal_number(user)
         BotActions.incrementa_mensajes(user_id, chat_id)
 
     @staticmethod
-    def add_twitter_account(bot, update):
+    @with_db
+    def add_twitter_account(data, bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
@@ -487,10 +492,9 @@ class BotActions(object):
             else:
                 user = BotActions.get_user(user_id)
                 user.twitter_user = twitter_acc
-                BotActions.data.modificar_usuario(user)
+                data.modificar_usuario(user)
                 text = u'Se ha añadido la cuenta de twitter ' + twitter_acc
-        bot.send_message(chat_id=chat_id,
-                         text=text)
+        bot.send_message(chat_id=chat_id, text=text)
 
     @staticmethod
     def get_twitter_acc(user_id):
@@ -499,19 +503,21 @@ class BotActions(object):
         return user.twitter_user
 
     @staticmethod
-    def get_user_group(user_id, chat_id):
+    @with_db
+    def get_user_group(data, user_id, chat_id):
         # WORK
         """Return the User Group from the Data Base"""
         user = UserGroup(user_id, chat_id)
-        user = BotActions.data.obtener_usuario_del_grupo(user)
+        user = data.obtener_usuario_del_grupo(user)
         return user
 
     @staticmethod
-    def get_user(user_id):
+    @with_db
+    def get_user(data, user_id):
         # WORK
         """Return the user from the Data Base"""
         user = User(user_id)
-        user = BotActions.data.obtener_usuario(user)
+        user = data.obtener_usuario(user)
         return user
 
     @staticmethod
@@ -611,9 +617,10 @@ class BotActions(object):
         return animal_text
 
     @staticmethod
-    def get_all_messages(user_id):
+    @with_db
+    def get_all_messages(data, user_id):
         user = BotActions.get_user(user_id)
-        total_messages = BotActions.data.calcular_total_mensajes(user)
+        total_messages = data.calcular_total_mensajes(user)
         mensaje_total = "En total has enviado " + str(total_messages) + " mensajes en todos los grupos!"
         return mensaje_total
 
@@ -636,9 +643,7 @@ class BotActions(object):
         user_id = update.message.from_user.id
         if not BotActions.do_not_disturb[chat_id]:
             BotActions.common_process(chat_id, user_id)
-            bot.send_message(chat_id=chat_id,
-                             text="que es facil",
-                             reply_to_message_id=update.message.message_id)
+            bot.send_message(chat_id=chat_id, text="que es facil", reply_to_message_id=update.message.message_id)
 
     @staticmethod
     def insulto_method(bot, update):
@@ -647,8 +652,7 @@ class BotActions(object):
         BotActions.common_process(chat_id, user_id)
         name = update.message.text[10:]
         insulto = BotActions.get_random_insult("insultos.txt")
-        bot.send_message(chat_id=chat_id,
-                         text=name + " eres un " + insulto)
+        bot.send_message(chat_id=chat_id, text=name + " eres un " + insulto)
 
     @staticmethod
     def get_random_insult(file_name):
@@ -676,25 +680,21 @@ class BotActions(object):
         user_id = update.message.from_user.id
         if not BotActions.do_not_disturb[chat_id]:
             BotActions.common_process(chat_id, user_id)
-            bot.send_message(chat_id=chat_id, text='de nada supollita',
-                            reply_to_message_id=update.message.message_id)
+            bot.send_message(chat_id=chat_id, text='de nada supollita', reply_to_message_id=update.message.message_id)
 
     @staticmethod
     def when_te_pasa(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        bot.send_message(chat_id=chat_id,
-                         text="si xD",
-                         reply_to_message_id=update.message.message_id)
+        bot.send_message(chat_id=chat_id, text="si xD", reply_to_message_id=update.message.message_id)
 
     @staticmethod
     def current_status(bot, update, args):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        bot.send_message(chat_id=chat_id,
-                         text=BotActions.status_message(args))
+        bot.send_message(chat_id=chat_id, text=BotActions.status_message(args))
 
     @staticmethod
     def status_message(args):
@@ -724,8 +724,7 @@ class BotActions(object):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        bot.send_photo(chat_id=chat_id,
-                       photo=open('../pytel_stuff/192.png', 'rb'),
+        bot.send_photo(chat_id=chat_id, photo=open(f'{BotActions.pytel_path}/192.png', 'rb'),
                        reply_to_message_id=update.message.message_id)
 
     @staticmethod
@@ -734,16 +733,14 @@ class BotActions(object):
         user_id = update.message.from_user.id
         if not BotActions.do_not_disturb[chat_id]:
             BotActions.common_process(chat_id, user_id)
-            bot.send_message(chat_id=chat_id, text='thicc boi',
-                             reply_to_message_id=update.message.message_id)
+            bot.send_message(chat_id=chat_id, text='thicc boi', reply_to_message_id=update.message.message_id)
 
     @staticmethod
     def spain(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        bot.send_photo(chat_id=chat_id,
-                       photo=open('../pytel_stuff/spainreact.jpg', 'rb'),
+        bot.send_photo(chat_id=chat_id, photo=open(f'{BotActions.pytel_path}/spainreact.jpg', 'rb'),
                        reply_to_message_id=update.message.message_id)
 
     @staticmethod
@@ -751,8 +748,7 @@ class BotActions(object):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        bot.send_video(chat_id=chat_id,
-                       video=open('../pytel_stuff/cocaine.mp4', 'rb'),
+        bot.send_video(chat_id=chat_id, video=open(f'{BotActions.pytel_path}/cocaine.mp4', 'rb'),
                        reply_to_message_id=update.message.message_id)
 
     @staticmethod
@@ -760,9 +756,7 @@ class BotActions(object):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        bot.send_message(chat_id=chat_id,
-                         text="sad reacts only",
-                         reply_to_message_id=update.message.message_id)
+        bot.send_message(chat_id=chat_id, text="sad reacts only", reply_to_message_id=update.message.message_id)
 
     @staticmethod
     def reverte(bot, update):
@@ -778,7 +772,7 @@ class BotActions(object):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        bot.send_photo(chat_id=chat_id, photo=open('../pytel_stuff/reverted.png', 'rb'))
+        bot.send_photo(chat_id=chat_id, photo=open(f'{BotActions.pytel_path}/reverted.png', 'rb'))
 
     @staticmethod
     def xd_react(bot, update):
@@ -786,8 +780,7 @@ class BotActions(object):
         user_id = update.message.from_user.id
         if not BotActions.do_not_disturb[chat_id]:
             BotActions.common_process(chat_id, user_id)
-            bot.send_message(chat_id=chat_id, text="que te jodan, macho",
-                             reply_to_message_id=update.message.message_id)
+            bot.send_message(chat_id=chat_id, text="que te jodan, macho", reply_to_message_id=update.message.message_id)
 
     @staticmethod
     def habeces(bot, update):
@@ -795,15 +788,14 @@ class BotActions(object):
         user_id = update.message.from_user.id
         if not BotActions.do_not_disturb[chat_id]:
             BotActions.common_process(chat_id, user_id)
-            bot.send_message(chat_id=chat_id, text="a veces",
-                             reply_to_message_id=update.message.message_id)
+            bot.send_message(chat_id=chat_id, text="a veces", reply_to_message_id=update.message.message_id)
 
     # @staticmethod
     # def calculator(bot, update):
     #     chat_id = update.message.chat.id
     #     user_id = update.message.from_user.id
     #     BotActions.common_process(chat_id, user_id)
-        # TODO calculadora;
+    # TODO calculadora;
 
     @staticmethod
     def useless_data(bot, update):
@@ -860,19 +852,15 @@ class BotActions(object):
         if not BotActions.ids:
             pass
         else:
-            pass
-        #
-        # BotActions.data.insertar_useless_data()
+            pass  # BotActions.data.insertar_useless_data()
 
     @staticmethod
     def bumper_cars(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        voice = open("../pytel_stuff/bumper_cars.mp3", 'rb')
-        bot.send_voice(chat_id=chat_id,
-                       reply_to_message_id=update.message.message_id,
-                       voice=voice)
+        voice = open(f"{BotActions.pytel_path}/bumper_cars.mp3", 'rb')
+        bot.send_voice(chat_id=chat_id, reply_to_message_id=update.message.message_id, voice=voice)
 
     @staticmethod
     def not_disturb(bot, update):

@@ -5,13 +5,13 @@
 import json
 import tweepy
 
+from pytel_bot.tokens import get_tokens
 
-class TweetFromTelegram():
+
+class TweetFromTelegram(object):
 
     def __init__(self):
-        json_config = open("tokens.json", 'r')
-        tokens = json.load(json_config)
-        json_config.close()
+        tokens = get_tokens()
         consumer_key = tokens["consumer_key"]
         consumer_secret = tokens["consumer_secret"]
         access_token = tokens["access_token"]

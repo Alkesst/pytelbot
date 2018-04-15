@@ -9,6 +9,7 @@ import sqlite3
 
 class UselessData(object):
     """Update by @alkesst"""
+
     def __init__(self, data_id=None, data_text=None):
         super(UselessData, self).__init__()
         if isinstance(data_id, (sqlite3.Row, tuple)):
@@ -40,6 +41,7 @@ class UselessData(object):
 
 class User(object):
     """User es una clase que representa un usuario de la base de datos"""
+
     def __init__(self, userid=None, twitter_user=None, ping=0, nude=0, animal=0):
         super(User, self).__init__()
         if isinstance(userid, (sqlite3.Row, tuple)):
@@ -88,15 +90,37 @@ class User(object):
         self.__animal_number = val
 
     def __str__(self):
-        return 'User(%d, u"%s", %d, %d, %d)' % (self.userid,
-                                                self.twitter_user,
-                                                self.ping_number,
-                                                self.nude_number,
-                                                self.animal_number)
+        return 'User(%d, u"%s", %d, %d, %d)' % (
+            self.userid, self.twitter_user, self.ping_number, self.nude_number, self.animal_number)
+
+
+class Group(object):
+
+        def __init__(self, group_id: int, dnd: bool):
+            super(Group, self).__init__()
+            if isinstance(group_id, (sqlite3.Row, tuple)):
+                self.__group_id = group_id[0]
+                self.__dnd = group_id[1]
+            else:
+                self.__group_id = group_id
+                self.__dnd = dnd
+
+        @property
+        def no_disturb(self) -> bool:
+            return self.__dnd
+
+        @no_disturb.setter
+        def no_disturb(self, dnd: bool):
+            self.__dnd = dnd
+
+        @property
+        def group_id(self) -> int:
+            return self.__group_id
 
 
 class UserGroup(object):
     """UserGroup almacena la información de un usuario de la base de datos"""
+
     def __init__(self, userid, groupid, message_number=0, pole_number=0, porro=0, pi=0):
         super(UserGroup, self).__init__()
         if isinstance(userid, (sqlite3.Row, tuple)):
@@ -163,12 +187,9 @@ class UserGroup(object):
         self.__pi_number = val
 
     def __str__(self):
-        return 'UserGroup(%d, %d, %d, %d, %d, %d)' % (self.userid,
-                                                      self.groupid,
-                                                      self.message_number,
-                                                      self.pole_number,
-                                                      self.porro_number,
-                                                      self.pi_number)
+        return f'UserGroup({self.userid}, {self.groupid}, {self.message_number},' \
+               f' {self.pole_number}, {self.porro_number}, {self.pi_number},' \
+               f' {self.no_disturb})'
 
 
 class Almacenamiento(object):
@@ -176,23 +197,27 @@ class Almacenamiento(object):
     Almacenamiento es una clase que añade una capa de abstracción
     para la persistencia de datos en el bot de Telegram de Alkesst
     """
+
     def __init__(self, dbfile="tel.db"):
         super(Almacenamiento, self).__init__()
         self.dbfile = dbfile
         self.db = sqlite3.connect(self.dbfile)
         self.c = self.db.cursor()
 
-        #https://stackoverflow.com/questions/5890250/on-delete-cascade-in-sqlite3
+        # https://stackoverflow.com/questions/5890250/on-delete-cascade-in-sqlite3
         self.c.execute('PRAGMA foreign_keys = ON')
         self.c.execute(
             "CREATE TABLE IF NOT EXISTS `user` (\n" +
-            "  userid INTEGER PRIMARY KEY ASC,\n" +
-            "  twitter_user TEXT,\n" +
+            "  userid INTEGER PRIMARY KEY ASC,\n" + "  twitter_user TEXT,\n" +
             "  ping_number INTEGER NOT NULL DEFAULT 0,\n" +
             "  nude_number INTEGER NOT NULL DEFAULT 0,\n" +
-            "  animal_number INTEGER NOT NULL DEFAULT 0\n" +
-            ")"
-        )
+            "  animal_number INTEGER NOT NULL DEFAULT 0\n" + ")")
+
+        self.c.execute(
+            "CREATE TABLE IF NOT EXISTS `chat_group` (\n" +
+            "   group_id INTEGER PRIMARY KEY," +
+            "   do_not_disturb INTEGER NOT NULL DEFAULT 0" +
+            ")")
 
         self.c.execute(
             "CREATE TABLE IF NOT EXISTS `user_group` (\n" +
@@ -203,16 +228,12 @@ class Almacenamiento(object):
             "  porro_number INTEGER NOT NULL DEFAULT 0,\n" +
             "  pi_number INTEGER NOT NULL DEFAULT 0,\n" +
             "  CONSTRAINT user_group_pk PRIMARY KEY (userid ASC, groupid ASC),\n" +
-            "  CONSTRAINT user_group_fk FOREIGN KEY (userid) REFERENCES user ON DELETE CASCADE\n" +
-            ")"
-        )
+            "  CONSTRAINT user_fk FOREIGN KEY (groupid) REFERENCES chat_group(group_id) ON DELETE CASCADE,\n" +
+            "  CONSTRAINT user_group_fk FOREIGN KEY (userid) REFERENCES user(userid) ON DELETE CASCADE\n" + ")")
 
         self.c.execute(
-            "CREATE TABLE IF NOT EXISTS `useless_data` (\n" +
-            "  data_id INTEGER PRIMARY KEY ASC AUTOINCREMENT,\n" +
-            "  data_description INTEGER UNIQUE NOT NULL" +
-            ")"
-        )
+            "CREATE TABLE IF NOT EXISTS `useless_data` (\n" + "  data_id INTEGER PRIMARY KEY ASC AUTOINCREMENT,\n" +
+            "  data_description INTEGER UNIQUE NOT NULL" + ")")
 
         self.db.commit()
 
@@ -238,11 +259,11 @@ class Almacenamiento(object):
         userid = user.userid
         twitter_user = user.twitter_user
         res = None
-        if userid != None:
+        if userid is not None:
             self.c.execute("SELECT * FROM `user` WHERE `userid` = ?", (userid,))
             res = self.c.fetchall()
             return None if not res else User(res[0])
-        elif twitter_user != None:
+        elif twitter_user is not None:
             self.c.execute("SELECT * FROM `user` WHERE `twitter_user` = ?", (twitter_user,))
             return None if not res else User(res[0])
         else:
@@ -251,9 +272,8 @@ class Almacenamiento(object):
     def insertar_usuario(self, user):
         """Inserta un usuario"""
         Almacenamiento.__checc(user)
-        self.c.execute('INSERT INTO user VALUES (?,?,?,?,?)', (user.userid, user.twitter_user,
-                                                               user.ping_number, user.nude_number,
-                                                               user.animal_number))
+        self.c.execute('INSERT INTO user VALUES (?,?,?,?,?)',
+                       (user.userid, user.twitter_user, user.ping_number, user.nude_number, user.animal_number))
         self.db.commit()
 
     def eliminar_usuario(self, user):
@@ -268,25 +288,13 @@ class Almacenamiento(object):
         Almacenamiento.__checc(user)
         old_user = self.obtener_usuario(user)
         if old_user.twitter_user != user.twitter_user:
-            self.c.execute(
-                'UPDATE user SET twitter_user = ? WHERE userid = ?',
-                (user.twitter_user, user.userid)
-            )
+            self.c.execute('UPDATE user SET twitter_user = ? WHERE userid = ?', (user.twitter_user, user.userid))
         if old_user.ping_number != user.ping_number:
-            self.c.execute(
-                'UPDATE user SET ping_number = ? WHERE userid = ?',
-                (user.ping_number, user.userid)
-            )
+            self.c.execute('UPDATE user SET ping_number = ? WHERE userid = ?', (user.ping_number, user.userid))
         if old_user.nude_number != user.nude_number:
-            self.c.execute(
-                'UPDATE user SET nude_number = ? WHERE userid = ?',
-                (user.nude_number, user.userid)
-            )
+            self.c.execute('UPDATE user SET nude_number = ? WHERE userid = ?', (user.nude_number, user.userid))
         if old_user.animal_number != user.animal_number:
-            self.c.execute(
-                'UPDATE user SET animal_number = ? WHERE userid = ?',
-                (user.animal_number, user.userid)
-            )
+            self.c.execute('UPDATE user SET animal_number = ? WHERE userid = ?', (user.animal_number, user.userid))
         self.db.commit()
 
     def aumentar_ping_number(self, user):
@@ -313,35 +321,27 @@ class Almacenamiento(object):
         full_u.animal_number += 1
         self.modificar_usuario(full_u)
 
-
     def obtener_usuario_del_grupo(self, user_group):
         """Busca un usuario del grupo por id"""
         Almacenamiento.__clocc(user_group)
-        self.c.execute(
-            "SELECT * FROM `user_group` WHERE `userid` = ? AND `groupid` = ?",
-            (user_group.userid, user_group.groupid)
-        )
+        self.c.execute("SELECT * FROM `user_group` WHERE `userid` = ? AND `groupid` = ?",
+                       (user_group.userid, user_group.groupid))
         res = self.c.fetchall()
         return None if not res else UserGroup(res[0], None)
 
-    def insertar_usuario_del_grupo(self, user_group):
+    def insertar_usuario_del_grupo(self, user_group: UserGroup):
         """Inserta info de un usuario de un grupo"""
         Almacenamiento.__clocc(user_group)
-        self.c.execute('INSERT INTO `user_group` VALUES (?,?,?,?,?,?)', (user_group.userid,
-                                                                         user_group.groupid,
-                                                                         user_group.message_number,
-                                                                         user_group.pole_number,
-                                                                         user_group.porro_number,
-                                                                         user_group.pi_number))
+        self.c.execute('INSERT INTO `user_group` VALUES (?,?,?,?,?,?,?)', (
+            user_group.userid, user_group.groupid, user_group.message_number, user_group.pole_number,
+            user_group.porro_number, user_group.pi_number, user_group.no_disturb))
         self.db.commit()
 
     def eliminar_usuario_del_grupo(self, user_group):
         """Elimina un usuario de un grupo. Solo es necesario el parámetro userid y el groupid"""
         Almacenamiento.__clocc(user_group)
-        self.c.execute(
-            'DELETE FROM `user_group` WHERE userid = ? AND groupid = ?',
-            (user_group.userid, user_group.groupid)
-        )
+        self.c.execute('DELETE FROM `user_group` WHERE userid = ? AND groupid = ?',
+                       (user_group.userid, user_group.groupid))
         self.db.commit()
         return self.c.rowcount != 0
 
@@ -350,25 +350,17 @@ class Almacenamiento(object):
         Almacenamiento.__clocc(user_group)
         old_user = self.obtener_usuario_del_grupo(user_group)
         if old_user.message_number != user_group.message_number:
-            self.c.execute(
-                'UPDATE `user_group` SET message_number = ? WHERE userid = ? AND groupid = ?',
-                (user_group.message_number, user_group.userid, user_group.groupid)
-            )
+            self.c.execute('UPDATE `user_group` SET message_number = ? WHERE userid = ? AND groupid = ?',
+                           (user_group.message_number, user_group.userid, user_group.groupid))
         if old_user.pole_number != user_group.pole_number:
-            self.c.execute(
-                'UPDATE `user_group` SET pole_number = ? WHERE userid = ? AND groupid = ?',
-                (user_group.pole_number, user_group.userid, user_group.groupid)
-            )
+            self.c.execute('UPDATE `user_group` SET pole_number = ? WHERE userid = ? AND groupid = ?',
+                           (user_group.pole_number, user_group.userid, user_group.groupid))
         if old_user.porro_number != user_group.porro_number:
-            self.c.execute(
-                'UPDATE `user_group` SET porro_number = ? WHERE userid = ? AND groupid = ?',
-                (user_group.porro_number, user_group.userid, user_group.groupid)
-            )
+            self.c.execute('UPDATE `user_group` SET porro_number = ? WHERE userid = ? AND groupid = ?',
+                           (user_group.porro_number, user_group.userid, user_group.groupid))
         if old_user.pi_number != user_group.pi_number:
-            self.c.execute(
-                'UPDATE `user_group` SET pi_number = ? WHERE userid = ? AND groupid = ?',
-                (user_group.pi_number, user_group.userid, user_group.groupid)
-            )
+            self.c.execute('UPDATE `user_group` SET pi_number = ? WHERE userid = ? AND groupid = ?',
+                           (user_group.pi_number, user_group.userid, user_group.groupid))
         self.db.commit()
 
     def aumentar_message_number(self, user_group):
@@ -407,23 +399,20 @@ class Almacenamiento(object):
         """Calcula la cantidad de mensajes total enviados por un usuario entre todos los grupos.
         Puede devolver None si no hay mensajes almacenados para ese usuario."""
         Almacenamiento.__checc(user)
-        self.c.execute(
-            "SELECT SUM(message_number) as total_messages FROM user_group WHERE userid = ?",
-            (user.userid,)
-        )
+        self.c.execute("SELECT SUM(message_number) as total_messages FROM user_group WHERE userid = ?", (user.userid,))
         res = self.c.fetchall()
         return res[0][0] if res else None
 
     # Updated by @alkesst
 
     def insertar_useless_data(self, data: UselessData):
-        self.c.execute('INSERT INTO useless_data (data_description) VALUES (?)',
-                       (data.data_text,))
+        self.c.execute('INSERT INTO useless_data (data_description) VALUES (?)', (data.data_text,))
         self.db.commit()
 
     # https://stackoverflow.com/questions/4114940/select-random-rows-in-sqlite
     def obtener_un_dato(self) -> UselessData:
-        self.c.execute('SELECT * FROM useless_data WHERE data_id IN (SELECT data_id FROM useless_data ORDER BY RANDOM() LIMIT 1)')
+        self.c.execute('SELECT * FROM useless_data WHERE data_id IN (SELECT data_id FROM useless_data ORDER BY RANDOM()'
+                       ' LIMIT 1)')
         res = self.c.fetchall()
         return None if not res else UselessData(res[0])
 
@@ -431,3 +420,6 @@ class Almacenamiento(object):
         self.c.execute('DELETE FROM useless_data WHERE data_id = ?', (data.data_id,))
         self.db.commit()
         return self.c.rowcount != 0
+
+    def get_all_groups(self):
+        self.c.execute('SELECT * FROM chat_group')

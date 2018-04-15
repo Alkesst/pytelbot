@@ -4,7 +4,7 @@ from wand.image import Image
 from wand.drawing import Drawing
 
 
-class SpecialActions():
+class SpecialActions(object):
 
     @staticmethod
     def create_image_search(image_name, text):

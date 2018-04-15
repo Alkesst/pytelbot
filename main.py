@@ -2,16 +2,14 @@
 # -*- coding: utf-8 -*-
 # made with python 3
 # pylint: disable=C1001
-import json
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from pytel_bot.bot_actions import BotActions
 from pytel_bot.message_filter import *
+from pytel_bot.tokens import get_tokens
 
 
 def main():
-    json_config = open("tokens.json", 'r')
-    tokens = json.load(json_config)
-    json_config.close()
+    tokens = get_tokens()
     updater = Updater(tokens["telegram"])
     happy_filter = HappyFilter()
     unhappy_filter = NotHappyFilter()
@@ -28,6 +26,7 @@ def main():
     xd = Xdd()
     habeces = AVeces()
     bumper_cars = BumperCars()
+    BotActions.get_disturb_status_from_db()
     updater.dispatcher.add_handler(CommandHandler('start', BotActions.start))
     updater.dispatcher.add_handler(CommandHandler('hola', BotActions.hola))
     updater.dispatcher.add_handler(CommandHandler('macho', BotActions.macho))
