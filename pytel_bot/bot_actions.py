@@ -16,8 +16,8 @@ from time import gmtime
 from os.path import isfile, join
 from threading import Timer
 from pytel_bot.telegram_tweet import TweetFromTelegram
-# from pytel_bot.special_actions import SpecialActions
-from pytel_bot.almacenamiento import Almacenamiento, User, UserGroup
+from pytel_bot.special_actions import SpecialActions
+from pytel_bot.almacenamiento import Almacenamiento, User, UserGroup, Group
 
 
 def with_db(func):
@@ -38,6 +38,7 @@ class BotActions(object):
     stickers = ['CAADBAADJQADuE-EEuya2udZTudYAg', 'CAADBAADLAADuE - EElvaPQABlkaHMAI', 'CAADBAADQAADuE-EEs7AEGXnB5sOAg']
     logging.basicConfig(format='%(name)s - %(asctime)s - %(levelname)s - %(message)s', filename="botActions.log",
                         level=logging.WARNING)
+    logging.getLogger().addHandler(logging.StreamHandler())
     ids = None
     do_not_disturb = {}
     pytel_path = os.environ.get("PYTEL_PATH", "../pytel_stuff")
@@ -73,6 +74,8 @@ class BotActions(object):
 
     @staticmethod
     def common_process(chat_id, user_id):
+        if chat_id != user_id:
+            BotActions.add_chat_group(chat_id)
         BotActions.add_user(user_id, chat_id)
         BotActions.incrementa_mensajes(user_id, chat_id)
 
@@ -90,7 +93,7 @@ class BotActions(object):
         """Reply with a random meme"""
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         BotActions.incrementa_nudes(user_id, chat_id)
         file_name = BotActions.random_file_name(f'{BotActions.pytel_path}/Memes')
         bot.send_photo(chat_id=chat_id, photo=open(file_name, 'rb'))
@@ -109,7 +112,7 @@ class BotActions(object):
         """Reply with a pong."""
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         bot.send_message(chat_id=update.message.chat.id, text="Pong!")
         BotActions.incrementa_ping(user_id, chat_id)
 
@@ -137,6 +140,9 @@ class BotActions(object):
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
         help_text = BotActions.help_commands()
+        if chat_id != user_id:
+            bot.send_message(chat_id=chat_id, text="Te he mandado la ayuda por privado :p",
+                             reply_to_message_id=update.message.message_id)
         bot.send_message(chat_id=user_id, text=help_text)
 
     @staticmethod
@@ -145,7 +151,7 @@ class BotActions(object):
         """Reply with a random animal image"""
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        BotActions.add_user(user_id, chat_id)
+        BotActions.common_process(chat_id, user_id)
         BotActions.incrementa_animales(user_id, chat_id)
         file_name = BotActions.random_file_name(f'{BotActions.pytel_path}/Animals')
         bot.send_photo(chat_id=chat_id, photo=open(file_name, 'rb'))
@@ -305,7 +311,7 @@ class BotActions(object):
     def happy(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        if not BotActions.do_not_disturb[chat_id]:
+        if not BotActions.do_not_disturb.get(chat_id, False):
             BotActions.common_process(chat_id, user_id)
             bot.send_message(chat_id=update.message.chat.id, text="cállate ya macho",
                              reply_to_message_id=update.message.message_id)
@@ -314,7 +320,7 @@ class BotActions(object):
     def not_happy(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        if not BotActions.do_not_disturb[chat_id]:
+        if not BotActions.do_not_disturb.get(chat_id, False):
             BotActions.common_process(chat_id, user_id)
             bot.send_message(chat_id=update.message.chat.id, text="alegra esa cara de comepollas que tienes",
                              reply_to_message_id=update.message.message_id)
@@ -323,7 +329,7 @@ class BotActions(object):
     def botijo_react(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        if not BotActions.do_not_disturb[chat_id]:
+        if not BotActions.do_not_disturb.get(chat_id, False):
             BotActions.common_process(chat_id, user_id)
             bot.send_message(chat_id=update.message.chat.id, text="like! ;)",
                              reply_to_message_id=update.message.message_id)
@@ -641,7 +647,7 @@ class BotActions(object):
     def easy_command(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        if not BotActions.do_not_disturb[chat_id]:
+        if not BotActions.do_not_disturb.get(chat_id, False):
             BotActions.common_process(chat_id, user_id)
             bot.send_message(chat_id=chat_id, text="que es facil", reply_to_message_id=update.message.message_id)
 
@@ -678,7 +684,7 @@ class BotActions(object):
     def gracias_react(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        if not BotActions.do_not_disturb[chat_id]:
+        if not BotActions.do_not_disturb.get(chat_id, False):
             BotActions.common_process(chat_id, user_id)
             bot.send_message(chat_id=chat_id, text='de nada supollita', reply_to_message_id=update.message.message_id)
 
@@ -731,7 +737,7 @@ class BotActions(object):
     def thicc_react(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        if not BotActions.do_not_disturb[chat_id]:
+        if not BotActions.do_not_disturb.get(chat_id, False):
             BotActions.common_process(chat_id, user_id)
             bot.send_message(chat_id=chat_id, text='thicc boi', reply_to_message_id=update.message.message_id)
 
@@ -778,7 +784,7 @@ class BotActions(object):
     def xd_react(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        if not BotActions.do_not_disturb[chat_id]:
+        if not BotActions.do_not_disturb.get(chat_id, False):
             BotActions.common_process(chat_id, user_id)
             bot.send_message(chat_id=chat_id, text="que te jodan, macho", reply_to_message_id=update.message.message_id)
 
@@ -786,7 +792,7 @@ class BotActions(object):
     def habeces(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
-        if not BotActions.do_not_disturb[chat_id]:
+        if not BotActions.do_not_disturb.get(chat_id, False):
             BotActions.common_process(chat_id, user_id)
             bot.send_message(chat_id=chat_id, text="a veces", reply_to_message_id=update.message.message_id)
 
@@ -879,3 +885,10 @@ class BotActions(object):
         BotActions.do_not_disturb[chat_id] = False
         bot.send_message(chat_id=chat_id, reply_to_message_id=update.message.message_id,
                          text="El bot se ha modificado para que moleste en este grupo!")
+
+    @staticmethod
+    @with_db
+    def add_chat_group(data, chat_id):
+        chat_group = Group(chat_id)
+        if data.obtener_grupo(chat_group.group_id) is None:
+            data.insertar_grupo(chat_group)

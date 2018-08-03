@@ -96,7 +96,7 @@ class User(object):
 
 class Group(object):
 
-        def __init__(self, group_id: int, dnd: bool):
+        def __init__(self, group_id: int, dnd: bool=False):
             super(Group, self).__init__()
             if isinstance(group_id, (sqlite3.Row, tuple)):
                 self.__group_id = group_id[0]
@@ -188,8 +188,7 @@ class UserGroup(object):
 
     def __str__(self):
         return f'UserGroup({self.userid}, {self.groupid}, {self.message_number},' \
-               f' {self.pole_number}, {self.porro_number}, {self.pi_number},' \
-               f' {self.no_disturb})'
+               f' {self.pole_number}, {self.porro_number}, {self.pi_number},'
 
 
 class Almacenamiento(object):
@@ -228,8 +227,8 @@ class Almacenamiento(object):
             "  porro_number INTEGER NOT NULL DEFAULT 0,\n" +
             "  pi_number INTEGER NOT NULL DEFAULT 0,\n" +
             "  CONSTRAINT user_group_pk PRIMARY KEY (userid ASC, groupid ASC),\n" +
-            "  CONSTRAINT user_fk FOREIGN KEY (groupid) REFERENCES chat_group(group_id) ON DELETE CASCADE,\n" +
-            "  CONSTRAINT user_group_fk FOREIGN KEY (userid) REFERENCES user(userid) ON DELETE CASCADE\n" + ")")
+            "  CONSTRAINT user_group_fk FOREIGN KEY (groupid) REFERENCES chat_group(group_id) ON DELETE CASCADE,\n" +
+            "  CONSTRAINT user_id_fk FOREIGN KEY (userid) REFERENCES user(userid) ON DELETE CASCADE\n" + ")")
 
         self.c.execute(
             "CREATE TABLE IF NOT EXISTS `useless_data` (\n" + "  data_id INTEGER PRIMARY KEY ASC AUTOINCREMENT,\n" +
@@ -332,9 +331,9 @@ class Almacenamiento(object):
     def insertar_usuario_del_grupo(self, user_group: UserGroup):
         """Inserta info de un usuario de un grupo"""
         Almacenamiento.__clocc(user_group)
-        self.c.execute('INSERT INTO `user_group` VALUES (?,?,?,?,?,?,?)', (
+        self.c.execute('INSERT INTO `user_group` VALUES (?,?,?,?,?,?)', (
             user_group.userid, user_group.groupid, user_group.message_number, user_group.pole_number,
-            user_group.porro_number, user_group.pi_number, user_group.no_disturb))
+            user_group.porro_number, user_group.pi_number))
         self.db.commit()
 
     def eliminar_usuario_del_grupo(self, user_group):
@@ -421,5 +420,24 @@ class Almacenamiento(object):
         self.db.commit()
         return self.c.rowcount != 0
 
-    def get_all_groups(self):
-        self.c.execute('SELECT * FROM chat_group')
+    def insertar_grupo(self, grupo: Group):
+        self.c.execute('INSERT INTO chat_group VALUES (?,?)', (grupo.group_id, grupo.no_disturb))
+        self.db.commit()
+
+    def eliminar_grupo(self, grupo: Group):
+        self.c.execute('DELETE FROM chat_group WHERE group_id = ?',
+                       (grupo.group_id,))
+        self.db.commit()
+        return self.c.rowcount != 0
+
+    def obtener_grupo(self, group_id: int) -> Group:
+        self.c.execute("SELECT * FROM `chat_group` WHERE group_id = ?",
+                       (group_id,))
+        res = self.c.fetchall()
+        return None if not res else Group(res[0])
+
+    def modificar_grupo(self, grupo: Group):
+        old_chat = self.obtener_grupo(grupo.group_id)
+        if old_chat.no_disturb != grupo.no_disturb:
+            self.c.execute('UPDATE `chat_group` SET do_not_disturb = ? WHERE group_id = ?',
+                           (int(grupo.no_disturb), grupo.group_id))
