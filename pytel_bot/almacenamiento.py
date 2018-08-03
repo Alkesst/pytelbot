@@ -441,3 +441,4 @@ class Almacenamiento(object):
         if old_chat.no_disturb != grupo.no_disturb:
             self.c.execute('UPDATE `chat_group` SET do_not_disturb = ? WHERE group_id = ?',
                            (int(grupo.no_disturb), grupo.group_id))
+        self.db.commit()
