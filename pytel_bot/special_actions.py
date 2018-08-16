@@ -7,7 +7,7 @@ from wand.drawing import Drawing
 class SpecialActions(object):
 
     @staticmethod
-    def create_image_search(image_name, text):
+    def create_image_search(image_name, saved_image, text):
         """Create an image with the given string"""
         with Image(filename=image_name) as img:
             with img.clone() as cloned:
@@ -18,7 +18,7 @@ class SpecialActions(object):
                     text = SpecialActions.simplifying(text)
                     draw.text(160, 785, text)
                     draw(cloned)
-                    cloned.save(filename="generated_meme_search.png")
+                    cloned.save(filename=saved_image)
 
     @staticmethod
     def simplifying(text):

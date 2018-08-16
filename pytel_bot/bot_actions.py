@@ -242,10 +242,11 @@ class BotActions(object):
         # si en el grupo hay más de un bot hay que arreglar la mención de /search@PyTel_bot
         text = update.message.text[8:]
         text = text
-        SpecialActions.create_image_search(f"{BotActions.pytel_path}/meme_template_search.png", text)
+        SpecialActions.create_image_search(f"{BotActions.pytel_path}/meme_template_search.png",
+                                           f"{BotActions.pytel_path}/generated_meme_search.png", text)
         bot.send_photo(chat_id=chat_id, photo=open(f"{BotActions.pytel_path}/generated_meme_search.png", 'rb'),
                        reply_to_message_id=update.message.message_id)
-        os.remove("generated_meme_search.png")
+        os.remove(f"{BotActions.pytel_path}/generated_meme_search.png")
 
     @staticmethod
     def sad_reacts(bot, update):
