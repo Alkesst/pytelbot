@@ -241,7 +241,6 @@ class BotActions(object):
         BotActions.common_process(chat_id, user_id)
         # si en el grupo hay más de un bot hay que arreglar la mención de /search@PyTel_bot
         text = update.message.text[8:]
-        text = text
         SpecialActions.create_image_search(f"{BotActions.pytel_path}/meme_template_search.png",
                                            f"{BotActions.pytel_path}/generated_meme_search.png", text)
         bot.send_photo(chat_id=chat_id, photo=open(f"{BotActions.pytel_path}/generated_meme_search.png", 'rb'),

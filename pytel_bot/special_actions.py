@@ -24,7 +24,7 @@ class SpecialActions(object):
     def simplifying(text):
         """Tokenizes the text by fragments of 15s chars"""
         str(text)
-        max_chars = 15
+        max_chars = 23
         size = len(text) // max_chars
         i = 0
         fragments = []
