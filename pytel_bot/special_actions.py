@@ -16,7 +16,7 @@ class SpecialActions(object):
                     draw.font_family = 'Liberation Mono'
                     draw.font_size = 30
                     text = SpecialActions.simplifying(text)
-                    draw.text(155, 785, text)
+                    draw.text(140, 785, text)
                     draw(cloned)
                     cloned.save(filename=saved_image)
 
