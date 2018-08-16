@@ -24,12 +24,14 @@ class SpecialActions(object):
     def simplifying(text):
         """Tokenizes the text by fragments of 15s chars"""
         str(text)
-        size = len(text) // 15
+        max_chars = 15
+        size = len(text) // max_chars
         i = 0
-        while i < (size - 1):
-            text += text[size*0:size*1] + "\n"
+        fragments = []
+        while i <= size:
+            fragments.append(text[max_chars * i:max_chars * (i + 1)])
             i += 1
-        return text
+        return '\n'.join(fragments)
 
     @staticmethod
     def preparing_text_cabezas(text):
