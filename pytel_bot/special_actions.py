@@ -24,7 +24,7 @@ class SpecialActions(object):
     def simplifying(text):
         """Tokenizes the text by fragments of 15s chars"""
         str(text)
-        size = len(text) / 15
+        size = len(text) // 15
         i = 0
         while i < (size - 1):
             text += text[size*0:size*1] + "\n"
