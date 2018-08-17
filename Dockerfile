@@ -5,6 +5,7 @@ WORKDIR /app/
 
 COPY requirements.txt .
 RUN pip install -r requirements.txt && rm requirements.txt && \
+    apt-get update && \
     apt-get install -y --no-install-recommends fonts-liberation && \
     apt-get clean && \
     rm -rf /var/lib/apt && \

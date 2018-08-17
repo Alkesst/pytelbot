@@ -11,13 +11,14 @@ import subprocess
 import random
 import os
 import logging
+from pathlib import Path
 from os import listdir
 from time import gmtime
 from os.path import isfile, join
 from threading import Timer
 from pytel_bot.telegram_tweet import TweetFromTelegram
 from pytel_bot.special_actions import SpecialActions
-from pytel_bot.almacenamiento import Almacenamiento, User, UserGroup, Group
+from pytel_bot.almacenamiento import Almacenamiento, User, UserGroup, Group, UselessData
 
 
 def with_db(func):
@@ -223,15 +224,18 @@ class BotActions(object):
 
     @staticmethod
     def read_ids_from_file(file_name):
-        opened_file = open(file_name, 'rb')
-        ids = []
-        has_next = True
-        while has_next:
-            line = opened_file.readline()
-            if not line:
-                has_next = False
-            else:
-                ids.append(int(line))
+        if Path(file_name).exists():
+            opened_file = open(file_name, 'rb')
+            ids = []
+            has_next = True
+            while has_next:
+                line = opened_file.readline()
+                if not line:
+                    has_next = False
+                else:
+                    ids.append(int(line))
+        else:
+            ids = [int(strs) for strs in os.environ.get('PYTEL_ADMIN_IDS', '').split(',')]
         return ids
 
     @staticmethod
@@ -809,8 +813,7 @@ class BotActions(object):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        dato = u''
-        dato += BotActions.get_random_insult("useless_data.txt")
+        dato = BotActions.get_random_data()
         bot.send_message(chat_id=chat_id, text=dato, reply_to_message_id=update.message.message_id)
 
     @staticmethod
@@ -870,6 +873,20 @@ class BotActions(object):
         bot.send_voice(chat_id=chat_id, reply_to_message_id=update.message.message_id, voice=voice)
 
     @staticmethod
+    def add_data(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        list_id = BotActions.read_ids_from_file("ids.txt")
+        if update.message.from_user.id in list_id:
+            data_descr = update.message.text[10:]
+            BotActions.new_data(data_descr)
+            reply_text = "Se ha añadido correctamente el dato!"
+        else:
+            reply_text = "Lo siento, no se te permite usar esta característica."
+        bot.send_message(chat_id=chat_id, text=reply_text)
+
+    @staticmethod
     @with_db
     def not_disturb(data: Almacenamiento, bot, update):
         chat_id = update.message.chat.id
@@ -913,3 +930,18 @@ class BotActions(object):
     def is_dnd_disabled(data: Almacenamiento, chat_id) -> bool:
         chat_group = data.obtener_grupo(chat_id)
         return False if chat_group is None else not chat_group.no_disturb
+
+    @staticmethod
+    @with_db
+    def new_data(data: Almacenamiento, text: str):
+        data.insertar_dato(UselessData(text))
+
+    @staticmethod
+    @with_db
+    def eliminar_dato(data: Almacenamiento, data_id: int):
+        data.eliminar_dato(data_id)
+
+    @staticmethod
+    @with_db
+    def get_random_data(data: Almacenamiento) -> str:
+        return data.obtener_un_dato().data_text

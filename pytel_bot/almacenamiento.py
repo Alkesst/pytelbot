@@ -10,7 +10,7 @@ import sqlite3
 class UselessData(object):
     """Update by @alkesst"""
 
-    def __init__(self, data_id=None, data_text=None):
+    def __init__(self, data_text=None, data_id=None):
         super(UselessData, self).__init__()
         if isinstance(data_id, (sqlite3.Row, tuple)):
             self.__data_id = data_id[0]
@@ -28,8 +28,8 @@ class UselessData(object):
         return self.__data_text
 
     @data_id.setter
-    def data_id(self, id: int):
-        self.__data_id = id
+    def data_id(self, data_id: int):
+        self.__data_id = data_id
 
     @data_text.setter
     def data_text(self, text: str):
@@ -232,7 +232,7 @@ class Almacenamiento(object):
 
         self.c.execute(
             "CREATE TABLE IF NOT EXISTS `useless_data` (\n" + "  data_id INTEGER PRIMARY KEY ASC AUTOINCREMENT,\n" +
-            "  data_description INTEGER UNIQUE NOT NULL" + ")")
+            "  data_description VARCHAR NOT NULL" + ")")
 
         self.db.commit()
 
@@ -404,7 +404,7 @@ class Almacenamiento(object):
 
     # Updated by @alkesst
 
-    def insertar_useless_data(self, data: UselessData):
+    def insertar_dato(self, data: UselessData):
         self.c.execute('INSERT INTO useless_data (data_description) VALUES (?)', (data.data_text,))
         self.db.commit()
 
@@ -413,10 +413,10 @@ class Almacenamiento(object):
         self.c.execute('SELECT * FROM useless_data WHERE data_id IN (SELECT data_id FROM useless_data ORDER BY RANDOM()'
                        ' LIMIT 1)')
         res = self.c.fetchall()
-        return None if not res else UselessData(res[0])
+        return None if not res else UselessData(res[0][1], res[0][0])
 
-    def eliminar_useless_data(self, data: UselessData) -> bool:
-        self.c.execute('DELETE FROM useless_data WHERE data_id = ?', (data.data_id,))
+    def eliminar_dato(self, data_id: int) -> bool:
+        self.c.execute('DELETE FROM useless_data WHERE data_id = ?', (data_id,))
         self.db.commit()
         return self.c.rowcount != 0
 
