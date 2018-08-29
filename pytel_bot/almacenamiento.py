@@ -415,6 +415,12 @@ class Almacenamiento(object):
         res = self.c.fetchall()
         return None if not res else UselessData(res[0][1], res[0][0])
 
+    def obtener_todos_datos(self) -> [UselessData]:
+        self.c.execute('SELECT * FROM useless_data')
+        res = self.c.fetchall()
+        list_res = [UselessData(data[1], data[0]) for data in res]
+        return list_res
+
     def eliminar_dato(self, data_id: int) -> bool:
         self.c.execute('DELETE FROM useless_data WHERE data_id = ?', (data_id,))
         self.db.commit()

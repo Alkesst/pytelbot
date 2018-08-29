@@ -880,11 +880,37 @@ class BotActions(object):
         list_id = BotActions.read_ids_from_file("ids.txt")
         if update.message.from_user.id in list_id:
             data_descr = update.message.text[10:]
-            BotActions.new_data(data_descr)
-            reply_text = "Se ha añadido correctamente el dato!"
+            if len(data_descr) == 0:
+                reply_text = "El texto no debe estar vacío!"
+            else:
+                BotActions.new_data(data_descr)
+                reply_text = "Se ha añadido correctamente el dato!"
         else:
             reply_text = "Lo siento, no se te permite usar esta característica."
         bot.send_message(chat_id=chat_id, text=reply_text)
+
+    @staticmethod
+    def print_all_data(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        text = ''
+        for data in BotActions.get_all_data():
+            text += str(data.data_id) + ': ' + data.data_text + '\n'
+        bot.send_message(chat_id=chat_id, text='Estos son todos los datos en almacenados: \n' + text)
+
+    @staticmethod
+    def delete_data(bot, update, args):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        try:
+            data_id = int(args[0])
+            BotActions.eliminar_dato(data_id)
+            text = 'Dato borrado correctamente...'
+        except ValueError:
+            text = 'No has insertado correctamente el id'
+        bot.send_message(chat_id=chat_id, text=text)
 
     @staticmethod
     @with_db
@@ -948,15 +974,12 @@ class BotActions(object):
 
     @staticmethod
     @with_db
-    def what_tw_acc(data: Almacenamiento, bot, update):
+    def get_all_data(data: Almacenamiento) -> [UselessData]:
+        return data.obtener_todos_datos()
+
+    @staticmethod
+    def unknown(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        user = User(user_id)
-        db_user = data.obtener_usuario(user)
-        if db_user.twitter_user:
-            text = 'Tu cuenta de twitter asociada es: {}'.format(db_user.twitter_user)
-        else:
-            text = 'Actualmente no tienes ninguna cuenta de twitter asociada. Usa /set_tw_acc para asociar una cuenta'
-        bot.send_message(chat_id=chat_id, text=text)
-
+        bot.send_message(chat_id=chat_id, text='No he entendido ese comando :(')
