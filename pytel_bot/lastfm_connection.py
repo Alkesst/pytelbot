@@ -40,3 +40,14 @@ class LastFM(object):
         except pylast.WSError:
             text = 'Usuario no encontrado :('
         return text
+
+    def get_playcount(self, user: str) -> str:
+        try:
+            user = self.network.get_user(user)
+            register = user.get_registered()
+            text = 'El usuario {} ha hecho {} scrobblings desde {} de {} de {}\n'.format(
+                user, user.get_playcount(), register.day, register.month, register.year
+            )
+        except pylast.WSError:
+            text = 'Usuario no encontrado'
+        return text
