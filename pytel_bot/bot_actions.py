@@ -1014,3 +1014,14 @@ class BotActions(object):
         else:
             text = 'Necesito el usuario!'
         bot.send_message(chat_id=chat_id, text=text)
+
+    @staticmethod
+    def total_scrobbled(bot, update, args):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        if len(args) >= 1:
+            text = BotActions.py_last.get_playcount(args[0])
+        else:
+            text = 'Necesito el usuario!'
+        bot.send_message(chat_id=chat_id, text=text)
