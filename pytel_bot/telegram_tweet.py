@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 # made with python 3
 # pylint: disable=C1001
-import json
 import tweepy
 
 from pytel_bot.tokens import get_tokens

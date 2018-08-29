@@ -1,3 +1,4 @@
 tweepy
 python-telegram-bot
 wand
+pylast

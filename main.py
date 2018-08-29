@@ -60,6 +60,8 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('add_data', BotActions.add_data))
     updater.dispatcher.add_handler(CommandHandler('all_data', BotActions.print_all_data))
     updater.dispatcher.add_handler(CommandHandler('delete_data', BotActions.delete_data, pass_args=True))
+    updater.dispatcher.add_handler(CommandHandler('last_tracks', BotActions.last_tracks, pass_args=True))
+    updater.dispatcher.add_handler(CommandHandler('listening', BotActions.listening, pass_args=True))
     updater.dispatcher.add_handler(MessageHandler(happy_filter, BotActions.happy))
     updater.dispatcher.add_handler(MessageHandler(unhappy_filter, BotActions.not_happy))
     updater.dispatcher.add_handler(MessageHandler(botijo, BotActions.botijo_react))

@@ -19,6 +19,7 @@ from threading import Timer
 from pytel_bot.telegram_tweet import TweetFromTelegram
 from pytel_bot.special_actions import SpecialActions
 from pytel_bot.almacenamiento import Almacenamiento, User, UserGroup, Group, UselessData
+from pytel_bot.lastfm_connection import LastFM
 
 
 def with_db(func):
@@ -42,6 +43,7 @@ class BotActions(object):
     logging.getLogger().addHandler(logging.StreamHandler())
     ids = None
     pytel_path = os.environ.get("PYTEL_PATH", "../pytel_stuff")
+    py_last = LastFM()
 
     # CAADBAADJQADuE-EEuya2udZTudYAg reverted
     # CAADBAADLAADuE - EElvaPQABlkaHMAI
@@ -983,3 +985,32 @@ class BotActions(object):
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
         bot.send_message(chat_id=chat_id, text='No he entendido ese comando :(')
+
+    @staticmethod
+    def last_tracks(bot, update, args):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        if len(args) >= 2:
+            try:
+                track_number = int(args[0])
+                if track_number < 50:
+                    text = BotActions.py_last.get_last_tracks(track_number, args[1])
+                else:
+                    text = 'El numero tiene que ser menor que 50!'
+            except ValueError:
+                text = 'El formato debe ser /last_tracks cantidad usuario. cantidad debe ser un numero'
+        else:
+            text = 'Necesito el número de canciones y el usuario!'
+        bot.send_message(chat_id, text=text)
+
+    @staticmethod
+    def listening(bot, update, args):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        if len(args) >= 1:
+            text = BotActions.py_last.get_now_playing(args[0])
+        else:
+            text = 'Necesito el usuario!'
+        bot.send_message(chat_id=chat_id, text=text)
