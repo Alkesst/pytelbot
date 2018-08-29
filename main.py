@@ -58,6 +58,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('disturb', BotActions.disturb))
     updater.dispatcher.add_handler(CommandHandler('dnd', BotActions.not_disturb))
     updater.dispatcher.add_handler(CommandHandler('add_data', BotActions.add_data))
+    updater.dispatcher.add_handler(CommandHandler('twitter', BotActions.what_tw_acc))
     updater.dispatcher.add_handler(MessageHandler(happy_filter, BotActions.happy))
     updater.dispatcher.add_handler(MessageHandler(unhappy_filter, BotActions.not_happy))
     updater.dispatcher.add_handler(MessageHandler(botijo, BotActions.botijo_react))

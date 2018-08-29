@@ -945,3 +945,18 @@ class BotActions(object):
     @with_db
     def get_random_data(data: Almacenamiento) -> str:
         return data.obtener_un_dato().data_text
+
+    @staticmethod
+    @with_db
+    def what_tw_acc(data: Almacenamiento, bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        user = User(user_id)
+        db_user = data.obtener_usuario(user)
+        if db_user.twitter_user:
+            text = 'Tu cuenta de twitter asociada es: {}'.format(db_user.twitter_user)
+        else:
+            text = 'Actualmente no tienes ninguna cuenta de twitter asociada. Usa /set_tw_acc para asociar una cuenta'
+        bot.send_message(chat_id=chat_id, text=text)
+

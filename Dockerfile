@@ -11,7 +11,7 @@ RUN pip install -r requirements.txt && rm requirements.txt && \
     rm -rf /var/lib/apt && \
     rm -rf /var/cache/apt && \
     unlink /etc/localtime && ln -s /usr/share/zoneinfo/Europe/Madrid /etc/localtime
-COPY main.py insultos.txt useless_data.txt insults.txt ./
+COPY main.py insultos.txt insults.txt ./
 COPY pytel_bot ./pytel_bot/
 
 CMD python main.py
