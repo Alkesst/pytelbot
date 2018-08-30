@@ -811,11 +811,11 @@ class BotActions(object):
     # TODO calculadora;
 
     @staticmethod
-    def useless_data(bot, update):
+    def facts(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        dato = BotActions.get_random_data()
+        dato = BotActions.get_random_facts()
         bot.send_message(chat_id=chat_id, text=dato, reply_to_message_id=update.message.message_id)
 
     @staticmethod
@@ -857,16 +857,6 @@ class BotActions(object):
         bot.send_message(chat_id=chat_id, text=u'Ets un ' + insult)
 
     @staticmethod
-    def new_data(_, update):
-        chat_id = update.message.chat.id
-        user_id = update.message.from_user.id
-        BotActions.common_process(chat_id, user_id)
-        if not BotActions.ids:
-            pass
-        else:
-            pass  # BotActions.data.insertar_useless_data()
-
-    @staticmethod
     def bumper_cars(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
@@ -875,7 +865,7 @@ class BotActions(object):
         bot.send_voice(chat_id=chat_id, reply_to_message_id=update.message.message_id, voice=voice)
 
     @staticmethod
-    def add_data(bot, update):
+    def add_fact(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
@@ -885,19 +875,19 @@ class BotActions(object):
             if len(data_descr) == 0:
                 reply_text = "El texto no debe estar vacío!"
             else:
-                BotActions.new_data(data_descr)
+                BotActions.new_fact(data_descr)
                 reply_text = "Se ha añadido correctamente el dato!"
         else:
             reply_text = "Lo siento, no se te permite usar esta característica."
         bot.send_message(chat_id=chat_id, text=reply_text)
 
     @staticmethod
-    def print_all_data(bot, update):
+    def print_all_facts(bot, update):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
         text = ''
-        for data in BotActions.get_all_data():
+        for data in BotActions.get_all_facts():
             text += str(data.data_id) + ': ' + data.data_text + '\n'
         bot.send_message(chat_id=chat_id, text='Estos son todos los datos en almacenados: \n' + text)
 
@@ -961,7 +951,7 @@ class BotActions(object):
 
     @staticmethod
     @with_db
-    def new_data(data: Almacenamiento, text: str):
+    def new_fact(data: Almacenamiento, text: str):
         data.insertar_dato(UselessData(text))
 
     @staticmethod
@@ -971,12 +961,12 @@ class BotActions(object):
 
     @staticmethod
     @with_db
-    def get_random_data(data: Almacenamiento) -> str:
+    def get_random_facts(data: Almacenamiento) -> str:
         return data.obtener_un_dato().data_text
 
     @staticmethod
     @with_db
-    def get_all_data(data: Almacenamiento) -> [UselessData]:
+    def get_all_facts(data: Almacenamiento) -> [UselessData]:
         return data.obtener_todos_datos()
 
     @staticmethod
