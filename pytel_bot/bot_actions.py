@@ -11,6 +11,7 @@ import subprocess
 import random
 import os
 import logging
+from math import ceil
 from pathlib import Path
 from os import listdir
 from time import gmtime
@@ -886,10 +887,14 @@ class BotActions(object):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        text = ''
-        for data in BotActions.get_all_facts():
-            text += str(data.data_id) + ': ' + data.data_text + '\n'
-        bot.send_message(chat_id=chat_id, text='Estos son todos los datos en almacenados: \n' + text)
+        text = 'Estos son todos los datos en almacenados: \n'
+        for facts in BotActions.get_all_facts():
+            text += str(facts.data_id) + ': ' + facts.data_text + '\n'
+        messages = []
+        for i in range(0, int(ceil(len(text) / 4096))):
+            messages.append(text[(i * 4096):(i + 1) * 4096])
+        for message in messages:
+            bot.send_message(chat_id=chat_id, text=message)
 
     @staticmethod
     def delete_data(bot, update, args):
