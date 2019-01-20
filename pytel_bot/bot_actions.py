@@ -1020,3 +1020,11 @@ class BotActions(object):
         else:
             text = 'Necesito el usuario!'
         bot.send_message(chat_id=chat_id, text=text)
+
+        @staticmethod
+        def vosvone(bot, update):
+            """Reply if you are altered"""
+            chat_id = update.message.chat.id
+            user_id = update.message.from_user.id
+            BotActions.common_process(chat_id, user_id)
+            bot.send_voice(chat_id=chat_id, voice=open(f'{BotActions.pytel_path}/vosvone.opus', 'rb'))

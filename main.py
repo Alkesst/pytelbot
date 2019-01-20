@@ -30,6 +30,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('start', BotActions.start))
     updater.dispatcher.add_handler(CommandHandler('hola', BotActions.hola))
     updater.dispatcher.add_handler(CommandHandler('macho', BotActions.macho))
+    updater.dispatcher.add_handler(CommandHandler('vosvone', BotActions.vosvone))
     updater.dispatcher.add_handler(CommandHandler('nudes', BotActions.send_memes))
     updater.dispatcher.add_handler(CommandHandler('ping', BotActions.ping))
     updater.dispatcher.add_handler(CommandHandler('id', BotActions.id_user))
