@@ -4,7 +4,10 @@ RUN mkdir -p /app/pytel_bot
 WORKDIR /app/
 
 COPY requirements.txt .
-RUN pip install -r requirements.txt && \
+RUN apt-get install -y build-essentials && \
+    pip install -r requirements.txt && \
+    apt-get remove -y build-essentials && \
+    apt-get autoremove -y && \
     rm requirements.txt && \
     apt-get update && \
     apt-get install -y procps && \
