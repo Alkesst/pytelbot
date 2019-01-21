@@ -989,10 +989,13 @@ class BotActions(object):
         if len(args) >= 2:
             try:
                 track_number = int(args[0])
-                if track_number < 50:
-                    text = BotActions.py_last.get_last_tracks(track_number, args[1])
+                if track_number > 0:
+                    if track_number < 50:
+                        text = BotActions.py_last.get_last_tracks(track_number, args[1])
+                    else:
+                        text = 'El numero tiene que ser menor que 50!'
                 else:
-                    text = 'El numero tiene que ser menor que 50!'
+                    text = 'El numero tiene que ser positivo!'
             except ValueError:
                 text = 'El formato debe ser /last_tracks cantidad usuario. cantidad debe ser un numero'
         else:
@@ -1021,10 +1024,10 @@ class BotActions(object):
             text = 'Necesito el usuario!'
         bot.send_message(chat_id=chat_id, text=text)
 
-        @staticmethod
-        def vosvone(bot, update):
-            """Reply if you are altered"""
-            chat_id = update.message.chat.id
-            user_id = update.message.from_user.id
-            BotActions.common_process(chat_id, user_id)
-            bot.send_voice(chat_id=chat_id, voice=open(f'{BotActions.pytel_path}/vosvone.opus', 'rb'))
+    @staticmethod
+    def vosvone(bot, update):
+        """Reply if you are altered"""
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        bot.send_voice(chat_id=chat_id, voice=open(f'{BotActions.pytel_path}/vosvone.opus', 'rb'))
