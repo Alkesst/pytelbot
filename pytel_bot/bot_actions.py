@@ -35,6 +35,7 @@ def with_db(func):
 
 class BotActions(object):
     """Makes actions with the bot"""
+    dict_tcp_connections = {}
     dict_pole = {}
     dict_porro = {}
     dict_pi = {}
@@ -60,12 +61,48 @@ class BotActions(object):
         pass
 
     @staticmethod
-    def start(bot, update):
+    def syn(bot, update):
         """Initialize the bot"""
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        bot.send_message(text='Hola, mundo!\n Para saber mi funcionamiento utiliza /help', chat_id=chat_id)
+        text = ''
+        if BotActions.dict_tcp_connections.get(chat_id) is not None:
+            if BotActions.dict_tcp_connections[chat_id]:
+                text = 'TCP connection already stablished!'
+        else:
+            text = 'SYN=1;ACK=1;'
+            BotActions.dict_tcp_connections[chat_id] = True
+        bot.send_message(text=text, chat_id=chat_id)
+
+    @staticmethod
+    def ack(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        if BotActions.dict_tcp_connections.get(chat_id) is not None:
+            if BotActions.dict_tcp_connections[chat_id]:
+                text = 'TCP connection finished'
+                BotActions.dict_tcp_connections[chat_id] = False
+            else:
+                text = 'TCP connection stablished'
+                BotActions.dict_tcp_connections[chat_id] = True
+        else:
+            text = 'TCP connection stablished'
+            BotActions.dict_tcp_connections[chat_id] = True
+        bot.send_message(text=text, chat_id=chat_id)
+
+    @staticmethod
+    def fin(bot, update):
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        if BotActions.dict_tcp_connections.get(chat_id) is not None:
+            text = 'FIN=1;ACK=1;'
+            BotActions.dict_tcp_connections[chat_id] = False
+        else:
+            text = 'You cannot end a connection that was never stablished!'
+        bot.send_message(text=text, chat_id=chat_id)
 
     @staticmethod
     def hola(bot, update):
