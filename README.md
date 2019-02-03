@@ -18,6 +18,31 @@ The tokens are saved using environment variables:
 | `PYTEL_ACCESS_TOKEN` | Twitter's user Access Token |
 | `PYTEL_ACCES_TOKEN_SECRET` | Twitter's user Access Token Secret |
 | `PYTEL_PATH` | Optional variable that points to where the files and database are stored |
+| `WEBHOOK_PATH_PREFIX` | Defines the public url to enable the webhook mode |
+
+### Abstract
+To enable the webhook mode, the environment variable `WEBHOOK_URL` must be defined with the public URL (it supposes that there is a reverse proxy that enables HTTPS for the public part). By default, expects to receive all the requests without any path prefix, but you can define one using the env var `WEBHOOK_PATH_PREFIX`. Both env vars can contain the token `{token}` that will be replaced with the real token if needed.
+
+### Example 1
+ - `WEBHOOK_URL`: `https://casita.melchor9000.me/pytelbot`
+ - `WEBHOOK_PATH_PREFIX`: `pytelbot`
+
+This will receive updates to https://casita.melchor9000.me/pytelbot, where the reverse proxy will send them to the bot under the path `/pytelbot`.
+
+### Example 2
+ - `WEBHOOK_URL`: `https://casita.melchor9000.me/pytelbot`
+ - `WEBHOOK_PATH_PREFIX`: ` ` (empty string)
+
+This will receive updates to https://casita.melchor9000.me/pytelbot, where the reverse proxy will send them to the bot under the path `/` (removing the `pytelbot` path prefix).
+
+### Example 3
+ - `WEBHOOK_URL`: `https://casita.melchor9000.me/bots/{token}`
+ - `WEBHOOK_PATH_PREFIX`: `{token}` (empty string)
+
+This will receive updates to https://casita.melchor9000.me/bots/<TOKEN> (where `<TOKEN>` is the bot token), where the reverse proxy will send them to the bot under the path `/<TOKEN>` (removing the `bots` path prefix and where `<TOKEN>` is the bot token).
+
+More information: https://github.com/python-telegram-bot/python-telegram-bot/wiki/Webhooks#using-nginx-with-one-domainport-for-all-bots
+
 
 ## AUTOMATE THE BOT
 
@@ -38,7 +63,6 @@ All the images you want to use will need to be in the docker image.
 First create the image with `docker image build -t *tag_name* .` and will create an image from the Dockerfile.
 
 Once created your image, just run with `docker run -it --rm -v *pytel_files_path*:/pytel_stuff --env-file .env *tag_name*`.
-
 
 ### Using Services
 #### Script:
