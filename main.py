@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 # made with python 3
 # pylint: disable=C1001
+import os
+
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from pytel_bot.bot_actions import BotActions
 from pytel_bot.message_filter import *
@@ -82,7 +84,16 @@ def main():
     updater.dispatcher.add_handler(MessageHandler(habeces, BotActions.habeces))
     updater.dispatcher.add_handler(MessageHandler(bumper_cars, BotActions.bumper_cars))
     updater.dispatcher.add_handler(MessageHandler(Filters.all, BotActions.mensajes_callback))
-    updater.start_polling()
+    if 'WEBHOOK_URL' in os.environ:
+        port = int(os.environ.get('PORT', 8000))
+        updater.start_webhook(
+            listen='0.0.0.0',
+            port=port,
+            url_path=os.environ.get('WEBHOOK_PATH_PREFIX', '').format(token=tokens['telegram'],
+        )
+        updater.bot.set_webhook(os.environ['WEBHOOK_URL'].format(token=tokens['telegram']))
+    else:
+        updater.start_polling()
     updater.idle()
 
 
