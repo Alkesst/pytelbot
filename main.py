@@ -89,7 +89,7 @@ def main():
         updater.start_webhook(
             listen='0.0.0.0',
             port=port,
-            url_path=os.environ.get('WEBHOOK_PATH_PREFIX', '').format(token=tokens['telegram'],
+            url_path=os.environ.get('WEBHOOK_PATH_PREFIX', '').format(token=tokens['telegram']),
         )
         updater.bot.set_webhook(os.environ['WEBHOOK_URL'].format(token=tokens['telegram']))
     else:
