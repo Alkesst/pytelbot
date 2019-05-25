@@ -751,7 +751,8 @@ class BotActions(object):
     def status_message(args):
         """ Reprogramado por @melchor629 """
         current_uptime = subprocess.check_output(["uptime", "-p"]).decode('utf-8')[3:]
-        current_temp = subprocess.check_output(["/opt/vc/bin/vcgencmd", "measure_temp"]).decode('utf-8')[5:]
+        with open('/sys/class/thermal/thermal_zone0/temp', 'r') as sys_temp:
+          current_temp = float(sys_temp.read()) / 1000
         free_output = None
         memory_units = None
         if len(args) > 0 and (args[0].lower() == 'mb' or args[0].lower() == 'm'):
