@@ -1,4 +1,4 @@
-FROM arm32v7/python:3.6-slim
+FROM arm64v8/python:3.6-slim
 
 RUN mkdir -p /app/pytel_bot
 WORKDIR /app/
@@ -14,7 +14,7 @@ RUN apt-get update && \
     rm requirements.txt && \
     apt-get update && \
     apt-get install -y procps && \
-    apt-get install -y --no-install-recommends libmagickwand-6.q16-6 fonts-liberation && \
+    apt-get install -y --no-install-recommends libmagickwand-6.q16-8 fonts-liberation && \
     apt-get clean && \
     rm -rf /var/lib/apt && \
     rm -rf /var/cache/apt && \
