@@ -20,7 +20,6 @@ afonacases
 afram
 agaçant
 agaçoris
-agarrat
 agafallós
 agafasopes
 aganit
@@ -30,6 +29,7 @@ aguantaespelmes
 aguiló
 aixafabolets
 aixafaguitarres
+aixafatenalles
 aixafaterrossos
 aixecacamises
 aixecasamarres
@@ -37,9 +37,9 @@ alarb
 alatrencat
 albardà
 albat
-alcavot
 alçapius
 alçaporro
+alcavot
 alcohòlic
 alficòs
 alienat
@@ -55,7 +55,7 @@ andoi
 angoni
 ànima de cadafet
 ànima de càntir
-ànima de Judes
+ànima de judes
 ànima de mal repòs
 ànima deserta
 ànima en pena
@@ -79,8 +79,8 @@ arpellant
 arrabassaqueixals
 arracada
 arrauxat
-arrencapèls
 arrecat
+arrencapèls
 arrencaqueixals
 arreplegaire
 arreplegat
@@ -96,7 +96,6 @@ as de bastos
 ase
 ase alabau
 ase mort
-més ase que gros
 assaltador
 assassí
 assedegat
@@ -122,9 +121,9 @@ baboia
 bacallà
 bacó
 bacora
+badabadoc
 badaluc
 badanes
-badabadoc
 badoc
 baganer
 bagarro
@@ -136,8 +135,8 @@ baix de sostre
 bajà
 bajoc
 balandran
-baldufa
 balcam
+baldufa
 baliga-balaga
 baloni
 baluerna
@@ -221,7 +220,6 @@ boca de fel
 bocafluix
 bocamoll
 bofiós
-boig
 bogia
 boginyot
 boig
@@ -238,7 +236,6 @@ bordegàs
 bordellenc
 borinot
 borni de cervell
-borratxo
 borrango
 borrasser
 borratxo
@@ -307,7 +304,7 @@ busca-raons
 buscona
 butxaca foradada
 bútxara
-Ca
+ca
 cabana
 cabassut
 cabeca
@@ -332,8 +329,8 @@ cagadéus
 cagadimonis
 cagadubtes
 cagadur
-cagafil
 cagaelàstics
+cagafil
 cagaire
 cagaïssa
 cagalatxa
@@ -381,7 +378,6 @@ caguerri
 caguerris
 cagueta
 caguetes
-caguerri
 caia
 caifàs
 caïm
@@ -391,11 +387,11 @@ calavera
 calçasses
 calent de cap
 caletro
+calollo
 camaco
 camacoix
 camacurt
 camadret
-calollo
 camàlic
 camallut
 camanduler
@@ -457,8 +453,8 @@ capesflorat
 cap espès
 cap esquerdat
 capet
-capfluix
 cap fluix
+capfluix
 cap foradat
 capgròs
 cap lleuger
@@ -482,7 +478,7 @@ cara de desmamar criatures
 cara de forrellat de presó
 cara de gnom
 cara de gos
-cara de Judes
+cara de judes
 cara de llufa
 cara de merda d'oca
 cara de mico
@@ -543,6 +539,7 @@ cloquipiu
 closca d'aram
 closcadur
 cocodril
+coiò
 coix de cervell
 colflori
 colgafocs
@@ -586,8 +583,8 @@ cul de bugadera
 cul de cafè
 cul de canonge
 cul d'església
-cul de taverna
 culdestrempat
+cul de taverna
 cul d'olla
 culejador
 culer
@@ -607,9 +604,8 @@ curt de cap
 curt de gambals
 curt de tei
 curt de vista
-més curt i no neixes
-més curt que una màniga de guardapits
-Dat pel cul
+curtet
+dat pel cul
 dat pel sac
 degenerat
 deixat
@@ -648,11 +644,11 @@ dogmàtic
 dolent
 dona de cadira
 dona de la vida
-dona pública
 dona de mala vida
 dona de món
 dona errada
 dona mundana
+dona pública
 doner
 donjoan
 donota
@@ -662,7 +658,7 @@ droga
 dropo
 dròpol
 drut
-Eixelebrat
+eixelebrat
 eixorit
 eixuga-semals
 el cap te fa fum i el cul te fa música
@@ -678,8 +674,8 @@ embustero
 empaitabisbes
 empastifaire
 empeltat de conill
-emplastre
 empipador
+emplastre
 emprenyador
 emprenya-soques
 emproperi
@@ -751,6 +747,7 @@ espantagarses
 espantall
 espantalloques
 espanyaportes
+espanyol
 espanyolàs
 espanyol ronquero, fill de punyetero
 espatllafestes
@@ -785,15 +782,15 @@ esvalotador
 esvalotat
 esventat
 etarra
+(ets més fals que un metge que fuma)
 eunuc
 extravagant
-Facinerós
+facinerós
 falanguero
-fals
-(ets més fals que un metge que fuma)
-falsari
 faldetes
 faldiller
+fals
+falsari
 fanàtic
 fanegues
 fanfarró
@@ -829,20 +826,20 @@ figatova
 fileter
 filibuster
 filisteu
-filosofastre
 fill de bagassa
 fill de capellà
-fill de la Gran Bretanya
+fill de la gran bretanya
 fill de la grandíssima de sa mare
 fill de (la gran) puta
 fill del sereno
 fill del veí de dalt
 fill de mala mare
 fill de monja
-fill de Puigcerdà
-fill de set pares
+fill de puigcerdà
 fill de rector
+fill de set pares
 fill de verra
+filosofastre
 flabiol
 flaüt
 flàvia
@@ -867,7 +864,7 @@ frívol
 fulana
 fulero
 furot
-Gaig
+gaig
 galàpet
 galdran
 galdrepa
@@ -951,11 +948,11 @@ guillat
 guilopo
 guineu
 guiri
-Hipòcrita
 heretge
+hipòcrita
 hippy
 hortera
-Idiota
+idiota
 ignominiós
 ignorant
 il·luminat
@@ -982,16 +979,16 @@ inxa
 irreponsable
 isard
 isidro
-Janet
+janet
 janfotre
 jesuïta
 jirafa
-Joan calcetes
-Joan faldilles
+joan calcetes
+joan faldilles
 judes
 jueu
 juràssic
-Lacasito
+lacasito
 larel·li
 lelo
 lero
@@ -1021,8 +1018,8 @@ llengua d'escorpí
 llengua de serp
 llenguallarg
 llenguerut
-llepacigales
 llepa
+llepacigales
 llepaconys
 llepaculs
 llepafigues
@@ -1043,13 +1040,13 @@ llosc
 lluç
 llusc
 lolailo
-Macaco
+macaco
 macarell
 macarel·la
 macarra
 macarró
-mà foradada
 mafiós
+mà foradada
 maganto
 mai calla
 maimó
@@ -1062,13 +1059,12 @@ malaganós
 malagradós
 malagraït
 malaire
-malandrí
-malànima
 malallengua
 malallet
 malalt
 malambrós
 malandrí
+malànima
 malapeça
 malapècora
 malapell
@@ -1144,8 +1140,8 @@ marieta
 marimatxo
 marioneta
 maripili
-marmota
 marmanyera
+marmota
 maromo
 marrà
 marrec
@@ -1178,6 +1174,9 @@ merdeta
 merdis
 merdós
 meretriu
+més ase que gros
+més curt i no neixes
+més curt que una màniga de guardapits
 mesell
 mesquí
 messalina
@@ -1195,6 +1194,7 @@ missaire
 mitjacerilla
 mitjafiga
 mitja hòstia
+mitja merda
 mitjamerda
 mitjanena
 moc
@@ -1225,8 +1225,8 @@ murri
 musicastre
 mussol
 mustafà
-N
-Nan
+n
+nan
 nap-buf
 napiós
 nas de carxofa
@@ -1248,12 +1248,13 @@ notícies
 no vals la corda per penjar-te
 no vals ni la merda que cagues
 no vals ni un pet de puta
+nul
 nul·litat
 nyarro
+nycris
 nyèbit
 nyeu-nyeu
-nycris
-Obcecat
+obcecat
 obsés
 obtús
 òliba
@@ -1266,7 +1267,7 @@ orc
 orellut
 orni
 ós marí
-Pabràs
+pabràs
 paganini
 pagano
 pagès
@@ -1350,10 +1351,10 @@ pertorbat
 pesat
 pesta
 pet
-pet bufat
 petaculs
 petaner
 petardo
+pet bufat
 pet de llufa
 petimetre
 petulant
@@ -1445,7 +1446,7 @@ putero
 puto
 putot
 putxinel·li
-Qualsevol
+qualsevol
 quatreulls
 queco
 quemaco
@@ -1455,7 +1456,7 @@ quinqui
 quinyol
 quisca
 quiscarro
-Rabassut
+rabassut
 rabosa
 raca
 rampoina
@@ -1495,7 +1496,7 @@ ronyós
 rosegaaltars
 ruc
 rufià
-Sabatot
+sabatot
 saburall
 sac de carn
 sac de gemecs
@@ -1546,7 +1547,7 @@ sopu
 subnormal
 sudaca
 suro
-Tabalot
+tabalot
 tacany
 tafaner
 tafur
@@ -1586,13 +1587,13 @@ titafluixa
 titafreda
 titella
 titot
+tocacampanes
 tocamanetes
 toca-son
-tocat de l'ala
-tocat del bolet
-tocacampanes
 tocatabals
 tocatardà
+tocat de l'ala
+tocat del bolet
 tocatrons
 tocino
 tòfol
@@ -1600,6 +1601,7 @@ toix
 toixarrut
 tomany
 tomàquet
+tontet
 tonto
 topi
 torero
@@ -1638,20 +1640,22 @@ tronera
 tronxo (de col)
 tros d'animal
 tros d'ase
+tros d’ase
 tros de carn batejada
+tros de merda
 tros de quòniam
-trucagenolls
 truà
+trucagenolls
 truja
 trujassa
 tuno
 tupet
-Ull de poll
+ull de poll
 unflapipes
 unglallarg
 urpallut
 usurer
-Vaca burra
+vaca burra
 vagabund
 vagarro
 vampir
@@ -1671,7 +1675,7 @@ viola de femer
 virago
 vivales
 voltor
-Xafarder
+xafarder
 xaixo
 xalat
 xandó
@@ -1681,14 +1685,16 @@ xanxó
 xapero
 xarlaire
 xarlatà
+xarlot
 xarnego
 xaró
-xarlot
+xarrupaescrots
 xarxó
 xerraire
 xeubo
 xibeca
 xiflat
+ximple
 ximple(t)
 xinxa
 xinxa de bosc
@@ -1703,8 +1709,8 @@ xondales
 xondan
 xoriço
 xot
-xuclaaixetes
 xuc de carbassa
+xuclaaixetes
 xueta
 xuleta
 xulla
@@ -1715,27 +1721,3 @@ xurro
 xusma
 zero a l'esquerra
 zombi
-Cap de suro
-tros de merda
-mitja merda
-tros d’ase
-malparit
-Curtet
-Ruc
-Tontet
-xarrupaescrots
-ximple
-pallús
-capsigrany
-carallot
-nul
-gamarús
-bordegàs
-borinot
-barrut
-xarnego
-tòtil
-llimac
-aixafatenalles
-espanyol
-coiò

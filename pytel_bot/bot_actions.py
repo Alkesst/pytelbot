@@ -386,7 +386,8 @@ class BotActions(object):
         BotActions.common_process(chat_id, user_id)
         current_time = update.message.date
         if chat_id != user_id:
-            if current_time.hour == 4 and current_time.minute == 20:
+            # https://en.wikipedia.org/wiki/420_(cannabis_culture)
+            if current_time.hour == 16 and current_time.minute == 20:
                 if update.message.chat.id not in BotActions.dict_porro:
                     if not BotActions.dict_porro:
                         # Cuando pasen las 04:21:10 se borrará el diccionario

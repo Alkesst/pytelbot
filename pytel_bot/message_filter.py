@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # made with python 3
 # pylint: disable=C1001
+import re
 from telegram.ext import BaseFilter
 
 
@@ -49,14 +50,16 @@ class AVeces(BaseFilter):
 class Gracias(BaseFilter):
     def filter(self, message):
         text = message.text.lower()
-        return message.text == 'gracias @pytel_bot' or message.text == '@pytel_bot gracias' or \
-               message.text == 'gracias' or "gracias" in text
-
+        return 'gracias ' in message.text.lower() or \
+               message.text.endswith('gracias') or \
+               message.text.endswith('gracias.') or
 
 class SadReacts(BaseFilter):
     def filter(self, message):
-        return " sad " in message.text.lower() or message.text.lower() == 'sad' or \
-                'sad ' in message.text.lower() or ' sad' in message.text.lower()
+        return " sad " in message.text.lower() or \
+                message.text.lower() == 'sad' or \
+                'sad ' in message.text.lower() or \
+                ' sad' in message.text.lower()
 
 
 class BuenosDias(BaseFilter):
