@@ -52,7 +52,7 @@ class Gracias(BaseFilter):
         text = message.text.lower()
         return 'gracias ' in message.text.lower() or \
                message.text.endswith('gracias') or \
-               message.text.endswith('gracias.') or
+               message.text.endswith('gracias.')
 
 class SadReacts(BaseFilter):
     def filter(self, message):

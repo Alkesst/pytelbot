@@ -1,4 +1,4 @@
-FROM arm32v7/python:3.6-slim
+FROM arm64v8/python:3.6-slim
 
 RUN mkdir -p /app/pytel_bot
 WORKDIR /app/
