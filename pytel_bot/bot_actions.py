@@ -1070,3 +1070,17 @@ class BotActions(object):
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
         bot.send_voice(chat_id=chat_id, voice=open(f'{BotActions.pytel_path}/vosvone.opus', 'rb'))
+
+    @staticmethod
+    # trae la alegría del viernes al grupo
+    def viernes(bot, update):
+        current_time = update.message.date
+        current_weekday = current_time.isoweekday()
+        chat_id = update.message.chat.id
+        user_id = update.message.from_user.id
+        BotActions.common_process(chat_id, user_id)
+        if current_weekday is 5:
+            text = "OOOOOLE LOS VIERNEEEEES!!\nhttps://www.youtube.com/watch?v=1p3-w7O4pVE"
+        else:
+            text = "Hoy no es viernes :("
+        bot.send_message(chat_id=chat_id, text=text)

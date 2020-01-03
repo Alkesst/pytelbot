@@ -63,6 +63,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('disturb', BotActions.disturb))
     updater.dispatcher.add_handler(CommandHandler('dnd', BotActions.not_disturb))
     updater.dispatcher.add_handler(CommandHandler('add_fact', BotActions.add_fact))
+    updater.dispatcher.add_handler(CommandHandler('viernes', BotActions.viernes))
     updater.dispatcher.add_handler(CommandHandler('all_facts', BotActions.print_all_facts))
     updater.dispatcher.add_handler(CommandHandler('delete_fact', BotActions.delete_data, pass_args=True))
     updater.dispatcher.add_handler(CommandHandler('last_tracks', BotActions.last_tracks, pass_args=True))
