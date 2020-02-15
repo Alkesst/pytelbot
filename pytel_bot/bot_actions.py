@@ -11,6 +11,8 @@ import subprocess
 import random
 import os
 import logging
+import pytz
+from datetime import datetime
 from math import ceil
 from pathlib import Path
 from os import listdir
@@ -33,6 +35,13 @@ def with_db(func):
         return ret_val
 
     return wrapped
+
+
+local_timezone = pytz.timezone('Europe/Madrid')
+
+
+def to_local_time(dt: datetime) -> datetime:
+    return local_timezone.fromutc(dt)
 
 
 class BotActions(object):
@@ -300,7 +309,7 @@ class BotActions(object):
 
     @staticmethod
     def pole(update: Update, context: CallbackContext):
-        current_time = update.message.date
+        current_time = to_local_time(update.message.date)
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
@@ -382,7 +391,7 @@ class BotActions(object):
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
-        current_time = update.message.date
+        current_time = to_local_time(update.message.date)
         if chat_id != user_id:
             # https://en.wikipedia.org/wiki/420_(cannabis_culture)
             if current_time.hour == 16 and current_time.minute == 20:
@@ -417,7 +426,7 @@ class BotActions(object):
 
     @staticmethod
     def horacio_pi(update: Update, context: CallbackContext):
-        current_time = update.message.date
+        current_time = to_local_time(update.message.date)
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
         BotActions.common_process(chat_id, user_id)
@@ -1063,8 +1072,7 @@ class BotActions(object):
     @staticmethod
     # trae la alegría del viernes al grupo
     def viernes(update: Update, context: CallbackContext):
-        # Nota: esta fecha está en UTC, por lo que el viernes empezará mas tarde siempre
-        current_time = update.message.date
+        current_time = to_local_time(update.message.date)
         current_weekday = current_time.isoweekday()
         chat_id = update.message.chat.id
         user_id = update.message.from_user.id
